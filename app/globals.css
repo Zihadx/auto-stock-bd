@@ -1,1 +1,148 @@
 @import "tailwindcss";
+
+/* ==========================================================================
+   AutoStock BD — Design Tokens
+   A premium, restrained system: ink + paper, one accent (muted brass).
+   No gradients, no glassmorphism, no neon. Confidence through precision.
+   ========================================================================== */
+
+:root {
+  /* Surfaces */
+  --color-paper: #f7f6f3; /* base background, warm off-white, not cream */
+  --color-paper-raised: #ffffff; /* cards, elevated modules */
+  --color-ink: #0b0d10; /* primary text / near-black */
+  --color-ink-soft: #464c54; /* secondary text */
+  --color-ink-faint: #8b909a; /* tertiary text, placeholders */
+
+  /* Dark surfaces (admin shell, footer, hero overlays) */
+  --color-charcoal: #14171b;
+  --color-charcoal-raised: #1c2126;
+  --color-charcoal-line: #2a2f36;
+
+  /* Borders */
+  --color-line: #e3e0d9; /* hairline border on paper */
+  --color-line-strong: #cfcbc0;
+
+  /* Accent — muted brass. Used sparingly: primary CTAs, price, live status. */
+  --color-brass: #a9832f;
+  --color-brass-dark: #8a6a24;
+  --color-brass-tint: #f1e6d0;
+
+  /* Semantic */
+  --color-success: #3f7a52;
+  --color-success-tint: #e5efe7;
+  --color-warning: #b5731a;
+  --color-warning-tint: #f6ead7;
+  --color-danger: #a83b32;
+  --color-danger-tint: #f5e3e0;
+  --color-info: #3a5a8a;
+  --color-info-tint: #e4ecf5;
+
+  /* Radii — small, purposeful. No pill-everything. */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+
+  /* Shadows — used almost never, and only faint */
+  --shadow-sm: 0 1px 2px rgba(11, 13, 16, 0.05);
+  --shadow-md: 0 4px 16px rgba(11, 13, 16, 0.08);
+  --shadow-modal: 0 12px 40px rgba(11, 13, 16, 0.18);
+
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+}
+
+@theme inline {
+  --color-paper: var(--color-paper);
+  --color-paper-raised: var(--color-paper-raised);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-ink-faint: var(--color-ink-faint);
+
+  --color-charcoal: var(--color-charcoal);
+  --color-charcoal-raised: var(--color-charcoal-raised);
+  --color-charcoal-line: var(--color-charcoal-line);
+
+  --color-line: var(--color-line);
+  --color-line-strong: var(--color-line-strong);
+
+  --color-brass: var(--color-brass);
+  --color-brass-dark: var(--color-brass-dark);
+  --color-brass-tint: var(--color-brass-tint);
+
+  --color-success: var(--color-success);
+  --color-success-tint: var(--color-success-tint);
+  --color-warning: var(--color-warning);
+  --color-warning-tint: var(--color-warning-tint);
+  --color-danger: var(--color-danger);
+  --color-danger-tint: var(--color-danger-tint);
+  --color-info: var(--color-info);
+  --color-info-tint: var(--color-info-tint);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-display: var(--font-geist);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+
+  --shadow-xs: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-modal: var(--shadow-modal);
+}
+
+* {
+  border-color: var(--color-line);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-feature-settings: "cv11", "ss01";
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.font-tabular {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Visible keyboard focus everywhere — never suppressed for aesthetics */
+:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+::selection {
+  background: var(--color-brass-tint);
+  color: var(--color-ink);
+}
