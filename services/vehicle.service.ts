@@ -1,5 +1,11 @@
 import { vehicles as vehicleRecords } from "@/data/vehicles";
-import type { Vehicle, VehicleFilters, VehiclePage } from "@/types/vehicle";
+import type {
+  CreateVehicleInput,
+  UpdateVehicleInput,
+  Vehicle,
+  VehicleFilters,
+  VehiclePage,
+} from "@/types/vehicle";
 
 /**
  * Mock vehicle service. Every function returns a Promise so call sites
@@ -105,4 +111,67 @@ export async function getSimilarVehicles(vehicle: Vehicle, limit = 4): Promise<V
   }
 
   return delay(similar);
+}
+
+function slugify(brand: string, model: string, year: number): string {
+  const base = `${brand}-${model}-${year}`
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+  let slug = base;
+  let suffix = 1;
+  while (vehicleRecords.some((v) => v.slug === slug)) {
+    slug = `${base}-${suffix++}`;
+  }
+  return slug;
+}
+
+/**
+ * Mock create. Pushes into the shared in-memory array so the new vehicle
+ * shows up immediately in the admin list within this server session —
+ * becomes `POST /api/vehicles` later, at which point this in-memory push
+ * goes away entirely.
+ */
+export async function createVehicle(input: CreateVehicleInput): Promise<Vehicle> {
+  const now = new Date().toISOString();
+  const vehicle: Vehicle = {
+    ...input,
+    id: `v-${Date.now()}`,
+    slug: slugify(input.brand, input.model, input.year),
+    images: input.images.map((img, i) => ({ ...img, id: `img-${Date.now()}-${i}` })),
+    history: [],
+    views: 0,
+    inquiryCount: 0,
+    createdAt: now,
+    updatedAt: now,
+  };
+
+  vehicleRecords.unshift(vehicle);
+  return delay(vehicle);
+}
+
+/** Mock update. Becomes `PATCH /api/vehicles/:id` later. */
+export async function updateVehicle(input: UpdateVehicleInput): Promise<Vehicle | null> {
+  const index = vehicleRecords.findIndex((v) => v.id === input.id);
+  if (index === -1) return delay(null);
+
+  const updated: Vehicle = {
+    ...vehicleRecords[index],
+    ...input,
+    images: input.images
+      ? input.images.map((img, i) => ({ ...img, id: `img-${Date.now()}-${i}` }))
+      : vehicleRecords[index].images,
+    updatedAt: new Date().toISOString(),
+  };
+
+  vehicleRecords[index] = updated;
+  return delay(updated);
+}
+
+/** Mock delete. Becomes `DELETE /api/vehicles/:id` later. */
+export async function deleteVehicle(id: string): Promise<boolean> {
+  const index = vehicleRecords.findIndex((v) => v.id === id);
+  if (index === -1) return delay(false);
+  vehicleRecords.splice(index, 1);
+  return delay(true);
 }
