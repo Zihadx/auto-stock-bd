@@ -65,9 +65,10 @@ function vehicleToFormValues(vehicle: Vehicle): VehicleFormValues {
     location: vehicle.location,
     ownerCount: vehicle.ownerCount,
     description: vehicle.description,
-    features: vehicle.features.flatMap((g) => g.items).map((value) => ({ value })) || [
-      { value: "" },
-    ],
+    features: (() => {
+      const items = vehicle.features.flatMap((g) => g.items);
+      return items.length > 0 ? items.map((value) => ({ value })) : [{ value: "" }];
+    })(),
     images: vehicle.images.map((img) => ({ url: img.url, alt: img.alt })),
     status: vehicle.status,
     featured: vehicle.featured,
