@@ -23,6 +23,8 @@ const validSorts: NonNullable<VehicleFilters["sortBy"]>[] = [
   "price-asc",
   "price-desc",
   "mileage-asc",
+  "mileage-desc",
+  "year-asc",
   "year-desc",
 ];
 

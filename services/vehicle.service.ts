@@ -41,6 +41,10 @@ function sortVehicles(list: Vehicle[], sortBy: VehicleFilters["sortBy"]): Vehicl
       return sorted.sort((a, b) => b.price - a.price);
     case "mileage-asc":
       return sorted.sort((a, b) => a.mileageKm - b.mileageKm);
+    case "mileage-desc":
+      return sorted.sort((a, b) => b.mileageKm - a.mileageKm);
+    case "year-asc":
+      return sorted.sort((a, b) => a.year - b.year);
     case "year-desc":
       return sorted.sort((a, b) => b.year - a.year);
     case "newest":

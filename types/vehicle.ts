@@ -56,7 +56,7 @@ export interface Vehicle {
   updatedAt: string;
 }
 
-export interface VehicleFilters {
+export type VehicleFilters = {
   search?: string;
   brands?: string[];
   priceMin?: number;
@@ -67,10 +67,17 @@ export interface VehicleFilters {
   transmissions?: TransmissionType[];
   mileageMax?: number;
   status?: VehicleStatus[];
-  sortBy?: "newest" | "price-asc" | "price-desc" | "mileage-asc" | "year-desc";
+  sortBy?:
+    | "newest"
+    | "price-asc"
+    | "price-desc"
+    | "mileage-asc"
+    | "mileage-desc"
+    | "year-asc"
+    | "year-desc";
   page?: number;
   pageSize?: number;
-}
+};
 
 export interface VehiclePage {
   items: Vehicle[];
