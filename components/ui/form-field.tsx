@@ -28,6 +28,7 @@ export function FormField({
         className={cn(
           "mt-1.5 h-10 w-full rounded-sm border bg-paper px-3 text-sm text-ink placeholder:text-ink-faint",
           error ? "border-danger" : "border-line focus-visible:border-ink",
+          "disabled:cursor-not-allowed disabled:bg-ink/5 disabled:text-ink-faint",
           className,
         )}
         {...props}
@@ -65,6 +66,7 @@ export function FormTextarea({
         className={cn(
           "mt-1.5 w-full rounded-sm border bg-paper px-3 py-2 text-sm text-ink placeholder:text-ink-faint",
           error ? "border-danger" : "border-line focus-visible:border-ink",
+          "disabled:cursor-not-allowed disabled:bg-ink/5 disabled:text-ink-faint",
           className,
         )}
         {...props}
@@ -109,6 +111,7 @@ export function FormSelect({
         className={cn(
           "mt-1.5 h-10 w-full rounded-sm border bg-paper px-3 text-sm text-ink",
           error ? "border-danger" : "border-line focus-visible:border-ink",
+          "disabled:cursor-not-allowed disabled:bg-ink/5 disabled:text-ink-faint",
           className,
         )}
         {...props}
