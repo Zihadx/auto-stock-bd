@@ -1,6 +1,6 @@
 import { AdminSidebar } from "@/components/layout/admin-sidebar";
 import { AdminTopbar } from "@/components/layout/admin-topbar";
-import { CommandPalette } from "@/components/layout/command-palette";
+import { CommandPaletteLoader } from "@/components/layout/command-palette-loader";
 
 export default function AdminLayout({ children }: LayoutProps<"/admin">) {
   return (
@@ -10,7 +10,7 @@ export default function AdminLayout({ children }: LayoutProps<"/admin">) {
         <AdminTopbar />
         <main className="flex-1">{children}</main>
       </div>
-      <CommandPalette />
+      <CommandPaletteLoader />
     </div>
   );
 }

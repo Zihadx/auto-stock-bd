@@ -1,15 +1,17 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Gauge, Fuel, Cog } from "lucide-react";
+import { Gauge, Fuel, Cog } from "lucide-react";
 import { VehicleStatusBadge } from "@/components/ui/status-badge";
 import { PriceDisplay } from "@/components/ui/price-display";
+import { FavoriteButton } from "@/components/features/favorite-button";
 import { formatMileage } from "@/lib/format";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { toggleFavorite } from "@/store/slices/favoritesSlice";
-import { cn } from "@/lib/utils";
 import type { Vehicle } from "@/types/vehicle";
+
+// No "use client" here — the card shell (image, text, links) is static
+// markup and renders on the server. FavoriteButton is the one piece that
+// needs Redux + interactivity, so it's the only client-side island; every
+// other grid of cards (homepage, inventory, similar vehicles) ships less
+// client JS as a result.
 
 const fuelLabel: Record<Vehicle["fuelType"], string> = {
   petrol: "Petrol",
@@ -24,23 +26,6 @@ const transmissionLabel: Record<Vehicle["transmission"], string> = {
   manual: "Manual",
   cvt: "CVT",
 };
-
-function FavoriteButton({ vehicleId }: { vehicleId: string }) {
-  const dispatch = useAppDispatch();
-  const isFavorite = useAppSelector((s) => s.favorites.vehicleIds.includes(vehicleId));
-
-  return (
-    <button
-      type="button"
-      onClick={() => dispatch(toggleFavorite(vehicleId))}
-      aria-pressed={isFavorite}
-      aria-label={isFavorite ? "Remove from favorites" : "Save to favorites"}
-      className="rounded-full p-1.5 text-ink-faint transition-colors hover:bg-ink/5 hover:text-ink"
-    >
-      <Heart className={cn("h-4 w-4", isFavorite && "fill-brass text-brass")} aria-hidden />
-    </button>
-  );
-}
 
 function SpecRow({ vehicle }: { vehicle: Vehicle }) {
   return (
