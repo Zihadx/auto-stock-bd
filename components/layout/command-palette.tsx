@@ -49,7 +49,7 @@ export function CommandPalette() {
       open={open}
       onOpenChange={(next) => dispatch(setCommandPaletteOpen(next))}
       label="Command palette"
-      className="fixed left-1/2 top-24 z-50 w-full max-w-lg -translate-x-1/2 overflow-hidden rounded-md border border-line bg-paper-raised shadow-[var(--shadow-modal)]"
+      className="fixed left-1/2 top-24 z-50 w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 overflow-hidden rounded-md border border-line bg-paper-raised shadow-[var(--shadow-modal)]"
     >
       <Command.Input
         placeholder="Search admin..."

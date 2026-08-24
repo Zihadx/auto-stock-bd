@@ -20,8 +20,8 @@ export function ImageUploader({
   return (
     <div className="space-y-4">
       {fields.map((field, index) => (
-        <div key={field.id} className="flex gap-3 rounded-sm border border-line p-3">
-          <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded-sm bg-ink/5">
+        <div key={field.id} className="flex flex-col gap-3 rounded-sm border border-line p-3 sm:flex-row">
+          <div className="relative h-32 w-full shrink-0 overflow-hidden rounded-sm bg-ink/5 sm:h-16 sm:w-24">
             {field.url && (
               // eslint-disable-next-line @next/next/no-img-element -- arbitrary user-entered URLs; next/image would require allowlisting every domain up front
               <img src={field.url} alt="" className="h-full w-full object-cover" />

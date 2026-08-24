@@ -113,18 +113,20 @@ export default async function CustomerDetailPage({
                     href={`/admin/inventory`}
                     className="flex items-center justify-between gap-3 rounded-md border border-line bg-paper-raised p-4 hover:border-ink"
                   >
-                    <div>
-                      <p className="text-sm font-medium text-ink">
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium text-ink">
                         {vehicle.brand} {vehicle.model}
                       </p>
                       <p className="mt-0.5 text-xs text-ink-faint">{formatBDT(vehicle.price)}</p>
                     </div>
                     {purchased ? (
-                      <span className="rounded-sm bg-brass-tint px-2 py-0.5 text-xs font-medium text-brass-dark">
+                      <span className="shrink-0 rounded-sm bg-brass-tint px-2 py-0.5 text-xs font-medium text-brass-dark">
                         Purchased
                       </span>
                     ) : (
-                      <VehicleStatusBadge status={vehicle.status} />
+                      <span className="shrink-0">
+                        <VehicleStatusBadge status={vehicle.status} />
+                      </span>
                     )}
                   </Link>
                 );

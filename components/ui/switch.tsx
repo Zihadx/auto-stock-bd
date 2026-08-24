@@ -17,7 +17,7 @@ export function Switch({
 }) {
   return (
     <div className="flex items-start justify-between gap-4 rounded-sm border border-line px-4 py-3">
-      <div>
+      <div className="min-w-0 flex-1">
         <label htmlFor={id} className="text-sm font-medium text-ink">
           {label}
         </label>
