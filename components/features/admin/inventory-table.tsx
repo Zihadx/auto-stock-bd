@@ -126,6 +126,7 @@ export function InventoryTable({ vehicles }: { vehicles: Vehicle[] }) {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <DropdownMenu
+                      triggerLabel={`Actions for ${vehicle.brand} ${vehicle.model}`}
                       trigger={
                         <span className="inline-flex h-8 w-8 items-center justify-center rounded-sm text-ink-faint hover:bg-ink/5 hover:text-ink">
                           <MoreHorizontal className="h-4 w-4" />

@@ -12,9 +12,11 @@ interface DropdownItem {
 
 export function DropdownMenu({
   trigger,
+  triggerLabel,
   items,
 }: {
   trigger: ReactNode;
+  triggerLabel: string;
   items: DropdownItem[];
 }) {
   const [open, setOpen] = useState(false);
@@ -43,6 +45,7 @@ export function DropdownMenu({
         type="button"
         aria-haspopup="menu"
         aria-expanded={open}
+        aria-label={triggerLabel}
         onClick={() => setOpen((o) => !o)}
       >
         {trigger}

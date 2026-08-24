@@ -23,12 +23,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://autostockbd.com"),
   title: {
     default: "AutoStock BD — Premium Vehicle Inventory",
     template: "%s · AutoStock BD",
   },
   description:
     "Browse verified, inspected vehicles from Bangladesh's most transparent dealership network.",
+  openGraph: {
+    siteName: "AutoStock BD",
+    type: "website",
+    locale: "en_US",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

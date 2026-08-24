@@ -12,7 +12,7 @@
   --color-paper-raised: #ffffff; /* cards, elevated modules */
   --color-ink: #0b0d10; /* primary text / near-black */
   --color-ink-soft: #464c54; /* secondary text */
-  --color-ink-faint: #8b909a; /* tertiary text, placeholders */
+  --color-ink-faint: #666c73; /* tertiary text, placeholders — tuned to meet WCAG AA (4.5:1) against --color-paper */
 
   /* Dark surfaces (admin shell, footer, hero overlays) */
   --color-charcoal: #14171b;
