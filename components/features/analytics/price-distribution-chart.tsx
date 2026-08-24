@@ -2,45 +2,26 @@
 
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { ChartCard } from "@/components/ui/chart-card";
-import type { TimeSeriesPoint } from "@/types/analytics";
 
-export function LeadsTrendChart({
-  data,
-  title = "Inquiries received",
-  description = "Last 8 months",
-  tooltipLabel = "Inquiries",
-  color = "var(--color-info)",
-}: {
-  data: TimeSeriesPoint[];
-  title?: string;
-  description?: string;
-  tooltipLabel?: string;
-  color?: string;
-}) {
+export function PriceDistributionChart({ data }: { data: { range: string; count: number }[] }) {
   return (
-    <ChartCard title={title} description={description}>
+    <ChartCard title="Price distribution" description="Current inventory by price band">
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
             <CartesianGrid vertical={false} stroke="var(--color-line)" />
             <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              interval="preserveStartEnd"
-              tick={{ fontSize: 11, fill: "var(--color-ink-faint)" }}
-            />
-            <YAxis
+              dataKey="range"
               tickLine={false}
               axisLine={false}
               tick={{ fontSize: 11, fill: "var(--color-ink-faint)" }}
-              width={28}
             />
+            <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "var(--color-ink-faint)" }} width={28} />
             <Tooltip
-              formatter={(value) => [`${value}`, tooltipLabel]}
+              formatter={(value) => [`${value} vehicles`, "Count"]}
               contentStyle={{ borderRadius: 6, borderColor: "var(--color-line)", fontSize: 13 }}
             />
-            <Bar dataKey="value" fill={color} radius={[3, 3, 0, 0]} maxBarSize={28} />
+            <Bar dataKey="count" fill="var(--color-info)" radius={[3, 3, 0, 0]} maxBarSize={48} />
           </BarChart>
         </ResponsiveContainer>
       </div>
