@@ -28,9 +28,9 @@ export default async function AdminInquiriesPage({
     : resolvedParams.status ?? "";
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
+    <div className="container-page py-8">
       <div>
-        <h1 className="font-display text-2xl font-medium md:text-3xl">Inquiries</h1>
+        <h1 className="text-h1 text-ink">Inquiries</h1>
         <p className="mt-1 text-sm text-ink-soft">
           {result.total} inquir{result.total === 1 ? "y" : "ies"}
         </p>

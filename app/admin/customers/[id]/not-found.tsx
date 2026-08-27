@@ -3,8 +3,8 @@ import { buttonVariants } from "@/components/ui/button";
 
 export default function CustomerNotFound() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-24 text-center md:px-8">
-      <h1 className="font-display text-2xl font-medium">Customer not found</h1>
+    <div className="container-page py-24 text-center">
+      <h1 className="text-h2 text-ink">Customer not found</h1>
       <p className="mx-auto mt-2 max-w-sm text-sm text-ink-soft">
         This customer record doesn&apos;t exist. Return to the customer list.
       </p>

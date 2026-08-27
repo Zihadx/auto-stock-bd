@@ -17,7 +17,7 @@ export default async function EditVehiclePage({
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 md:px-8">
-      <h1 className="font-display text-2xl font-medium md:text-3xl">
+      <h1 className="text-h1 text-ink">
         Edit {vehicle.brand} {vehicle.model}
       </h1>
       <p className="mt-1 text-sm text-ink-soft">

@@ -16,9 +16,9 @@ export function KpiCard({
   const TrendIcon = trend === "up" ? TrendingUp : trend === "down" ? TrendingDown : Minus;
 
   return (
-    <div className="rounded-md border border-line bg-paper-raised p-5">
-      <p className="text-xs font-medium uppercase tracking-wide text-ink-faint">{label}</p>
-      <p className="mt-2 font-tabular text-2xl font-semibold text-ink">{value}</p>
+    <div className="rounded-md border border-line bg-paper-raised p-5 transition-[border-color,box-shadow] duration-200 hover:border-line-strong hover:shadow-sm">
+      <p className="text-label text-ink-faint">{label}</p>
+      <p className="text-h2 font-tabular mt-2 text-ink">{value}</p>
       <div className="mt-2 flex items-center gap-1.5">
         <span
           className={cn(

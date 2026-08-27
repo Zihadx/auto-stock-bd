@@ -22,7 +22,7 @@ export function AdminTopbar() {
       <button
         type="button"
         onClick={() => dispatch(setCommandPaletteOpen(true))}
-        className="flex h-9 flex-1 max-w-sm items-center gap-2 rounded-sm border border-charcoal-line bg-charcoal-raised px-3 text-sm text-paper/50 hover:border-paper/20"
+        className="flex h-9 flex-1 max-w-sm items-center gap-2 rounded-sm border border-charcoal-line bg-charcoal-raised px-3 text-sm text-paper/50 transition-colors duration-200 hover:border-paper/20"
       >
         <Search className="h-4 w-4" aria-hidden />
         <span className="hidden sm:inline">Search or jump to...</span>

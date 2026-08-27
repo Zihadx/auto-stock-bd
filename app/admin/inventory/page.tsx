@@ -32,10 +32,10 @@ export default async function AdminInventoryPage({
     : resolvedParams.status ?? "";
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
+    <div className="container-page py-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl font-medium md:text-3xl">Inventory</h1>
+          <h1 className="text-h1 text-ink">Inventory</h1>
           <p className="mt-1 text-sm text-ink-soft">
             {result.total} vehicle{result.total === 1 ? "" : "s"}
           </p>

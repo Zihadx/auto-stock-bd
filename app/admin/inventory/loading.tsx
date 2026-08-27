@@ -2,7 +2,7 @@ import { Skeleton, TableSkeleton } from "@/components/ui/skeleton";
 
 export default function AdminInventoryLoading() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
+    <div className="container-page py-8">
       <div className="flex items-center justify-between">
         <Skeleton className="h-7 w-32" />
         <Skeleton className="h-9 w-32" />

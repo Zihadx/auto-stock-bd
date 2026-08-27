@@ -41,7 +41,7 @@ export default async function CustomerDetailPage({
 
       <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-2xl font-medium md:text-3xl">{customer.name}</h1>
+          <h1 className="text-h1 text-ink">{customer.name}</h1>
           <p className="mt-1 text-sm text-ink-soft">
             Customer since {formatFullDate(customer.createdAt)}
           </p>
@@ -101,7 +101,7 @@ export default async function CustomerDetailPage({
 
       {(customer.interestedVehicles.length > 0 || customer.purchasedVehicles.length > 0) && (
         <div className="mt-6">
-          <h2 className="font-display text-base font-medium">Vehicles</h2>
+          <h2 className="text-h3 text-ink">Vehicles</h2>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {[...customer.purchasedVehicles, ...customer.interestedVehicles]
               .filter((v, i, arr) => arr.findIndex((x) => x.id === v.id) === i)
@@ -137,7 +137,7 @@ export default async function CustomerDetailPage({
 
       {customer.inquiries.length > 0 && (
         <div className="mt-6">
-          <h2 className="font-display text-base font-medium">Inquiry history</h2>
+          <h2 className="text-h3 text-ink">Inquiry history</h2>
           <div className="mt-3 overflow-hidden rounded-md border border-line bg-paper-raised">
             <ul className="divide-y divide-line">
               {customer.inquiries.map((inquiry) => (
@@ -159,7 +159,7 @@ export default async function CustomerDetailPage({
 
       {timelineEvents.length > 0 && (
         <div className="mt-6">
-          <h2 className="font-display text-base font-medium">Communication timeline</h2>
+          <h2 className="text-h3 text-ink">Communication timeline</h2>
           <ol className="mt-3 space-y-4">
             {timelineEvents.map((event) => (
               <li key={`${event.inquiryId}-${event.id}`} className="border-l-2 border-line pl-3">
