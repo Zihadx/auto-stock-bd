@@ -30,13 +30,13 @@ export function Switch({
         aria-checked={checked}
         onClick={() => onChange(!checked)}
         className={cn(
-          "relative h-6 w-11 shrink-0 rounded-full transition-colors",
+          "relative h-6 w-11 shrink-0 rounded-full transition-colors duration-200 ease-out",
           checked ? "bg-brass" : "bg-ink/15",
         )}
       >
         <span
           className={cn(
-            "absolute top-0.5 h-5 w-5 rounded-full bg-paper-raised shadow-sm transition-transform",
+            "absolute top-0.5 h-5 w-5 rounded-full bg-paper-raised shadow-sm transition-transform duration-200 ease-out",
             checked ? "translate-x-[22px]" : "translate-x-0.5",
           )}
         />

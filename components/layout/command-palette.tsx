@@ -49,7 +49,8 @@ export function CommandPalette() {
       open={open}
       onOpenChange={(next) => dispatch(setCommandPaletteOpen(next))}
       label="Command palette"
-      className="fixed left-1/2 top-24 z-50 w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 overflow-hidden rounded-md border border-line bg-paper-raised shadow-[var(--shadow-modal)]"
+      overlayClassName="command-overlay fixed inset-0 z-50 bg-ink/40"
+      contentClassName="command-content fixed left-1/2 top-24 z-50 w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 overflow-hidden rounded-md border border-line bg-paper-raised shadow-[var(--shadow-modal)]"
     >
       <Command.Input
         placeholder="Search admin..."
@@ -64,7 +65,7 @@ export function CommandPalette() {
             key={href}
             value={label}
             onSelect={() => go(href)}
-            className="flex cursor-pointer items-center gap-2.5 rounded-sm px-3 py-2 text-sm text-ink data-[selected=true]:bg-ink/5"
+            className="flex cursor-pointer items-center gap-2.5 rounded-sm px-3 py-2 text-sm text-ink transition-colors data-[selected=true]:bg-ink/5"
           >
             <Icon className="h-4 w-4 text-ink-faint" aria-hidden />
             {label}

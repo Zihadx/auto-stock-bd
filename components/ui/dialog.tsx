@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
+import { transition } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 export function Dialog({
@@ -46,49 +48,61 @@ export function Dialog({
     };
   }, [open, onClose]);
 
-  if (!open || typeof document === "undefined") return null;
+  if (typeof document === "undefined") return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
-      <div
-        className="fixed inset-0 bg-ink/40"
-        onClick={onClose}
-        aria-hidden="true"
-      />
-      <div
-        ref={panelRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="dialog-title"
-        aria-describedby={description ? "dialog-description" : undefined}
-        className={cn(
-          "relative z-10 max-h-[90vh] w-full max-w-md overflow-y-auto rounded-t-lg border border-line bg-paper-raised p-6 shadow-[var(--shadow-modal)] sm:rounded-lg",
-          className,
-        )}
-      >
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h2 id="dialog-title" className="font-display text-lg font-medium text-ink">
-              {title}
-            </h2>
-            {description && (
-              <p id="dialog-description" className="mt-1 text-sm text-ink-soft">
-                {description}
-              </p>
-            )}
-          </div>
-          <button
-            type="button"
+    <AnimatePresence>
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={transition.fast}
+            className="fixed inset-0 bg-ink/40"
             onClick={onClose}
-            aria-label="Close dialog"
-            className="rounded-sm p-1 text-ink-faint hover:bg-ink/5 hover:text-ink"
+            aria-hidden="true"
+          />
+          <motion.div
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="dialog-title"
+            aria-describedby={description ? "dialog-description" : undefined}
+            initial={{ opacity: 0, y: 24, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.98 }}
+            transition={transition.base}
+            className={cn(
+              "relative z-10 max-h-[90vh] w-full max-w-md overflow-y-auto rounded-t-lg border border-line bg-paper-raised p-6 shadow-[var(--shadow-modal)] sm:rounded-lg",
+              className,
+            )}
           >
-            <X className="h-5 w-5" />
-          </button>
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h2 id="dialog-title" className="text-h3 text-ink">
+                  {title}
+                </h2>
+                {description && (
+                  <p id="dialog-description" className="text-small mt-1 text-ink-soft">
+                    {description}
+                  </p>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close dialog"
+                className="rounded-sm p-1 text-ink-faint transition-colors hover:bg-ink/5 hover:text-ink"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="mt-5">{children}</div>
+          </motion.div>
         </div>
-        <div className="mt-5">{children}</div>
-      </div>
-    </div>,
+      )}
+    </AnimatePresence>,
     document.body,
   );
 }

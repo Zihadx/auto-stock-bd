@@ -26,7 +26,7 @@ export function FormField({
         aria-invalid={!!error}
         aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
         className={cn(
-          "mt-1.5 h-10 w-full rounded-sm border bg-paper px-3 text-sm text-ink placeholder:text-ink-faint",
+          "mt-1.5 h-10 w-full rounded-sm border bg-paper px-3 text-sm text-ink placeholder:text-ink-faint transition-colors duration-150",
           error ? "border-danger" : "border-line focus-visible:border-ink",
           "disabled:cursor-not-allowed disabled:bg-ink/5 disabled:text-ink-faint",
           className,
@@ -64,7 +64,7 @@ export function FormTextarea({
         aria-invalid={!!error}
         aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
         className={cn(
-          "mt-1.5 w-full rounded-sm border bg-paper px-3 py-2 text-sm text-ink placeholder:text-ink-faint",
+          "mt-1.5 w-full rounded-sm border bg-paper px-3 py-2 text-sm text-ink placeholder:text-ink-faint transition-colors duration-150",
           error ? "border-danger" : "border-line focus-visible:border-ink",
           "disabled:cursor-not-allowed disabled:bg-ink/5 disabled:text-ink-faint",
           className,
@@ -109,7 +109,7 @@ export function FormSelect({
         aria-invalid={!!error}
         aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
         className={cn(
-          "mt-1.5 h-10 w-full rounded-sm border bg-paper px-3 text-sm text-ink",
+          "mt-1.5 h-10 w-full rounded-sm border bg-paper px-3 text-sm text-ink transition-colors duration-150",
           error ? "border-danger" : "border-line focus-visible:border-ink",
           "disabled:cursor-not-allowed disabled:bg-ink/5 disabled:text-ink-faint",
           className,

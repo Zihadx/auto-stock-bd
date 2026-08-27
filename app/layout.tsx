@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
-import { Toaster } from "sonner";
+import { Toaster } from "@/components/toaster";
 import { StoreProvider } from "@/store/provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
@@ -49,7 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ThemeProvider>
           <StoreProvider>
             {children}
-            <Toaster position="bottom-right" richColors closeButton />
+            <Toaster />
           </StoreProvider>
         </ThemeProvider>
       </body>

@@ -33,7 +33,7 @@ export function PaginationBar({
         aria-disabled={page === 1}
         aria-label="Previous page"
         className={cn(
-          "flex h-9 w-9 items-center justify-center rounded-sm border border-line text-ink-soft hover:bg-ink/5",
+          "flex h-9 w-9 items-center justify-center rounded-sm border border-line text-ink-soft transition-colors hover:bg-ink/5",
           page === 1 && "pointer-events-none opacity-40",
         )}
       >
@@ -50,7 +50,7 @@ export function PaginationBar({
               href={buildHref(searchParams, p)}
               aria-current={p === page ? "page" : undefined}
               className={cn(
-                "flex h-9 w-9 items-center justify-center rounded-sm border text-sm",
+                "flex h-9 w-9 items-center justify-center rounded-sm border text-sm transition-colors",
                 p === page
                   ? "border-ink bg-ink text-paper"
                   : "border-line text-ink-soft hover:bg-ink/5",
@@ -67,7 +67,7 @@ export function PaginationBar({
         aria-disabled={page === totalPages}
         aria-label="Next page"
         className={cn(
-          "flex h-9 w-9 items-center justify-center rounded-sm border border-line text-ink-soft hover:bg-ink/5",
+          "flex h-9 w-9 items-center justify-center rounded-sm border border-line text-ink-soft transition-colors hover:bg-ink/5",
           page === totalPages && "pointer-events-none opacity-40",
         )}
       >

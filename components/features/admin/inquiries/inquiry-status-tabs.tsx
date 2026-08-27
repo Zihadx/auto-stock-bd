@@ -31,7 +31,7 @@ export function InquiryStatusTabs({
             key={tab.label}
             href={`?${params.toString()}`}
             className={cn(
-              "border-b-2 px-3 py-2.5 text-sm font-medium",
+              "border-b-2 px-3 py-2.5 text-sm font-medium transition-colors duration-150",
               isActive ? "border-ink text-ink" : "border-transparent text-ink-soft hover:text-ink",
             )}
           >

@@ -298,6 +298,48 @@ h4,
     stroke var(--duration-fast) var(--ease-in-out) !important;
 }
 
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes overlay-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes command-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px) scale(0.98);
+  }
+}
+
+@keyframes command-out {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -8px) scale(0.98);
+  }
+}
+
+.command-overlay[data-state="open"] {
+  animation: overlay-in var(--duration-fast) var(--ease-out);
+}
+
+.command-overlay[data-state="closed"] {
+  animation: overlay-out var(--duration-fast) var(--ease-in-out);
+}
+
+.command-content[data-state="open"] {
+  animation: command-in var(--duration-base) var(--ease-out);
+}
+
+.command-content[data-state="closed"] {
+  animation: command-out var(--duration-fast) var(--ease-in-out);
+}
+
 ::selection {
   background: var(--color-brass-tint);
   color: var(--color-ink);
