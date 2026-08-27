@@ -35,7 +35,13 @@ export function InventoryDonut({
             </Pie>
             <Tooltip
               formatter={(value, name) => [`${value} vehicles`, name]}
-              contentStyle={{ borderRadius: 6, borderColor: "var(--color-line)", fontSize: 13 }}
+              contentStyle={{
+                borderRadius: 6,
+                backgroundColor: "var(--color-paper-raised)",
+                borderColor: "var(--color-line)",
+                color: "var(--color-ink)",
+                fontSize: 13,
+              }}
             />
             <Legend
               verticalAlign="bottom"

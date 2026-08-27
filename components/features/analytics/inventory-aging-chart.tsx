@@ -21,7 +21,13 @@ export function InventoryAgingChart({ data }: { data: { bucket: string; count: n
             <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "var(--color-ink-faint)" }} width={28} />
             <Tooltip
               formatter={(value) => [`${value} vehicles`, "Count"]}
-              contentStyle={{ borderRadius: 6, borderColor: "var(--color-line)", fontSize: 13 }}
+              contentStyle={{
+                borderRadius: 6,
+                backgroundColor: "var(--color-paper-raised)",
+                borderColor: "var(--color-line)",
+                color: "var(--color-ink)",
+                fontSize: 13,
+              }}
             />
             <Bar dataKey="count" radius={[3, 3, 0, 0]} maxBarSize={48}>
               {data.map((entry, i) => (

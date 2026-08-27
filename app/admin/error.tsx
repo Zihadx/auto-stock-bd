@@ -15,7 +15,7 @@ export default function AdminErrorBoundary({
   }, [error]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 md:px-8">
+    <div className="container-page py-16">
       <ErrorState
         title="This section failed to load"
         description="Something went wrong fetching this data. Try again, or use the sidebar to go elsewhere."

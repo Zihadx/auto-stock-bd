@@ -35,7 +35,9 @@ export function SalesTrendChart({ data }: { data: TimeSeriesPoint[] }) {
               formatter={(value) => [formatBDTCompact(Number(value)), "Revenue"]}
               contentStyle={{
                 borderRadius: 6,
+                backgroundColor: "var(--color-paper-raised)",
                 borderColor: "var(--color-line)",
+                color: "var(--color-ink)",
                 fontSize: 13,
               }}
             />

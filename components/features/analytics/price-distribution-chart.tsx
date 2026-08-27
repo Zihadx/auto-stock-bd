@@ -19,7 +19,13 @@ export function PriceDistributionChart({ data }: { data: { range: string; count:
             <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "var(--color-ink-faint)" }} width={28} />
             <Tooltip
               formatter={(value) => [`${value} vehicles`, "Count"]}
-              contentStyle={{ borderRadius: 6, borderColor: "var(--color-line)", fontSize: 13 }}
+              contentStyle={{
+                borderRadius: 6,
+                backgroundColor: "var(--color-paper-raised)",
+                borderColor: "var(--color-line)",
+                color: "var(--color-ink)",
+                fontSize: 13,
+              }}
             />
             <Bar dataKey="count" fill="var(--color-info)" radius={[3, 3, 0, 0]} maxBarSize={48} />
           </BarChart>

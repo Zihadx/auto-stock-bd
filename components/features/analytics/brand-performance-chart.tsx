@@ -36,7 +36,13 @@ export function BrandPerformanceChart({
               formatter={(value, name) =>
                 name === "unitsSold" ? [`${value} units`, "Sold"] : [`${value} days`, "Avg. to sell"]
               }
-              contentStyle={{ borderRadius: 6, borderColor: "var(--color-line)", fontSize: 13 }}
+              contentStyle={{
+                borderRadius: 6,
+                backgroundColor: "var(--color-paper-raised)",
+                borderColor: "var(--color-line)",
+                color: "var(--color-ink)",
+                fontSize: 13,
+              }}
             />
             <Bar dataKey="unitsSold" fill="var(--color-brass)" radius={[0, 3, 3, 0]} maxBarSize={18} />
           </BarChart>

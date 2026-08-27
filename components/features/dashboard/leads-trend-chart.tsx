@@ -38,7 +38,13 @@ export function LeadsTrendChart({
             />
             <Tooltip
               formatter={(value) => [`${value}`, tooltipLabel]}
-              contentStyle={{ borderRadius: 6, borderColor: "var(--color-line)", fontSize: 13 }}
+              contentStyle={{
+                borderRadius: 6,
+                backgroundColor: "var(--color-paper-raised)",
+                borderColor: "var(--color-line)",
+                color: "var(--color-ink)",
+                fontSize: 13,
+              }}
             />
             <Bar dataKey="value" fill={color} radius={[3, 3, 0, 0]} maxBarSize={28} />
           </BarChart>
