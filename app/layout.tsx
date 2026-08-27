@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import { StoreProvider } from "@/store/provider";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const geist = Geist({
@@ -41,13 +42,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geist.variable} ${inter.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
-        <StoreProvider>
-          {children}
-          <Toaster position="bottom-right" richColors closeButton />
-        </StoreProvider>
+        <ThemeProvider>
+          <StoreProvider>
+            {children}
+            <Toaster position="bottom-right" richColors closeButton />
+          </StoreProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -50,6 +50,55 @@
 
   --background: var(--color-paper);
   --foreground: var(--color-ink);
+
+  /* Motion — one system, used everywhere */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-instant: 100ms;
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 560ms;
+  --duration-cinematic: 900ms;
+}
+
+/* ==========================================================================
+   Dark theme — a distinct, cinematic surface, not an inverted light theme.
+   Applied via `.dark` on <html> (next-themes, class strategy).
+   ========================================================================== */
+.dark {
+  --color-paper: #0e1013; /* base background */
+  --color-paper-raised: #16191d; /* cards, elevated modules */
+  --color-ink: #f2f0ea; /* primary text */
+  --color-ink-soft: #b8bcc2; /* secondary text */
+  --color-ink-faint: #82878e; /* tertiary text — tuned for AA against --color-paper */
+
+  --color-charcoal: #08090b;
+  --color-charcoal-raised: #101317;
+  --color-charcoal-line: #23272d;
+
+  --color-line: #24282e; /* hairline border on dark surface */
+  --color-line-strong: #34393f;
+
+  /* Accent — brass reads warmer and slightly brighter against dark surfaces */
+  --color-brass: #d1a94a;
+  --color-brass-dark: #b98f34;
+  --color-brass-tint: #2c2718;
+
+  --color-success: #6fb586;
+  --color-success-tint: #1a2620;
+  --color-warning: #d99a4e;
+  --color-warning-tint: #2c2116;
+  --color-danger: #d97a6e;
+  --color-danger-tint: #2c1a17;
+  --color-info: #7fa3d6;
+  --color-info-tint: #19212c;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.6);
+
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -93,6 +142,10 @@
   --shadow-xs: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
   --shadow-modal: var(--shadow-modal);
+
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+  --ease-spring: var(--ease-spring);
 }
 
 * {
@@ -124,6 +177,84 @@ h4,
   font-variant-numeric: tabular-nums;
 }
 
+/* ==========================================================================
+   Typography scale — display first. Fluid via clamp() so scale is intentional
+   at every breakpoint rather than a fixed desktop size squeezed onto mobile.
+   ========================================================================== */
+.text-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: clamp(3.25rem, 2.2rem + 4.6vw, 7.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.text-hero {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: clamp(2.5rem, 1.9rem + 2.6vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+
+.text-h1 {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: clamp(2rem, 1.6rem + 1.6vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.text-h2 {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: clamp(1.5rem, 1.3rem + 0.8vw, 2.125rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+
+.text-h3 {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+.text-body {
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.text-body-lg {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.text-small {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.text-metadata {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.text-label {
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
 /* Visible keyboard focus everywhere — never suppressed for aesthetics */
 :focus-visible {
   outline: 2px solid var(--color-brass);
@@ -140,6 +271,31 @@ h4,
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+.container-page {
+  margin-inline: auto;
+  max-width: 80rem; /* 7xl */
+  padding-inline: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container-page {
+    padding-inline: 2rem;
+  }
+}
+
+/* Theme switch itself should feel premium: cross-fade surfaces, not a hard cut.
+   Scoped to a class next-themes toggles off immediately after mount, so this
+   never runs on first paint (no flash, no transition on initial load). */
+.theme-transition,
+.theme-transition * {
+  transition:
+    background-color var(--duration-base) var(--ease-in-out),
+    border-color var(--duration-base) var(--ease-in-out),
+    color var(--duration-fast) var(--ease-in-out),
+    fill var(--duration-fast) var(--ease-in-out),
+    stroke var(--duration-fast) var(--ease-in-out) !important;
 }
 
 ::selection {
