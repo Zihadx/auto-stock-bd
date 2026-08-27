@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function VehicleDetailLoading() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
+    <div className="container-page py-8">
       <Skeleton className="h-3 w-40" />
       <div className="mt-4 grid gap-10 lg:grid-cols-[1fr_340px]">
         <div>

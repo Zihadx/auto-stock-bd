@@ -26,10 +26,10 @@ export default async function InventoryPage({
   );
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 md:px-8">
+    <div className="container-page py-10 md:py-14">
       <div className="flex flex-col gap-1">
-        <h1 className="font-display text-2xl font-medium md:text-3xl">Inventory</h1>
-        <p className="text-sm text-ink-soft">
+        <h1 className="text-h1 text-ink">Inventory</h1>
+        <p className="text-small text-ink-soft">
           {result.total} vehicle{result.total === 1 ? "" : "s"} match your search
         </p>
       </div>

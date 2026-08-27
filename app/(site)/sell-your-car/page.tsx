@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ShieldCheck, Clock, Handshake } from "lucide-react";
 import { SellCarForm } from "@/components/features/sell-car-form";
+import { RevealList, RevealItem } from "@/components/features/scroll-reveal";
 
 export const metadata: Metadata = {
   title: "Sell Your Car",
@@ -8,33 +9,58 @@ export const metadata: Metadata = {
 };
 
 const steps = [
-  { icon: Clock, title: "24-hour turnaround", description: "Submit details, get a valuation the same or next business day." },
-  { icon: ShieldCheck, title: "No obligation", description: "Walk away any time — the valuation costs nothing and commits you to nothing." },
-  { icon: Handshake, title: "Trade in or sell outright", description: "Apply the value toward your next car, or take the cash directly." },
+  {
+    icon: Clock,
+    index: "01",
+    title: "24-hour turnaround",
+    description: "Submit details, get a valuation the same or next business day.",
+  },
+  {
+    icon: ShieldCheck,
+    index: "02",
+    title: "No obligation",
+    description: "Walk away any time — the valuation costs nothing and commits you to nothing.",
+  },
+  {
+    icon: Handshake,
+    index: "03",
+    title: "Trade in or sell outright",
+    description: "Apply the value toward your next car, or take the cash directly.",
+  },
 ];
 
 export default function SellYourCarPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-14 md:px-8">
-      <div className="text-center">
-        <h1 className="font-display text-3xl font-medium md:text-4xl">Sell your car</h1>
-        <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-ink-soft">
-          Tell us about your vehicle and we&apos;ll get back to you with an
-          honest, no-obligation valuation.
+    <div className="container-page py-14 md:py-20">
+      <div className="max-w-2xl">
+        <p className="text-label text-brass">Sell your car</p>
+        <h1 className="text-h1 mt-3 text-ink">Tell us about your car.</h1>
+        <p className="text-body-lg mt-4 text-ink-soft">
+          We&apos;ll get back to you with an honest, no-obligation valuation.
         </p>
       </div>
 
-      <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {steps.map(({ icon: Icon, title, description }) => (
-          <div key={title} className="rounded-md border border-line bg-paper-raised p-5">
-            <Icon className="h-5 w-5 text-brass" aria-hidden />
-            <h2 className="mt-3 text-sm font-medium text-ink">{title}</h2>
-            <p className="mt-1 text-xs leading-relaxed text-ink-soft">{description}</p>
-          </div>
+      <RevealList className="relative mt-12 grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-4">
+        {/* Connecting line across steps, desktop only */}
+        <div
+          aria-hidden
+          className="absolute left-0 right-0 top-4 hidden h-px bg-line sm:block"
+        />
+        {steps.map(({ icon: Icon, index, title, description }) => (
+          <RevealItem key={title} className="relative">
+            <div className="flex items-center gap-3 bg-paper pr-4 sm:bg-transparent">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line bg-paper text-xs text-ink-faint">
+                {index}
+              </span>
+              <Icon className="h-4 w-4 text-brass" aria-hidden />
+            </div>
+            <h2 className="text-h3 mt-4 text-ink">{title}</h2>
+            <p className="text-small mt-1.5 max-w-[16rem] text-ink-soft">{description}</p>
+          </RevealItem>
         ))}
-      </div>
+      </RevealList>
 
-      <div className="mt-10">
+      <div className="mt-14 max-w-2xl">
         <SellCarForm />
       </div>
     </div>

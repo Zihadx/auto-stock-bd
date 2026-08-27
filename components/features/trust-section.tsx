@@ -1,3 +1,8 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { fadeUp, staggerContainer, viewport } from "@/lib/motion";
+
 const stats = [
   { value: "1,200+", label: "Vehicles sold since 2021" },
   { value: "4.8 / 5", label: "Average customer rating" },
@@ -7,17 +12,27 @@ const stats = [
 
 export function TrustSection() {
   return (
-    <section className="border-y border-line">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 py-12 md:grid-cols-4 md:px-8">
-        {stats.map((stat) => (
-          <div key={stat.label} className="text-center md:text-left">
-            <p className="font-tabular text-2xl font-semibold text-ink md:text-3xl">
-              {stat.value}
-            </p>
-            <p className="mt-1 text-xs text-ink-soft">{stat.label}</p>
-          </div>
+    <section className="border-y border-line bg-charcoal text-paper">
+      <motion.div
+        variants={staggerContainer(0.08)}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewport}
+        className="container-page grid grid-cols-2 md:grid-cols-4"
+      >
+        {stats.map((stat, i) => (
+          <motion.div
+            key={stat.label}
+            variants={fadeUp}
+            className={`border-line/20 py-10 pr-4 ${
+              i % 2 === 0 ? "border-r" : ""
+            } md:border-r md:py-14 md:pr-8 md:last:border-r-0`}
+          >
+            <p className="text-h1 font-tabular text-paper">{stat.value}</p>
+            <p className="text-small mt-2 max-w-[10rem] text-paper/50">{stat.label}</p>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }

@@ -45,7 +45,7 @@ export default async function VehicleDetailPage({
   if (!vehicle) notFound();
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
+    <div className="container-page py-8 md:py-10">
       <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-ink-faint">
         <Link href="/" className="hover:text-ink">
           Home
@@ -64,11 +64,11 @@ export default async function VehicleDetailPage({
         <div>
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div>
-              <h1 className="font-display text-2xl font-medium md:text-3xl">
+              <h1 className="text-h1 text-ink">
                 {vehicle.brand} {vehicle.model}
                 {vehicle.trim ? ` ${vehicle.trim}` : ""}
               </h1>
-              <p className="mt-1 text-sm text-ink-soft">
+              <p className="text-small mt-1 text-ink-soft">
                 {vehicle.year} · {vehicle.bodyType} · Listed {formatFullDate(vehicle.createdAt)}
               </p>
             </div>
@@ -89,14 +89,14 @@ export default async function VehicleDetailPage({
 
           <div className="mt-10 space-y-10">
             <section>
-              <h2 className="font-display text-xl font-medium">Overview</h2>
+              <h2 className="text-h3 text-ink">Overview</h2>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-soft">
                 {vehicle.description}
               </p>
             </section>
 
             <section>
-              <h2 className="font-display text-xl font-medium">Specifications</h2>
+              <h2 className="text-h3 text-ink">Specifications</h2>
               <div className="mt-4">
                 <SpecSheet vehicle={vehicle} />
               </div>
@@ -104,7 +104,7 @@ export default async function VehicleDetailPage({
 
             {vehicle.features.length > 0 && (
               <section>
-                <h2 className="font-display text-xl font-medium">Features</h2>
+                <h2 className="text-h3 text-ink">Features</h2>
                 <div className="mt-4">
                   <FeatureList groups={vehicle.features} />
                 </div>
@@ -113,7 +113,7 @@ export default async function VehicleDetailPage({
 
             {vehicle.history.length > 0 && (
               <section>
-                <h2 className="font-display text-xl font-medium">Vehicle history</h2>
+                <h2 className="text-h3 text-ink">Vehicle history</h2>
                 <div className="mt-4">
                   <HistoryTimeline events={vehicle.history} />
                 </div>

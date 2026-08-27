@@ -101,7 +101,7 @@ export function VehicleCard({
   }
 
   return (
-    <article className="group overflow-hidden rounded-md border border-line bg-paper-raised transition-shadow hover:shadow-md">
+    <article className="group overflow-hidden rounded-md border border-line bg-paper-raised transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-md">
       <Link href={`/inventory/${vehicle.slug}`} className="block">
         <div className="relative aspect-[4/3] overflow-hidden bg-ink/5">
           {primaryImage && (
