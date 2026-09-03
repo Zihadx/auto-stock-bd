@@ -2,30 +2,36 @@ import { FeaturedVehicles } from "@/components/features/featured-vehicles";
 import { BrowseByBrand } from "@/components/features/browse-by-brand";
 import { WhyChooseUs } from "@/components/features/why-choose-us";
 import { RecentlyAdded } from "@/components/features/recently-added";
-import { TradeInCta, FinalCta } from "@/components/features/homepage-ctas";
-import { TrustSection } from "@/components/features/trust-section";
+import {  FinalCta, TradeInCta } from "@/components/features/homepage-ctas";
+import BenefitsStrip from "@/components/features/trust-section";
 import { Hero } from "@/components/features/hero";
-import { formatBDTCompact } from "@/lib/format";
-import {
-  totalInventoryCount,
-  totalInventoryValueBDT,
-  newVehiclesThisWeek,
-} from "@/data/vehicles";
+// import { QuickSearchBar } from "@/components/features/quick-search";
+// import { SpecStrip } from "@/components/features/spec-strip";
+import { Testimonials } from "@/components/features/testimonials";
+
+
 
 export default function HomePage() {
   return (
     <>
       <Hero />
 
-    
+     {/* <QuickSearchBar /> */}
+      <BenefitsStrip />
+      {/* <SpecStrip
+        totalInventoryCount={214}
+        totalInventoryValueBDT={186_000_000}
+        newVehiclesThisWeek={9}
+      /> */}
 
       <FeaturedVehicles />
       <BrowseByBrand />
       <WhyChooseUs />
       <RecentlyAdded />
+      <Testimonials />
       <TradeInCta />
-      <TrustSection />
       <FinalCta />
+      {/* <SellCTA /> */}
     </>
   );
 }

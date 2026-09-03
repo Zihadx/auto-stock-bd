@@ -8,8 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { publicNav, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-
-const ACCENT = "#5FC9CF";
+import { CHARCOAL, ACCENT } from "../ui/tokens";
 
 /* ================================================================
    MARQUE
@@ -25,12 +24,11 @@ function LogoMark({ className }: { className?: string }) {
     >
       <path
         d="M16 3L29 28H22.3L19.2 21.2H12.8L9.7 28H3L16 3Z"
-        fill="currentColor"
+        fill={ACCENT}
       />
-
       <path
         d="M14.1 17.2H17.9L16 12.8L14.1 17.2Z"
-        fill="black"
+        fill={CHARCOAL}
       />
     </svg>
   );
@@ -148,7 +146,7 @@ export function SiteHeader() {
             : "bg-transparent",
         )}
       >
-        <div className="mx-auto flex h-[76px] container items-center justify-between px-6 sm:px-9 lg:px-14 xl:px-20">
+        <div className="mx-auto flex h-[76px] container items-center justify-between">
           {/* ======================================================
               BRAND
           ====================================================== */}

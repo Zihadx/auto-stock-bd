@@ -49,7 +49,7 @@ export function Hero() {
           MAIN FRAME
       ========================================================= */}
 
-      <div className="relative z-10 mx-auto flex min-h-[100svh] container flex-col px-6 py-7 sm:px-9 lg:px-14 xl:px-20">
+      <div className="relative z-10 mx-auto flex min-h-[100svh] container flex-col py-7">
         <div className="relative flex flex-1 items-center">
           <div className="relative w-full">
             {/* Eyebrow — one line, one job */}

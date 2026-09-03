@@ -1,88 +1,81 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { publicNav, siteConfig, vehicleBrands } from "@/config/site";
-import { fadeUp, staggerContainer, viewport } from "@/lib/motion";
+import { ACCENT, CHARCOAL, PAPER } from "../ui/tokens";
+
+const COLUMNS = [
+  {
+    heading: "Browse",
+    links: [
+      { label: "Inventory", href: "/inventory" },
+      { label: "Sell Your Car", href: "/sell" },
+      { label: "Our Standard", href: "/standard" },
+    ],
+  },
+  {
+    heading: "Company",
+    links: [
+      { label: "About", href: "/about" },
+      { label: "Journal", href: "/journal" },
+      { label: "Careers", href: "/careers" },
+    ],
+  },
+  {
+    heading: "Contact",
+    links: [
+      { label: "+880 1XXX-XXXXXX", href: "tel:+8801XXXXXXXXX" },
+      { label: "hello@autostockbd.com", href: "mailto:hello@autostockbd.com" },
+      { label: "Gulshan, Dhaka", href: "/visit" },
+    ],
+  },
+];
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-charcoal-line bg-charcoal text-paper/70">
-      <motion.div
-        variants={staggerContainer(0.06)}
-        initial="hidden"
-        whileInView="visible"
-        viewport={viewport}
-        className="container-page grid gap-12 py-16 md:grid-cols-12 md:py-20"
-      >
-        <motion.div variants={fadeUp} className="md:col-span-5">
-          <p className="text-display text-[clamp(2.5rem,1.8rem+3vw,4.5rem)] leading-[0.98] text-paper">
-            {siteConfig.name}
-          </p>
-          <p className="mt-4 max-w-sm text-body text-paper/50">
-            {siteConfig.tagline}
-          </p>
-        </motion.div>
+    <footer className="pt-20" style={{ backgroundColor: CHARCOAL, color: PAPER }}>
+      <div className="mx-auto max-w-[1920px] px-6 sm:px-9 lg:px-14 xl:px-20">
+        <div className="grid grid-cols-1 gap-12 pb-16 sm:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <span className="text-[15px] tracking-[0.22em]">
+              AUTOSTOCK <span style={{ color: ACCENT }}>BD</span>
+            </span>
+            <p className="mt-4 max-w-[220px] text-[12px] leading-[1.8]" style={{ color: `${PAPER}66` }}>
+              Bangladeshs inspected pre-owned marketplace for exceptional cars.
+            </p>
+          </div>
 
-        <motion.div variants={fadeUp} className="md:col-span-2">
-          <p className="text-label text-paper/40">Explore</p>
-          <ul className="mt-5 space-y-3 text-sm">
-            {publicNav.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="transition-colors hover:text-paper"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </motion.div>
+          {COLUMNS.map((col) => (
+            <div key={col.heading}>
+              <h4 className="text-[11px] uppercase tracking-[0.22em]" style={{ color: `${PAPER}80` }}>
+                {col.heading}
+              </h4>
+              <ul className="mt-5 flex flex-col gap-3">
+                {col.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-[13px] transition-colors hover:text-white"
+                      style={{ color: `${PAPER}99` }}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
 
-        <motion.div variants={fadeUp} className="md:col-span-2">
-          <p className="text-label text-paper/40">Popular Brands</p>
-          <ul className="mt-5 space-y-3 text-sm">
-            {vehicleBrands.slice(0, 5).map((brand) => (
-              <li key={brand}>
-                <Link
-                  href={`/inventory?brands=${encodeURIComponent(brand)}`}
-                  className="transition-colors hover:text-paper"
-                >
-                  {brand}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </motion.div>
-
-        <motion.div variants={fadeUp} className="md:col-span-3">
-          <p className="text-label text-paper/40">Contact</p>
-          <ul className="mt-5 space-y-3 text-sm">
-            <li className="max-w-[220px] text-paper/60">{siteConfig.address}</li>
-            <li>
-              <a
-                href={`tel:${siteConfig.phone}`}
-                className="transition-colors hover:text-paper"
-              >
-                {siteConfig.phone}
-              </a>
-            </li>
-            <li>
-              <a
-                href={`mailto:${siteConfig.email}`}
-                className="transition-colors hover:text-paper"
-              >
-                {siteConfig.email}
-              </a>
-            </li>
-          </ul>
-        </motion.div>
-      </motion.div>
-
-      <div className="container-page flex flex-col gap-2 border-t border-charcoal-line py-5 text-xs text-paper/40 sm:flex-row sm:items-center sm:justify-between">
-        <span>© {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</span>
-        <span className="text-paper/25">Dhaka, Bangladesh</span>
+        <div
+          className="flex flex-col gap-3 border-t py-7 text-[11px] sm:flex-row sm:items-center sm:justify-between"
+          style={{ borderColor: `${PAPER}18`, color: `${PAPER}55` }}
+        >
+          <span>© {new Date().getFullYear()} AutoStock BD. All rights reserved.</span>
+          <div className="flex gap-6">
+            <Link href="/privacy" className="hover:text-white">Privacy</Link>
+            <Link href="/terms" className="hover:text-white">Terms</Link>
+          </div>
+        </div>
       </div>
     </footer>
   );
