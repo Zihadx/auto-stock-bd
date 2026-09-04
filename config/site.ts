@@ -15,15 +15,16 @@ export const publicNav = [
 ] as const;
 
 export const vehicleBrands = [
-  "Toyota",
-  "Honda",
-  "Nissan",
-  "Mitsubishi",
   "BMW",
+  "Ferrari",
+  "Lamborghini",
   "Mercedes-Benz",
+  "Porsche",
+  "Toyota",
   "Audi",
-  "Hyundai",
-  "Kia",
-  "Mazda",
-  "Suzuki",
+  "Bugatti",
+  "Ford",
+  "Honda",
+  "Land Rover",
+  "Nissan",
 ] as const;

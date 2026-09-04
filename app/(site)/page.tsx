@@ -1,4 +1,4 @@
-import { FeaturedVehicles } from "@/components/features/featured-vehicles";
+import FeaturedCollections from "@/components/features/featured-vehicles";
 import { BrowseByBrand } from "@/components/features/browse-by-brand";
 import { WhyChooseUs } from "@/components/features/why-choose-us";
 import { RecentlyAdded } from "@/components/features/recently-added";
@@ -8,6 +8,7 @@ import { Hero } from "@/components/features/hero";
 // import { QuickSearchBar } from "@/components/features/quick-search";
 // import { SpecStrip } from "@/components/features/spec-strip";
 import { Testimonials } from "@/components/features/testimonials";
+import AutoShowcase from "@/components/features/AutoShowcase";
 
 
 
@@ -24,7 +25,9 @@ export default function HomePage() {
         newVehiclesThisWeek={9}
       /> */}
 
-      <FeaturedVehicles />
+      <AutoShowcase />
+
+      <FeaturedCollections />
       <BrowseByBrand />
       <WhyChooseUs />
       <RecentlyAdded />

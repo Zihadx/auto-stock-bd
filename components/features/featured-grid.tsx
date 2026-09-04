@@ -2,14 +2,15 @@
 
 import { motion } from "framer-motion";
 import { VehicleCard } from "@/components/features/vehicle-card";
-import { fadeUp, fadeUpLarge, staggerContainer, viewport } from "@/lib/motion";
+import {
+  fadeUp,
+  fadeUpLarge,
+  staggerContainer,
+  viewport,
+} from "@/lib/motion";
+
 import type { Vehicle } from "@/types/vehicle";
 
-/**
- * Asymmetric spotlight layout: the first featured vehicle gets a larger,
- * editorial treatment; the rest form a tighter supporting grid alongside it.
- * Keeps this section visually distinct from RecentlyAdded's uniform grid.
- */
 export function FeaturedGrid({ vehicles }: { vehicles: Vehicle[] }) {
   const [spotlight, ...rest] = vehicles;
 
@@ -19,20 +20,43 @@ export function FeaturedGrid({ vehicles }: { vehicles: Vehicle[] }) {
       initial="hidden"
       whileInView="visible"
       viewport={viewport}
-      className="mt-10 grid gap-5 lg:grid-cols-12"
+      className="
+        relative mt-12
+        grid gap-5
+        lg:grid-cols-12
+        lg:gap-6
+      "
     >
+      {/* Main editorial vehicle */}
       {spotlight && (
-        <motion.div variants={fadeUpLarge} className="lg:col-span-6">
-          <VehicleCard vehicle={spotlight} />
+        <motion.div
+          variants={fadeUpLarge}
+          className="min-w-0 lg:col-span-7"
+        >
+          <VehicleCard
+            vehicle={spotlight}
+            layout="spotlight"
+          />
         </motion.div>
       )}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:col-span-6">
-        {rest.map((vehicle) => (
-          <motion.div key={vehicle.id} variants={fadeUp}>
-            <VehicleCard vehicle={vehicle} />
-          </motion.div>
-        ))}
-      </div>
+
+      {/* Supporting collection */}
+      {rest.length > 0 && (
+        <div className="grid min-w-0 grid-cols-1 gap-5 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1">
+          {rest.slice(0, 4).map((vehicle) => (
+            <motion.div
+              key={vehicle.id}
+              variants={fadeUp}
+              className="min-w-0"
+            >
+              <VehicleCard
+                vehicle={vehicle}
+                layout="grid"
+              />
+            </motion.div>
+          ))}
+        </div>
+      )}
     </motion.div>
   );
 }

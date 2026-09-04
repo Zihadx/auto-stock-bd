@@ -5,6 +5,20 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { MotionConfig } from "framer-motion";
 import type { ComponentProps } from "react";
 
+// React 19 warns whenever a <script> tag renders inside a component tree.
+// next-themes relies on exactly that — an inline script injected before
+// hydration to avoid a flash of the wrong theme — so the warning is a false
+// positive: the script still runs correctly during SSR. Filtered here in dev
+// only, until next-themes ships a fix upstream (tracked in their repo as a
+// known React 19 / Next.js 16.2+ issue with no release in over a year).
+if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
+  const originalError = console.error;
+  console.error = (...args: unknown[]) => {
+    if (typeof args[0] === "string" && args[0].includes("Encountered a script tag")) return;
+    originalError.apply(console, args);
+  };
+}
+
 /**
  * Wraps next-themes. Class strategy on <html>, system preference by default,
  * no flash of incorrect theme (next-themes injects a blocking inline script).
