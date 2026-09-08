@@ -4,9 +4,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { CalendarDays, Gauge } from "lucide-react";
-
+import { useTheme } from "next-themes";
 import { fadeUp, staggerContainer, viewport } from "@/lib/motion";
-import { ACCENT, BURGUNDY, CHARCOAL, GOLD, PAPER, PINK } from "../ui/tokens";
+import {
+  ACCENT,
+  BURGUNDY,
+  CHARCOAL,
+  GOLD,
+  PAPER,
+  PINK,
+} from "../ui/tokens";
 
 const PLATE_NUMERALS = ["I", "II", "III", "IV"] as const;
 
@@ -58,30 +65,101 @@ const recentlyAdded = [
 ] as const;
 
 export function RecentlyAdded() {
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+
+  /* ================================================================
+     THEME
+  ================================================================ */
+
+  const sectionBackground = isLight ? "#F5F3EE" : CHARCOAL;
+
+  const primaryText = isLight ? "#171512" : PAPER;
+
+  const mutedText = isLight
+    ? "rgba(23,21,18,0.62)"
+    : `${PAPER}55`;
+
+  const eyebrowColor = isLight
+    ? "#8A6A3F"
+    : `${GOLD}B8`;
+
+  const plateColor = isLight
+    ? "#96703F"
+    : `${GOLD}B0`;
+
+  const intakeColor = isLight
+    ? "rgba(23,21,18,0.52)"
+    : `${PAPER}55`;
+
+  const metadataColor = isLight
+    ? "rgba(23,21,18,0.58)"
+    : `${PAPER}52`;
+
+  const listingColor = isLight
+    ? "rgba(23,21,18,0.56)"
+    : `${PAPER}45`;
+
+  const gridBorder = isLight
+    ? "rgba(23,21,18,0.12)"
+    : `${PAPER}0D`;
+
+  const cardBorder = isLight
+    ? "rgba(23,21,18,0.11)"
+    : `${PAPER}0D`;
+
+  const cardBackground = isLight
+    ? "rgba(255,255,255,0.68)"
+    : CHARCOAL;
+
+  const ambientBackground = isLight
+    ? `
+        radial-gradient(
+          circle at 10% 6%,
+          ${BURGUNDY}12 0%,
+          transparent 32%
+        ),
+        radial-gradient(
+          circle at 92% 90%,
+          ${PINK}08 0%,
+          transparent 30%
+        )
+      `
+    : `
+        radial-gradient(
+          circle at 10% 6%,
+          ${BURGUNDY}22 0%,
+          transparent 32%
+        ),
+        radial-gradient(
+          circle at 92% 90%,
+          ${PINK}0D 0%,
+          transparent 30%
+        )
+      `;
+
   return (
     <section
       className="relative overflow-hidden py-20 sm:py-24 lg:py-28"
-      style={{ backgroundColor: CHARCOAL, color: PAPER }}
+      style={{
+        backgroundColor: sectionBackground,
+        color: primaryText,
+      }}
     >
       {/* ============================================================
           AMBIENT BACKGROUND
       ============================================================ */}
-
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
-          background: `
-            radial-gradient(circle at 10% 6%, ${BURGUNDY}22 0%, transparent 32%),
-            radial-gradient(circle at 92% 90%, ${PINK}0D 0%, transparent 30%)
-          `,
+          background: ambientBackground,
         }}
       />
 
       {/* ============================================================
           CONTENT
       ============================================================ */}
-
       <motion.div
         variants={staggerContainer(0.06)}
         initial="hidden"
@@ -92,17 +170,20 @@ export function RecentlyAdded() {
         {/* ============================================================
             SECTION HEADER
         ============================================================ */}
-
         <motion.div
           variants={fadeUp}
           className="flex flex-wrap items-end justify-between gap-6"
         >
           <div>
+            {/* Eyebrow */}
             <div className="flex items-center gap-3">
               <span
                 aria-hidden="true"
                 className="h-px w-8 shrink-0"
-                style={{ backgroundColor: `${GOLD}80` }}
+                style={{
+                  backgroundColor: `${eyebrowColor}`,
+               
+                }}
               />
 
               <span
@@ -110,31 +191,39 @@ export function RecentlyAdded() {
                 style={{
                   fontFamily: "var(--font-display, Georgia), serif",
                   fontSize: "13px",
-                  color: `${PAPER}72`,
+                  color: eyebrowColor,
                 }}
               >
                 Recent acquisitions
               </span>
             </div>
 
+            {/* Heading */}
             <h2
               className="mt-5 max-w-lg text-2xl font-normal leading-[1.2] tracking-[-0.03em] sm:text-3xl"
-              style={{ fontFamily: "var(--font-display, Georgia), serif" }}
+              style={{
+                fontFamily: "var(--font-display, Georgia), serif",
+                color: primaryText,
+              }}
             >
               New to the floor, and already inspected.
             </h2>
 
+            {/* Description */}
             <p
               className="mt-3 max-w-md text-[12px] leading-6"
-              style={{ color: `${PAPER}55` }}
+              style={{
+                color: mutedText,
+              }}
             >
               Four of the latest arrivals — each run through our 82-point
               inspection before it ever reached the floor.
             </p>
           </div>
 
-          {/* Desktop link */}
-
+          {/* ========================================================
+              DESKTOP LINK
+          ======================================================== */}
           <Link
             href="/inventory?sort=newest"
             className="group hidden shrink-0 sm:block"
@@ -160,7 +249,9 @@ export function RecentlyAdded() {
               style={
                 {
                   fontFamily: "var(--font-display, Georgia), serif",
-                  color: `${PAPER}80`,
+                  color: isLight
+                    ? "rgba(23,21,18,0.68)"
+                    : `${PAPER}80`,
                   "--accent": GOLD,
                 } as React.CSSProperties
               }
@@ -171,25 +262,35 @@ export function RecentlyAdded() {
         </motion.div>
 
         {/* ============================================================
-            PLATES
+            VEHICLE PLATES
         ============================================================ */}
-
         <motion.div
           variants={staggerContainer(0.08)}
           className="mt-12 grid grid-cols-1 gap-px overflow-hidden sm:grid-cols-2 lg:grid-cols-4"
-          style={{ backgroundColor: `${PAPER}0D` }}
+          style={{
+            backgroundColor: gridBorder,
+            boxShadow: isLight
+              ? "0 18px 60px rgba(23,21,18,0.06)"
+              : "none",
+          }}
         >
           {recentlyAdded.map((vehicle, i) => (
-            <motion.div key={vehicle.slug} variants={fadeUp} className="min-w-0">
+            <motion.div
+              key={vehicle.slug}
+              variants={fadeUp}
+              className="min-w-0"
+            >
               <Link
                 href={`/inventory/${vehicle.slug}`}
                 className="group block h-full"
-                style={{ backgroundColor: CHARCOAL }}
+                style={{
+                  backgroundColor: cardBackground,
+                  color: primaryText,
+                }}
               >
                 {/* ==================================================
                     PHOTOGRAPH
                 ================================================== */}
-
                 <div className="relative aspect-[4/3] overflow-hidden px-4 pt-4 sm:px-5 sm:pt-5">
                   <div className="relative h-full w-full overflow-hidden">
                     <Image
@@ -210,7 +311,7 @@ export function RecentlyAdded() {
                       "
                     />
 
-                    {/* Frame corners — draw in on hover */}
+                    {/* Frame corners */}
                     {[
                       "left-0 top-0 border-l border-t",
                       "right-0 top-0 border-r border-t",
@@ -231,7 +332,9 @@ export function RecentlyAdded() {
                           group-hover:opacity-100
                           ${pos}
                         `}
-                        style={{ borderColor: GOLD }}
+                        style={{
+                          borderColor: GOLD,
+                        }}
                       />
                     ))}
                   </div>
@@ -240,8 +343,8 @@ export function RecentlyAdded() {
                 {/* ==================================================
                     CAPTION
                 ================================================== */}
-
                 <div className="px-4 pb-6 pt-4 sm:px-5">
+                  {/* Plate + intake */}
                   <div className="flex items-baseline justify-between gap-3">
                     <span
                       className="italic"
@@ -249,7 +352,7 @@ export function RecentlyAdded() {
                         fontFamily: "var(--font-display, Georgia), serif",
                         fontSize: "12px",
                         letterSpacing: "0.04em",
-                        color: `${GOLD}99`,
+                        color: plateColor,
                       }}
                     >
                       Plate {PLATE_NUMERALS[i]}
@@ -260,40 +363,60 @@ export function RecentlyAdded() {
                       style={{
                         fontFamily: "var(--font-display, Georgia), serif",
                         fontSize: "10.5px",
-                        color: `${PAPER}40`,
+                        color: intakeColor,
                       }}
                     >
                       {vehicle.intake}
                     </span>
                   </div>
 
+                  {/* Vehicle name */}
                   <h3
                     className="mt-2 text-[15px] font-normal leading-5 tracking-[-0.01em]"
-                    style={{ fontFamily: "var(--font-display, Georgia), serif" }}
+                    style={{
+                      fontFamily: "var(--font-display, Georgia), serif",
+                      color: primaryText,
+                    }}
                   >
                     {vehicle.name}
                   </h3>
 
+                  {/* Vehicle metadata */}
                   <div
                     className="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-[10px]"
-                    style={{ color: `${PAPER}52` }}
+                    style={{
+                      color: metadataColor,
+                    }}
                   >
                     <span className="flex items-center gap-1.5">
-                      <CalendarDays size={11} strokeWidth={1.3} />
+                      <CalendarDays
+                        size={11}
+                        strokeWidth={1.3}
+                      />
                       {vehicle.year}
                     </span>
+
                     <span aria-hidden="true">·</span>
+
                     <span className="flex items-center gap-1.5">
-                      <Gauge size={11} strokeWidth={1.3} />
+                      <Gauge
+                        size={11}
+                        strokeWidth={1.3}
+                      />
                       {vehicle.mileage}
                     </span>
+
                     <span aria-hidden="true">·</span>
+
                     <span>{vehicle.transmission}</span>
                   </div>
 
+                  {/* Price + listing */}
                   <div
                     className="mt-4 flex items-baseline justify-between gap-3 border-t pt-4"
-                    style={{ borderColor: `${PAPER}0D` }}
+                    style={{
+                      borderColor: cardBorder,
+                    }}
                   >
                     <span
                       className="italic tabular-nums"
@@ -325,7 +448,7 @@ export function RecentlyAdded() {
                       "
                       style={
                         {
-                          color: `${PAPER}45`,
+                          color: listingColor,
                           "--accent": GOLD,
                         } as React.CSSProperties
                       }
@@ -342,9 +465,11 @@ export function RecentlyAdded() {
         {/* ============================================================
             MOBILE LINK
         ============================================================ */}
-
         <div className="mt-8 text-center sm:hidden">
-          <Link href="/inventory?sort=newest" className="group inline-block">
+          <Link
+            href="/inventory?sort=newest"
+            className="group inline-block"
+          >
             <span
               className="
                 relative
@@ -366,7 +491,9 @@ export function RecentlyAdded() {
                 {
                   fontFamily: "var(--font-display, Georgia), serif",
                   fontSize: "13px",
-                  color: `${PAPER}80`,
+                  color: isLight
+                    ? "rgba(23,21,18,0.68)"
+                    : `${PAPER}80`,
                   "--accent": GOLD,
                 } as React.CSSProperties
               }

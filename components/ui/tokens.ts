@@ -8,7 +8,7 @@ export const BURGUNDY = "#6B102E";     // Deep burgundy — secondary brand
 export const CHARCOAL = "#0A0106";     // Near-black — main background
 export const PAPER = "#F5F1EA";        // Off-white — primary text
 export const PINK = "#F8C3E1";         // Soft pink — light sections
-export const GOLD = "#FFD86B";         // Warm gold — secondary accent
+export const GOLD = "#DAA428";         // Warm gold — secondary accent
 
 export const LINE = "rgba(245, 241, 234, 0.14)";
 

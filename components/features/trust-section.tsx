@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -7,8 +8,37 @@ import {
   ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { ACCENT, CHARCOAL, PAPER } from "../ui/tokens";
+import {
+  motion,
+  useReducedMotion,
+  type Variants,
+} from "framer-motion";
+import { useTheme } from "next-themes";
+import { useSyncExternalStore } from "react";
+
+import {
+  ACCENT,
+  CHARCOAL,
+  PAPER,
+} from "../ui/tokens";
+
+/* ================================================================
+   HYDRATION-SAFE THEME DETECTION
+================================================================ */
+
+const emptySubscribe = () => () => {};
+
+function useMounted() {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
+}
+
+/* ================================================================
+   TYPES
+================================================================ */
 
 interface Benefit {
   title: string;
@@ -16,112 +46,363 @@ interface Benefit {
   icon: LucideIcon;
 }
 
+/* ================================================================
+   BENEFITS
+================================================================ */
+
 const BENEFITS: Benefit[] = [
   {
     title: "Best Price Guarantee",
-    description: "Get the best offers on every car.",
+    description:
+      "Get the best offers on every car.",
     icon: BadgeCheck,
   },
   {
     title: "Trusted Dealers",
-    description: "Verified dealers, 100% reliable.",
+    description:
+      "Verified dealers, 100% reliable.",
     icon: ShieldCheck,
   },
   {
     title: "24/7 Support",
-    description: "We are here to help you anytime.",
+    description:
+      "We are here to help you anytime.",
     icon: Headphones,
   },
   {
     title: "Easy Financing",
-    description: "Flexible finance options that fit your budget.",
+    description:
+      "Flexible finance options that fit your budget.",
     icon: HandCoins,
   },
 ];
 
-const EASE = [0.16, 1, 0.3, 1] as const;
+/* ================================================================
+   MOTION
+================================================================ */
+
+const EASE = [
+  0.16,
+  1,
+  0.3,
+  1,
+] as const;
 
 const container: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08, delayChildren: 0.04 } },
+  show: {
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.04,
+    },
+  },
 };
 
 const item: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
+  hidden: {
+    opacity: 0,
+    y: 16,
+  },
+
+  show: {
+    opacity: 1,
+    y: 0,
+
+    transition: {
+      duration: 0.6,
+      ease: EASE,
+    },
+  },
 };
+
+/* ================================================================
+   COMPONENT
+================================================================ */
 
 export default function BenefitsStrip() {
   const reducedMotion = useReducedMotion();
 
+  const { resolvedTheme } = useTheme();
+
+  const mounted = useMounted();
+
+  /*
+   * Dark is used as the SSR fallback so the initial render
+   * remains stable during hydration.
+   */
+  const isDark =
+    !mounted ||
+    resolvedTheme === "dark";
+
+  /* ================================================================
+     THEME TOKENS
+  ================================================================ */
+
+  const sectionBackground = isDark
+    ? CHARCOAL
+    : "#F5F4F0";
+
+  const surfaceBackground = isDark
+    ? `${ACCENT}14`
+    : "rgba(255,255,255,0.68)";
+
+  const surfaceBorder = isDark
+    ? `${ACCENT}30`
+    : "rgba(0,0,0,0.09)";
+
+  const dividerColor = isDark
+    ? `${PAPER}12`
+    : "rgba(0,0,0,0.08)";
+
+  const titleColor = isDark
+    ? PAPER
+    : "#111111";
+
+  const descriptionColor = isDark
+    ? `${PAPER}75`
+    : "rgba(17,17,17,0.58)";
+
+  const iconBackground = isDark
+    ? `${ACCENT}14`
+    : `${ACCENT}0D`;
+
+  const iconBorder = isDark
+    ? `${ACCENT}30`
+    : `${ACCENT}35`;
+
+  const hoverBackground = isDark
+    ? "rgba(255,255,255,0.03)"
+    : "rgba(0,0,0,0.025)";
+
+  const highlightColor = isDark
+    ? `${PAPER}20`
+    : "rgba(255,255,255,0.85)";
+
+  /* ================================================================
+     RENDER
+  ================================================================ */
+
   return (
-    <section className="w-full py-16" style={{ backgroundColor: CHARCOAL }}>
+    <section
+      className="w-full py-16"
+      style={{
+        backgroundColor:
+          sectionBackground,
+      }}
+    >
       <motion.div
-        className="relative mx-auto w-full overflow-hidden rounded-2xl px-6 sm:px-9 lg:px-14 xl:px-20 container border"
+        className="
+          relative mx-auto w-full
+          overflow-hidden rounded-2xl
+          border px-6
+          sm:px-9
+          lg:px-14
+          xl:px-20
+          container
+        "
         style={{
-          borderColor: `${ACCENT}30`,
-                    backgroundColor: `${ACCENT}14`,
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          boxShadow: `inset 0 1px 0 ${PAPER}0B`,
+          borderColor: surfaceBorder,
+          backgroundColor:
+            surfaceBackground,
+
+          backdropFilter:
+            "blur(20px)",
+
+          WebkitBackdropFilter:
+            "blur(20px)",
+
+          boxShadow: isDark
+            ? `inset 0 1px 0 ${PAPER}0B`
+            : "inset 0 1px 0 rgba(255,255,255,0.8)",
         }}
-        variants={reducedMotion ? undefined : container}
-        initial={reducedMotion ? undefined : "hidden"}
-        whileInView={reducedMotion ? undefined : "show"}
-        viewport={{ once: true, amount: 0.3 }}
+        variants={
+          reducedMotion
+            ? undefined
+            : container
+        }
+        initial={
+          reducedMotion
+            ? undefined
+            : "hidden"
+        }
+        whileInView={
+          reducedMotion
+            ? undefined
+            : "show"
+        }
+        viewport={{
+          once: true,
+          amount: 0.3,
+        }}
       >
-        {/* Glass top highlight */}
+        {/* ========================================================
+            GLASS TOP HIGHLIGHT
+        ======================================================== */}
+
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-px"
-          style={{ background: `linear-gradient(90deg, transparent, ${PAPER}20, transparent)` }}
+          className="
+            pointer-events-none
+            absolute inset-x-0 top-0
+            h-px
+          "
+          style={{
+            background: `linear-gradient(
+              90deg,
+              transparent,
+              ${highlightColor},
+              transparent
+            )`,
+          }}
         />
-        {/* Ambient accent glow — one, quiet, not a decoration on every card */}
+
+        {/* ========================================================
+            AMBIENT ACCENT GLOW
+        ======================================================== */}
+
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -left-16 -top-16 h-56 w-56 rounded-full opacity-[0.12] blur-[90px]"
-          style={{ backgroundColor: ACCENT }}
+          className="
+            pointer-events-none
+            absolute -left-16 -top-16
+            h-56 w-56
+            rounded-full
+            opacity-[0.12]
+            blur-[90px]
+          "
+          style={{
+            backgroundColor: ACCENT,
+          }}
         />
 
-        <div className="relative grid grid-cols-1 divide-y sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x lg:divide-y-0 " style={{ borderColor: `${PAPER}12` }}>
-          {BENEFITS.map((benefit) => {
-            const Icon = benefit.icon;
+        {/* ========================================================
+            BENEFITS GRID
+        ======================================================== */}
 
-            return (
-              <motion.div
-                key={benefit.title}
-                variants={item}
-                className="group flex min-h-[112px] items-center gap-4 px-6 py-7 transition-colors duration-300 hover:bg-white/[0.03] sm:px-7 lg:px-6 xl:px-8"
-                style={{ borderColor: `${PAPER}12` }}
-              >
-                <div
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-transform duration-300 group-hover:scale-105"
+        <div
+          className="
+            relative grid
+            grid-cols-1
+            divide-y
+            sm:grid-cols-2
+            sm:divide-y-0
+            lg:grid-cols-4
+            lg:divide-x
+            lg:divide-y-0
+          "
+          style={{
+            borderColor: dividerColor,
+          }}
+        >
+          {BENEFITS.map(
+            (benefit) => {
+              const Icon =
+                benefit.icon;
+
+              return (
+                <motion.div
+                  key={benefit.title}
+                  variants={item}
+                  className="
+                    group flex min-h-[112px]
+                    items-center gap-4
+                    px-6 py-7
+                    transition-colors
+                    duration-300
+                    sm:px-7
+                    lg:px-6
+                    xl:px-8
+                  "
                   style={{
-                    borderColor: `${ACCENT}30`,
-                    backgroundColor: `${ACCENT}14`,
-                    color: ACCENT,
+                    borderColor:
+                      dividerColor,
                   }}
+                  whileHover={
+                    reducedMotion
+                      ? undefined
+                      : {
+                          backgroundColor:
+                            hoverBackground,
+                        }
+                  }
                 >
-                  <Icon size={22} strokeWidth={1.6} aria-hidden="true" />
-                </div>
+                  {/* ==================================================
+                      ICON
+                  ================================================== */}
 
-                <div className="min-w-0">
-                  <h3
-                    className="text-[13px] font-medium leading-tight tracking-[-0.01em]"
-                    style={{ color: PAPER }}
+                  <div
+                    className="
+                      flex h-11 w-11
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-xl
+                      border
+                      transition-all
+                      duration-300
+                      group-hover:scale-105
+                    "
+                    style={{
+                      borderColor:
+                        iconBorder,
+
+                      backgroundColor:
+                        iconBackground,
+
+                      color: ACCENT,
+
+                      boxShadow: isDark
+                        ? "none"
+                        : `0 4px 18px ${ACCENT}08`,
+                    }}
                   >
-                    {benefit.title}
-                  </h3>
-                  <p
-                    className="mt-1 max-w-[180px] text-[11px] font-normal leading-[1.5]"
-                    style={{ color: `${PAPER}75` }}
-                  >
-                    {benefit.description}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
+                    <Icon
+                      size={22}
+                      strokeWidth={1.6}
+                      aria-hidden="true"
+                    />
+                  </div>
+
+                  {/* ==================================================
+                      CONTENT
+                  ================================================== */}
+
+                  <div className="min-w-0">
+                    <h3
+                      className="
+                        text-[13px]
+                        font-medium
+                        leading-tight
+                        tracking-[-0.01em]
+                      "
+                      style={{
+                        color:
+                          titleColor,
+                      }}
+                    >
+                      {benefit.title}
+                    </h3>
+
+                    <p
+                      className="
+                        mt-1
+                        max-w-[180px]
+                        text-[11px]
+                        font-normal
+                        leading-[1.5]
+                      "
+                      style={{
+                        color:
+                          descriptionColor,
+                      }}
+                    >
+                      {benefit.description}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            },
+          )}
         </div>
       </motion.div>
     </section>

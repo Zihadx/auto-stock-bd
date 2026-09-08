@@ -1,11 +1,8 @@
 "use client";
 
+import { useMemo } from "react";
 import Link from "next/link";
-import {
-  motion,
-  useReducedMotion,
-  type Variants,
-} from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
   ArrowUpRight,
   CarFront,
@@ -15,19 +12,12 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
+import { useTheme } from "next-themes";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { viewport } from "@/lib/motion";
-
-import {
-  ACCENT,
-  BURGUNDY,
-  CHARCOAL,
-  PAPER,
-  PINK,
-  GOLD,
-} from "../ui/tokens";
+import { BURGUNDY, CHARCOAL, PAPER, PINK, GOLD } from "../ui/tokens";
 
 // ============================================================
 // GRAIN
@@ -51,13 +41,14 @@ const GRAIN =
         filter='url(#noise)'
         opacity='.55'
       />
-    </svg>`
+    </svg>`,
   );
 
 // ============================================================
 // PREMIUM MOTION
-// Explicit Variants typing prevents Framer Motion TS errors.
 // ============================================================
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 const premiumReveal: Variants = {
   hidden: {
@@ -65,21 +56,19 @@ const premiumReveal: Variants = {
     y: 24,
     filter: "blur(8px)",
   },
-
   visible: {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
     transition: {
       duration: 0.9,
-      ease: [0.22, 1, 0.36, 1],
+      ease: EASE_OUT,
     },
   },
 };
 
 const premiumStagger: Variants = {
   hidden: {},
-
   visible: {
     transition: {
       staggerChildren: 0.12,
@@ -93,16 +82,128 @@ const lineReveal: Variants = {
     scaleY: 0,
     opacity: 0,
   },
-
   visible: {
     scaleY: 1,
     opacity: 1,
     transition: {
       duration: 1.1,
-      ease: [0.22, 1, 0.36, 1],
+      ease: EASE_OUT,
     },
   },
 };
+
+// ============================================================
+// THEME TOKENS
+// ============================================================
+
+function buildTheme(isLight: boolean) {
+  const frame = isLight ? "rgba(23,21,18,0.14)" : `${PAPER}08`;
+
+  return {
+    background: isLight ? "#F5F3EE" : CHARCOAL,
+
+    // Main typography
+    text: isLight ? "#11100E" : PAPER,
+
+    // 100% visible small/body text
+    textSecondary: isLight ? "#2B2823" : PAPER,
+    textTertiary: isLight ? "#3A3630" : PAPER,
+    textSoft: isLight ? "#27241F" : PAPER,
+
+    // Destination italic
+    destinationAccent: isLight ? "#514B41" : PAPER,
+
+    // Frame lines
+    frameGradient: `linear-gradient(
+      to bottom,
+      transparent,
+      ${frame} 20%,
+      ${frame} 80%,
+      transparent
+    )`,
+
+    // Trust divider
+    trustBorder: isLight ? "rgba(23,21,18,0.20)" : `${PAPER}30`,
+
+    // Signature
+    signature: isLight ? "#5C554A" : PAPER,
+
+    grainOpacity: isLight ? 0.018 : 0.035,
+
+    // Eyebrow — 100% visible
+    eyebrowLine: isLight ? "#8A6828" : GOLD,
+    eyebrowText: isLight ? "#654A19" : PAPER,
+
+    // Station — 100% visible
+    stationDescription: isLight ? "#332F29" : PAPER,
+    stationCta: isLight ? "#211E19" : PAPER,
+    stationMarker: isLight ? "#76571F" : GOLD,
+    stationIcon: isLight ? "#76571F" : GOLD,
+    stationCtaBorder: isLight ? "#96712F" : GOLD,
+    stationCtaBg: isLight
+      ? "rgba(138,104,40,0.10)"
+      : `${GOLD}14`,
+    stationGlow: isLight
+      ? "rgba(138,104,40,0.08)"
+      : `${GOLD}10`,
+
+    // Trust — 100% visible
+    trustIcon: isLight ? "#76571F" : GOLD,
+    trustLabel: isLight ? "#332F29" : PAPER,
+
+    burgundyBg: isLight ? `${BURGUNDY}0C` : `${BURGUNDY}20`,
+    burgundyOpacity: isLight ? [0.12, 0.18, 0.12] : [0.35, 0.5, 0.35],
+    goldOpacity: isLight ? [0.06, 0.11, 0.06] : [0.05, 0.12, 0.05],
+    pinkBg: isLight ? `${PINK}04` : `${PINK}07`,
+  };
+}
+
+type Theme = ReturnType<typeof buildTheme>;
+
+// ============================================================
+// ATMOSPHERE BLOB
+// ============================================================
+
+function AtmosphereBlob({
+  className,
+  color,
+  opacityRange,
+  moveX,
+  moveY,
+  duration,
+  reduceMotion,
+}: {
+  className: string;
+  color: string;
+  opacityRange: number[];
+  moveX: number[];
+  moveY: number[];
+  duration: number;
+  reduceMotion: boolean;
+}) {
+  return (
+    <motion.div
+      className={className}
+      animate={
+        reduceMotion
+          ? undefined
+          : {
+              x: moveX,
+              y: moveY,
+              opacity: opacityRange,
+            }
+      }
+      transition={{
+        duration,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+      style={{
+        backgroundColor: color,
+      }}
+    />
+  );
+}
 
 // ============================================================
 // EYEBROW
@@ -110,23 +211,25 @@ const lineReveal: Variants = {
 
 function Eyebrow({
   children,
+  theme,
 }: {
   children: React.ReactNode;
+  theme: Theme;
 }) {
   return (
-    <div className="flex items-center justify-center gap-3">
+    <div className="flex items-center justify-center gap-4">
       <span
         aria-hidden="true"
-        className="h-px w-7"
+        className="h-[2px] w-10"
         style={{
-          backgroundColor: `${GOLD}80`,
+          backgroundColor: theme.eyebrowLine,
         }}
       />
 
       <span
-        className="font-display text-[10px] uppercase tracking-[0.28em]"
+        className="font-display text-[11px] font-medium uppercase tracking-[0.28em]"
         style={{
-          color: `${PAPER}65`,
+          color: theme.eyebrowText,
         }}
       >
         {children}
@@ -134,9 +237,9 @@ function Eyebrow({
 
       <span
         aria-hidden="true"
-        className="h-px w-7"
+        className="h-[2px] w-10"
         style={{
-          backgroundColor: `${GOLD}80`,
+          backgroundColor: theme.eyebrowLine,
         }}
       />
     </div>
@@ -154,6 +257,7 @@ function Station({
   description,
   href,
   ctaLabel,
+  theme,
 }: {
   icon: typeof CarFront;
   number: string;
@@ -161,23 +265,18 @@ function Station({
   description: string;
   href: string;
   ctaLabel: string;
+  theme: Theme;
 }) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <motion.div
-      variants={premiumReveal}
-      className="group relative"
-    >
-      {/* ======================================================
-          TOP MARKER
-      ====================================================== */}
-
-      <div className="flex items-center gap-4">
+    <motion.div variants={premiumReveal} className="group relative">
+      {/* Top marker */}
+      <div className="flex items-center gap-5">
         <span
-          className="font-display text-[11px] italic"
+          className="font-display text-[13px] font-medium italic"
           style={{
-            color: `${GOLD}A8`,
+            color: theme.stationMarker,
           }}
         >
           {number}
@@ -185,96 +284,78 @@ function Station({
 
         <span
           aria-hidden="true"
-          className="h-px w-12 transition-all duration-700 group-hover:w-20"
+          className="h-[2px] w-14 transition-all duration-700 group-hover:w-24"
           style={{
-            background: `linear-gradient(
-              to right,
-              ${GOLD}65,
-              transparent
-            )`,
+            background:
+              "linear-gradient(to right, #8A6828, rgba(138,104,40,0.18), transparent)",
           }}
         />
       </div>
 
-      {/* ======================================================
-          ICON
-      ====================================================== */}
-
-      <div className="mt-7">
+      <div className="mt-8">
         <Icon
-          size={20}
-          strokeWidth={1.15}
+          size={23}
+          strokeWidth={1.45}
           style={{
-            color: `${GOLD}C4`,
+            color: theme.stationIcon,
           }}
         />
       </div>
 
-      {/* ======================================================
-          TITLE
-      ====================================================== */}
-
-      <h3 className="mt-5 max-w-md font-display text-[clamp(1.65rem,2.5vw,2.35rem)] font-normal leading-[1.05] tracking-[-0.035em]">
+      <h3
+        className="mt-6 max-w-md font-display text-[clamp(1.85rem,2.7vw,2.55rem)] font-normal leading-[1.05] tracking-[-0.035em]"
+        style={{
+          color: theme.text,
+        }}
+      >
         {title}
       </h3>
 
-      {/* ======================================================
-          DESCRIPTION
-      ====================================================== */}
-
       <p
-        className="mt-5 max-w-sm text-[12px] leading-6"
+        className="mt-6 max-w-sm text-[13px] leading-7"
         style={{
-          color: `${PAPER}5F`,
+          color: theme.stationDescription,
         }}
       >
         {description}
       </p>
 
-      {/* ======================================================
-          CTA
-      ====================================================== */}
-
       <Link
         href={href}
-        className="group/link mt-7 inline-flex items-center gap-3"
+        className="group/link mt-8 inline-flex items-center gap-3"
       >
         <span
-          className="text-[10px] uppercase tracking-[0.18em]"
+          className="text-[11px] font-medium uppercase tracking-[0.18em]"
           style={{
-            color: PAPER,
+            color: theme.stationCta,
           }}
         >
           {ctaLabel}
         </span>
 
         <span
-          className="flex h-7 w-7 items-center justify-center rounded-full border transition-all duration-500 group-hover/link:translate-x-1"
+          className="flex h-9 w-9 items-center justify-center rounded-full border-2 transition-all duration-500 group-hover/link:translate-x-1"
           style={{
-            borderColor: `${GOLD}35`,
-            backgroundColor: `${GOLD}08`,
+            borderColor: theme.stationCtaBorder,
+            backgroundColor: theme.stationCtaBg,
           }}
         >
           <ArrowUpRight
-            size={12}
-            strokeWidth={1.4}
+            size={15}
+            strokeWidth={2.2}
             style={{
-              color: GOLD,
+              color: theme.stationIcon,
             }}
           />
         </span>
       </Link>
-
-      {/* ======================================================
-          SUBTLE HOVER GLOW
-      ====================================================== */}
 
       {!shouldReduceMotion && (
         <motion.div
           aria-hidden="true"
           className="pointer-events-none absolute -left-16 top-16 h-40 w-40 rounded-full blur-[90px] opacity-0 transition-opacity duration-700 group-hover:opacity-100"
           style={{
-            backgroundColor: `${GOLD}08`,
+            backgroundColor: theme.stationGlow,
           }}
         />
       )}
@@ -289,24 +370,26 @@ function Station({
 function TrustItem({
   icon: Icon,
   label,
+  theme,
 }: {
   icon: typeof ShieldCheck;
   label: string;
+  theme: Theme;
 }) {
   return (
-    <div className="flex items-center justify-center gap-2">
+    <div className="flex items-center justify-center gap-2.5">
       <Icon
-        size={13}
-        strokeWidth={1.25}
+        size={15}
+        strokeWidth={1.35}
         style={{
-          color: `${GOLD}A0`,
+          color: theme.trustIcon,
         }}
       />
 
       <span
-        className="text-[9px] uppercase tracking-[0.16em]"
+        className="text-[10px] font-medium uppercase tracking-[0.16em]"
         style={{
-          color: `${PAPER}42`,
+          color: theme.trustLabel,
         }}
       >
         {label}
@@ -320,131 +403,78 @@ function TrustItem({
 // ============================================================
 
 export function FinalCta() {
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = !!useReducedMotion();
+  const { resolvedTheme } = useTheme();
+
+  const isLight = resolvedTheme === "light";
+
+  const theme = useMemo(() => buildTheme(isLight), [isLight]);
 
   return (
     <section
       className="relative overflow-hidden"
       style={{
-        backgroundColor: CHARCOAL,
-        color: PAPER,
+        backgroundColor: theme.background,
+        color: theme.text,
       }}
     >
-      {/* ======================================================
-          CINEMATIC BACKGROUND
-      ====================================================== */}
-
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-      >
-        {/* Burgundy atmosphere */}
-
-        <motion.div
+      {/* Cinematic background */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <AtmosphereBlob
           className="absolute -left-[20%] top-[5%] h-[520px] w-[520px] rounded-full blur-[150px]"
-          animate={
-            shouldReduceMotion
-              ? undefined
-              : {
-                  x: [0, 35, 0],
-                  y: [0, 20, 0],
-                  opacity: [0.35, 0.5, 0.35],
-                }
-          }
-          transition={{
-            duration: 14,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          style={{
-            backgroundColor: `${BURGUNDY}20`,
-          }}
+          color={theme.burgundyBg}
+          opacityRange={theme.burgundyOpacity}
+          moveX={[0, 35, 0]}
+          moveY={[0, 20, 0]}
+          duration={14}
+          reduceMotion={shouldReduceMotion}
         />
 
-        {/* Gold atmosphere */}
-
-        <motion.div
+        <AtmosphereBlob
           className="absolute right-[-10%] top-[20%] h-[440px] w-[440px] rounded-full blur-[150px]"
-          animate={
-            shouldReduceMotion
-              ? undefined
-              : {
-                  x: [0, -30, 0],
-                  y: [0, 35, 0],
-                  opacity: [0.05, 0.12, 0.05],
-                }
-          }
-          transition={{
-            duration: 16,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          style={{
-            backgroundColor: GOLD,
-          }}
+          color={GOLD}
+          opacityRange={theme.goldOpacity}
+          moveX={[0, -30, 0]}
+          moveY={[0, 35, 0]}
+          duration={16}
+          reduceMotion={shouldReduceMotion}
         />
-
-        {/* Bottom atmosphere */}
 
         <div
           className="absolute bottom-[-15%] left-1/2 h-[420px] w-[720px] -translate-x-1/2 rounded-full blur-[160px]"
           style={{
-            backgroundColor: `${PINK}07`,
+            backgroundColor: theme.pinkBg,
           }}
         />
-
-        {/* Grain */}
 
         <div
           className="absolute inset-0"
           style={{
             backgroundImage: `url("${GRAIN}")`,
             backgroundSize: "180px 180px",
-            opacity: 0.035,
+            opacity: theme.grainOpacity,
             mixBlendMode: "overlay",
           }}
         />
 
-        {/* ==================================================
-            SIDE FRAME LINES
-        ================================================== */}
-
+        {/* Side frames */}
         <div
-          className="absolute inset-y-0 left-[7%] hidden w-px md:block"
+          className="absolute inset-y-0 left-[7%] hidden w-[2px] md:block"
           style={{
-            background: `linear-gradient(
-              to bottom,
-              transparent,
-              ${PAPER}08 20%,
-              ${PAPER}08 80%,
-              transparent
-            )`,
+            background: theme.frameGradient,
           }}
         />
 
         <div
-          className="absolute inset-y-0 right-[7%] hidden w-px md:block"
+          className="absolute inset-y-0 right-[7%] hidden w-[2px] md:block"
           style={{
-            background: `linear-gradient(
-              to bottom,
-              transparent,
-              ${PAPER}08 20%,
-              ${PAPER}08 80%,
-              transparent
-            )`,
+            background: theme.frameGradient,
           }}
         />
       </div>
 
-      {/* ======================================================
-          CONTENT
-      ====================================================== */}
-
       <div className="container-page relative py-24 md:py-32 lg:py-40">
-        {/* ====================================================
-            INTRO
-        ==================================================== */}
-
+        {/* Intro */}
         <motion.div
           variants={premiumStagger}
           initial="hidden"
@@ -453,22 +483,22 @@ export function FinalCta() {
           className="mx-auto max-w-4xl text-center"
         >
           <motion.div variants={premiumReveal}>
-            <Eyebrow>
-              Begin the next chapter
-            </Eyebrow>
+            <Eyebrow theme={theme}>Begin the next chapter</Eyebrow>
           </motion.div>
 
           <motion.h2
             variants={premiumReveal}
-            className="mt-8 font-display text-[clamp(3rem,7vw,6.7rem)] font-normal leading-[0.88] tracking-[-0.055em]"
+            className="mt-9 font-display text-[clamp(3.2rem,7.2vw,7rem)] font-normal leading-[0.88] tracking-[-0.055em]"
+            style={{
+              color: theme.text,
+            }}
           >
             Your old car.
             <br />
-
             <span
               className="italic"
               style={{
-                color: GOLD,
+                color: isLight ? "#8A6828" : GOLD,
               }}
             >
               Your next one.
@@ -477,43 +507,18 @@ export function FinalCta() {
 
           <motion.p
             variants={premiumReveal}
-            className="mx-auto mt-8 max-w-lg text-[12px] leading-6 md:text-[13px]"
+            className="mx-auto mt-9 max-w-xl text-[13px] leading-7 md:text-[14px]"
             style={{
-              color: `${PAPER}62`,
+              color: theme.textSecondary,
             }}
           >
-            A considered way to change cars. We take care
-            of the valuation, the numbers and the details —
-            so you can concentrate on what comes next.
+            A considered way to change cars. We take care of the valuation, the
+            numbers and the details — so you can concentrate on what comes next.
           </motion.p>
         </motion.div>
 
-        {/* ====================================================
-            PROCESS
-        ==================================================== */}
-
+        {/* Process */}
         <div className="relative mt-24 md:mt-32">
-          {/* Desktop connecting line */}
-
-          <div
-            aria-hidden="true"
-            className="absolute left-0 right-0 top-[5px] hidden h-px md:block"
-            style={{
-              background: `linear-gradient(
-                90deg,
-                transparent,
-                ${GOLD}22 15%,
-                ${GOLD}55 50%,
-                ${GOLD}22 85%,
-                transparent
-              )`,
-            }}
-          />
-
-          {/* ==================================================
-              PROCESS ITEMS
-          ================================================== */}
-
           <motion.div
             variants={premiumStagger}
             initial="hidden"
@@ -528,6 +533,7 @@ export function FinalCta() {
               description="Receive a considered valuation within 24 hours. If you choose your next car with us, the value moves directly into the new purchase."
               href="/sell-your-car"
               ctaLabel="Get your valuation"
+              theme={theme}
             />
 
             <Station
@@ -537,35 +543,27 @@ export function FinalCta() {
               description="We work with trusted finance partners on eligible vehicles and explain the options clearly before you make a decision."
               href="/contact"
               ctaLabel="Explore financing"
+              theme={theme}
             />
           </motion.div>
         </div>
 
-        {/* ====================================================
-            VERTICAL DIVIDER
-        ==================================================== */}
-
+        {/* Vertical divider */}
         <motion.div
           variants={lineReveal}
           initial="hidden"
           whileInView="visible"
           viewport={viewport}
           aria-hidden="true"
-          className="mx-auto mt-24 h-24 w-px origin-top md:mt-32 md:h-32"
+          className="mx-auto mt-24 h-24 w-[2px] origin-top md:mt-32 md:h-32"
           style={{
-            background: `linear-gradient(
-              to bottom,
-              ${GOLD}00,
-              ${GOLD}65 50%,
-              ${GOLD}00
-            )`,
+            background: isLight
+              ? "linear-gradient(to bottom, transparent, #A9823A 25%, #8A6828 50%, #A9823A 75%, transparent)"
+              : `linear-gradient(to bottom, ${GOLD}00, ${GOLD}65 50%, ${GOLD}00)`,
           }}
         />
 
-        {/* ====================================================
-            DESTINATION
-        ==================================================== */}
-
+        {/* Destination */}
         <motion.div
           variants={premiumStagger}
           initial="hidden"
@@ -574,22 +572,22 @@ export function FinalCta() {
           className="mx-auto mt-2 max-w-4xl text-center md:mt-4"
         >
           <motion.div variants={premiumReveal}>
-            <Eyebrow>
-              Your next destination
-            </Eyebrow>
+            <Eyebrow theme={theme}>Your next destination</Eyebrow>
           </motion.div>
 
           <motion.h3
             variants={premiumReveal}
-            className="mt-8 font-display text-[clamp(2.7rem,5.5vw,5.2rem)] font-normal leading-[0.94] tracking-[-0.05em]"
+            className="mt-9 font-display text-[clamp(2.9rem,5.7vw,5.4rem)] font-normal leading-[0.94] tracking-[-0.05em]"
+            style={{
+              color: theme.text,
+            }}
           >
             Find the car
             <br />
-
             <span
               className="italic"
               style={{
-                color: `${PAPER}D8`,
+                color: theme.destinationAccent,
               }}
             >
               that feels right.
@@ -598,26 +596,20 @@ export function FinalCta() {
 
           <motion.p
             variants={premiumReveal}
-            className="mx-auto mt-7 max-w-md text-[12px] leading-6"
+            className="mx-auto mt-8 max-w-md text-[13px] leading-7"
             style={{
-              color: `${PAPER}58`,
+              color: theme.textTertiary,
             }}
           >
-            Every vehicle inspected. Every document
-            verified. Every important detail considered
-            before you arrive.
+            Every vehicle inspected. Every document verified. Every important
+            detail considered before you arrive.
           </motion.p>
 
-          {/* ==================================================
-              CTA GROUP
-          ================================================== */}
-
+          {/* CTA group */}
           <motion.div
             variants={premiumReveal}
-            className="mt-11 flex flex-col items-center justify-center gap-4 sm:flex-row"
+            className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
-            {/* Primary CTA */}
-
             <Link
               href="/inventory"
               className={cn(
@@ -625,12 +617,11 @@ export function FinalCta() {
                   variant: "brass",
                   size: "lg",
                 }),
-                "group relative h-12 overflow-hidden rounded-full px-8 text-[10px] uppercase tracking-[0.18em]"
+                "group relative h-12 overflow-hidden rounded-full px-8 text-[10px] uppercase tracking-[0.18em]",
               )}
             >
               <span className="relative z-10 flex items-center gap-3">
                 Browse inventory
-
                 <ArrowUpRight
                   size={14}
                   strokeWidth={1.4}
@@ -639,30 +630,27 @@ export function FinalCta() {
               </span>
             </Link>
 
-            {/* Secondary CTA */}
-
             <Link
               href="/contact"
-              className="group flex h-12 items-center gap-2 rounded-full px-6 text-[10px] uppercase tracking-[0.18em]"
+              className="group flex h-12 items-center gap-2 rounded-full px-6 text-[11px] font-medium uppercase tracking-[0.18em]"
               style={{
-                color: `${PAPER}A0`,
+                color: theme.textSoft,
               }}
             >
               Speak with us
-
               <ChevronRight
-                size={13}
-                strokeWidth={1.3}
+                size={14}
+                strokeWidth={1.4}
                 className="transition-transform duration-500 group-hover:translate-x-1"
+                style={{
+                  color: isLight ? "#8A6828" : GOLD,
+                }}
               />
             </Link>
           </motion.div>
         </motion.div>
 
-        {/* ====================================================
-            TRUST STRIP
-        ==================================================== */}
-
+        {/* Trust strip */}
         <motion.div
           initial={{
             opacity: 0,
@@ -676,35 +664,35 @@ export function FinalCta() {
           transition={{
             duration: 0.9,
             delay: 0.15,
-            ease: [0.22, 1, 0.36, 1],
+            ease: EASE_OUT,
           }}
-          className="mx-auto mt-24 max-w-3xl border-t pt-8 md:mt-32"
+          className="mx-auto mt-24 max-w-3xl border-t pt-9 md:mt-32"
           style={{
-            borderColor: `${PAPER}0C`,
+            borderColor: theme.trustBorder,
           }}
         >
-          <div className="grid gap-6 sm:grid-cols-3">
+          <div className="grid gap-7 sm:grid-cols-3">
             <TrustItem
               icon={ShieldCheck}
               label="Inspected vehicles"
+              theme={theme}
             />
 
             <TrustItem
               icon={Check}
               label="Verified documentation"
+              theme={theme}
             />
 
             <TrustItem
               icon={Sparkles}
               label="Straightforward buying"
+              theme={theme}
             />
           </div>
         </motion.div>
 
-        {/* ====================================================
-            SIGNATURE
-        ==================================================== */}
-
+        {/* Signature */}
         <motion.div
           initial={{
             opacity: 0,
@@ -720,9 +708,9 @@ export function FinalCta() {
           className="mt-16 text-center md:mt-20"
         >
           <p
-            className="font-display text-[11px] italic"
+            className="font-display text-[15px] italic"
             style={{
-              color: `${PAPER}32`,
+              color: theme.signature,
             }}
           >
             Take your time. Choose well.

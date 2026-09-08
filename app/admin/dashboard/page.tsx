@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import {
   getDashboardStats,
   getDashboardCharts,
@@ -6,6 +7,7 @@ import {
   getNeedsAttention,
 } from "@/services/dashboard.service";
 import { leadsTrend } from "@/data/dashboard";
+
 import { KpiCard } from "@/components/features/dashboard/kpi-card";
 import { SalesTrendChart } from "@/components/features/dashboard/sales-trend-chart";
 import { InventoryDonut } from "@/components/features/dashboard/inventory-donut";
@@ -22,6 +24,7 @@ export const metadata: Metadata = {
 
 function timeOfDayGreeting() {
   const hour = new Date().getHours();
+
   if (hour < 12) return "Good morning";
   if (hour < 17) return "Good afternoon";
   return "Good evening";
@@ -75,40 +78,57 @@ export default async function AdminDashboardPage() {
   ];
 
   return (
-    <div className="container-page py-8">
-      <div>
+    <div className="container px-10 py-6 sm:py-8">
+      {/* Header */}
+      <section>
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-accent">
+          AutoStock / Overview
+        </p>
+
         <h1 className="text-h1 text-ink">
           {timeOfDayGreeting()}, Admin
         </h1>
-        <p className="text-small mt-1 text-ink-soft">{stats.greetingSummary}</p>
-      </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <p className="text-small mt-1 text-ink-soft">
+          {stats.greetingSummary}
+        </p>
+      </section>
+
+      {/* KPI overview */}
+      <section
+        aria-label="Dashboard metrics"
+        className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6"
+      >
         {kpis.map((kpi) => (
           <KpiCard key={kpi.label} {...kpi} />
         ))}
-      </div>
+      </section>
 
-      <div className="mt-6 grid gap-5 lg:grid-cols-2">
+      {/* Revenue + inventory */}
+      <section className="mt-5 grid gap-5 lg:grid-cols-2">
         <SalesTrendChart data={charts.monthlyRevenue} />
         <InventoryDonut data={charts.inventoryDistribution} />
-      </div>
+      </section>
 
-      <div className="mt-5 grid gap-5 lg:grid-cols-[2fr_1fr]">
+      {/* Leads + inventory health */}
+      <section className="mt-5 grid gap-5 lg:grid-cols-[2fr_1fr]">
         <LeadsTrendChart data={leadsTrend} />
         <InventoryHealth stats={stats} />
-      </div>
+      </section>
 
-      <div className="mt-5 grid gap-5 lg:grid-cols-3">
+      {/* Activity + quick actions */}
+      <section className="mt-5 grid gap-5 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <RecentActivityList items={activity} />
         </div>
-        <QuickActions />
-      </div>
 
-      <div className="mt-5">
+        <QuickActions />
+      </section>
+
+      {/* Attention */}
+      <section className="mt-5">
         <NeedsAttentionPanel items={attention} />
-      </div>
+      </section>
     </div>
   );
 }
