@@ -31,33 +31,18 @@ const SOCIALS = [
 
 const COLUMNS = [
   {
-    heading: "Quick Links",
+    heading: "Explore",
     links: [
       { label: "Home", href: "/" },
-      { label: "New Cars", href: "/inventory?condition=new" },
-      { label: "Used Cars", href: "/inventory?condition=used" },
-      { label: "Sell Your Car", href: "/sell" },
-      { label: "Contact Us", href: "/contact" },
-    ],
-  },
-  {
-    heading: "Our Services",
-    links: [
-      { label: "Car Inspection", href: "/standard" },
-      { label: "Financing", href: "/financing" },
-      { label: "Insurance", href: "/insurance" },
-      { label: "Warranty", href: "/warranty" },
-      { label: "After Sales", href: "/after-sales" },
+      { label: "Browse Inventory", href: "/inventory" },
+      { label: "Sell Your Car", href: "/sell-your-car" },
     ],
   },
   {
     heading: "Company",
     links: [
       { label: "About Us", href: "/about" },
-      { label: "Careers", href: "/careers" },
-      { label: "Journal", href: "/journal" },
-      { label: "Privacy Policy", href: "/privacy" },
-      { label: "Terms & Conditions", href: "/terms" },
+      { label: "Contact Us", href: "/contact" },
     ],
   },
 ];
@@ -73,7 +58,7 @@ export function SiteFooter() {
       }}
     >
       <div className="mx-auto max-w-[1920px] px-6 pb-10 pt-20 sm:px-9 lg:px-14 xl:px-20">
-        <div className="grid grid-cols-1 gap-y-14 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr_1.2fr] lg:gap-x-10">
+        <div className="grid grid-cols-1 gap-y-14 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr] lg:gap-x-10">
           {/* Brand */}
           <div>
             <Link href="/" className="flex items-center gap-2.5">

@@ -1,11 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, ChevronRight } from "lucide-react";
+import { ArrowUpRight, ChevronRight, Car } from "lucide-react";
 
-import { vehicleBrands } from "@/config/site";
 import { fadeUp, staggerContainer, viewport } from "@/lib/motion";
 import { ACCENT, CHARCOAL, PAPER, GOLD, LINE } from "../ui/tokens";
 
@@ -27,12 +27,44 @@ function brandLogo(brand: string) {
   return `/images/brands/${brandSlug(brand)}.png`;
 }
 
+/**
+ * Not every brand in inventory has a logo file on disk. React state (not an
+ * imperative `img.src` mutation) tracks the failure, so a 404'd logo stays
+ * failed across re-renders instead of the component resetting `src` back to
+ * the broken URL and looping onError forever.
+ */
+function BrandLogo({ brand }: { brand: string }) {
+  const [failed, setFailed] = useState(false);
+
+  if (failed) {
+    return <Car className="h-6 w-6 opacity-70" style={{ color: GOLD }} aria-hidden="true" />;
+  }
+
+  return (
+    <Image
+      src={brandLogo(brand)}
+      alt={`${brand} logo`}
+      width={48}
+      height={48}
+      loading="lazy"
+      className="h-10 w-10 object-contain opacity-80 transition-all duration-500 group-hover:opacity-100"
+      onError={() => setFailed(true)}
+    />
+  );
+}
+
 /* -------------------------------------------------------------------------- */
 /* Component                                                                  */
 /* -------------------------------------------------------------------------- */
 
-export function BrowseByBrand() {
+export function BrowseByBrand({
+  brands,
+}: {
+  brands: { brand: string; count: number }[];
+}) {
   const reducedMotion = useReducedMotion();
+
+  if (brands.length === 0) return null;
 
   return (
     <section
@@ -138,7 +170,7 @@ export function BrowseByBrand() {
           }}
         >
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-            {vehicleBrands.map((brand, index) => (
+            {brands.map(({ brand, count }, index) => (
               <motion.div
                 key={brand}
                 variants={reducedMotion ? undefined : fadeUp}
@@ -227,26 +259,7 @@ export function BrowseByBrand() {
                         backgroundColor: `${ACCENT}14`,
                       }}
                     >
-                      <Image
-                        src={brandLogo(brand)}
-                        alt={`${brand} logo`}
-                        width={48}
-                        height={48}
-                        loading="lazy"
-                        className="
-        h-10
-        w-10
-        object-contain
-        opacity-80
-        transition-all
-        duration-500
-        group-hover:opacity-100
-      "
-                        onError={(event) => {
-                          event.currentTarget.onerror = null;
-                          event.currentTarget.src = "/images/brands/car.png";
-                        }}
-                      />
+                      <BrandLogo brand={brand} />
                     </div>
 
                     <div className="min-w-0">
@@ -275,7 +288,7 @@ export function BrowseByBrand() {
       "
                         style={{ color: `${PAPER}32` }}
                       >
-                        Explore
+                        {count} in stock
                       </span>
                     </div>
                   </div>
@@ -323,7 +336,7 @@ export function BrowseByBrand() {
               className="text-[9px] uppercase tracking-[0.18em]"
               style={{ color: `${PAPER}30` }}
             >
-              {String(vehicleBrands.length).padStart(2, "0")} manufacturers
+              {String(brands.length).padStart(2, "0")} manufacturers
             </span>
           </div>
 

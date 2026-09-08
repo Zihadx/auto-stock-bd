@@ -50,21 +50,6 @@ function alpha(color: string, opacity: number) {
   return color;
 }
 
-const stats = [
-  {
-    value: "1,200+",
-    label: "Vehicles inspected",
-  },
-  {
-    value: "11 Days",
-    label: "Average time to sell",
-  },
-  {
-    value: "4.9 / 5",
-    label: "Owner satisfaction",
-  },
-];
-
 const reasons = [
   {
     number: "01",
@@ -226,7 +211,26 @@ function useScrollSpy(count: number) {
   };
 }
 
-export default function WhyChooseUs() {
+export default function WhyChooseUs({
+  stats: inventoryStats,
+}: {
+  stats: { totalAvailable: number; brandCount: number };
+}) {
+  const stats = [
+    {
+      value: String(inventoryStats.totalAvailable),
+      label: "Vehicles currently listed",
+    },
+    {
+      value: String(inventoryStats.brandCount),
+      label: "Manufacturers represented",
+    },
+    {
+      value: "82-Point",
+      label: "Inspection standard",
+    },
+  ];
+
   const {
     active,
     containerRef,

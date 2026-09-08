@@ -93,6 +93,34 @@ export async function getFeaturedVehicles(limit = 6): Promise<Vehicle[]> {
   return delay(vehicleRecords.filter((v) => v.featured).slice(0, limit));
 }
 
+/**
+ * Brands actually represented in current inventory, with a live count each,
+ * sorted by how many vehicles are available. Used anywhere the site invites
+ * someone to "browse by brand" — so it never promises a brand (e.g. a
+ * marque with only a logo asset on disk) that isn't actually in stock.
+ */
+export async function getBrandCounts(): Promise<{ brand: string; count: number }[]> {
+  const counts = new Map<string, number>();
+  for (const v of vehicleRecords) {
+    if (v.status !== "available") continue;
+    counts.set(v.brand, (counts.get(v.brand) ?? 0) + 1);
+  }
+  const list = Array.from(counts.entries())
+    .map(([brand, count]) => ({ brand, count }))
+    .sort((a, b) => b.count - a.count || a.brand.localeCompare(b.brand));
+  return delay(list);
+}
+
+/** Real, computable inventory-wide numbers — no invented stats. */
+export async function getInventoryStats(): Promise<{
+  totalAvailable: number;
+  brandCount: number;
+}> {
+  const available = vehicleRecords.filter((v) => v.status === "available");
+  const brandCount = new Set(available.map((v) => v.brand)).size;
+  return delay({ totalAvailable: available.length, brandCount });
+}
+
 export async function getRecentlyAddedVehicles(limit = 8): Promise<Vehicle[]> {
   const sorted = sortVehicles(vehicleRecords, "newest");
   return delay(sorted.slice(0, limit));

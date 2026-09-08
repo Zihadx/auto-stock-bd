@@ -7,7 +7,7 @@ import { motion, useReducedMotion } from "framer-motion";
 const ACCENT = "#8C3A34"; // oxblood — leather, coachbuilding, not tech-teal
 const HAIRLINE = "#8C7355"; // aged brass
 
-export function Hero() {
+export function Hero({ vehicleCount }: { vehicleCount: number }) {
   const reducedMotion = useReducedMotion();
 
   return (
@@ -23,10 +23,10 @@ export function Hero() {
           loop
           playsInline
           preload="metadata"
-          poster="/images/hero-poster.jpg"
+          poster="/images/hero-image.png"
           className="h-full w-full object-cover"
         >
-          <source src="/videos/hero-loop.webm" type="video/webm" />
+          <source src="/videos/hero-loop.mp4" type="video/mp4" />
           <source src="/videos/hero-loop-002.mp4" type="video/mp4" />
         </video>
 
@@ -148,7 +148,7 @@ export function Hero() {
 
           <div className="hidden items-baseline gap-2 md:flex">
             <span className="text-[15px]" style={{ color: ACCENT, fontFamily: "Georgia, serif" }}>
-              214
+              {vehicleCount}
             </span>
             <span className="text-[12px] italic text-[#F5F1EA]/35" style={{ fontFamily: "Georgia, serif" }}>
               motorcars currently in inventory
