@@ -734,7 +734,7 @@ export default function HotSelling() {
 
   return (
     <motion.section
-      className={`${cinzel.variable} ${inter.variable} relative overflow-hidden py-20 sm:py-24 lg:py-28`}
+      className={`${cinzel.variable} ${inter.variable} relative overflow-hidden py-20 sm:py-24 lg:py-28 px-4`}
       style={{
         backgroundColor: theme.sectionBg,
         color: theme.body,

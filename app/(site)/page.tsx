@@ -1,4 +1,3 @@
-import FeaturedCollections from "@/components/features/hot-selling";
 import { BrowseByBrand } from "@/components/features/browse-by-brand";
 
 import { RecentlyAdded } from "@/components/features/recently-added";
@@ -14,6 +13,7 @@ import { Hero } from "@/components/features/hero";
 import AutoShowcase from "@/components/features/AutoShowcase";
 import WhyChooseUs from "@/components/features/why-choose-us";
 import { getBrandCounts, getInventoryStats } from "@/services/vehicle.service";
+import HotSelling from "@/components/features/hot-selling";
 
 export default async function HomePage() {
   const [brandCounts, inventoryStats] = await Promise.all([
@@ -35,7 +35,7 @@ export default async function HomePage() {
 
       <AutoShowcase />
 
-      <FeaturedCollections />
+      <HotSelling />
       <BrowseByBrand brands={brandCounts} />
       <WhyChooseUs stats={inventoryStats} />
       <RecentlyAdded />

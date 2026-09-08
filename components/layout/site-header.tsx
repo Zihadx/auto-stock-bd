@@ -171,7 +171,7 @@ function useAccountLinks(): AccountLink[] {
     { href: "/account", label: "Account", desc: "", icon: User, accent: "" },
     { href: "/settings", label: "Settings", desc: "", icon: Settings, accent: "" },
     {
-      href: "/agent-dashboard",
+      href: "/admin/dashboard",
       label: "Agent Dashboard",
       desc: "Manage your listings",
       icon: LayoutDashboard,

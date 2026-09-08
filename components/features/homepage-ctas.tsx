@@ -473,7 +473,7 @@ export function FinalCta() {
         />
       </div>
 
-      <div className="container-page relative py-24 md:py-32 lg:py-40">
+      <div className="container px-4 mx-auto relative py-24 md:py-32 lg:py-40">
         {/* Intro */}
         <motion.div
           variants={premiumStagger}

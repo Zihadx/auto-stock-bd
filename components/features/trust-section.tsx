@@ -184,7 +184,7 @@ export default function BenefitsStrip() {
 
   return (
     <section
-      className="w-full py-16"
+      className="w-full px-4 py-16"
       style={{
         backgroundColor:
           sectionBackground,

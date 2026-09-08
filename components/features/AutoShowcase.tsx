@@ -163,7 +163,7 @@ export default function AutoShowcase() {
 
   return (
     <motion.section
-      className="relative overflow-hidden py-20 sm:py-24 lg:py-28"
+      className="relative overflow-hidden py-20 px-4 sm:py-24 lg:py-28"
       style={{ backgroundColor: theme.bg, color: theme.text }}
       variants={reducedMotion ? undefined : container}
       initial={reducedMotion ? undefined : "hidden"}

@@ -289,7 +289,7 @@ export default function WhyChooseUs({
         }}
       />
 
-      <div className="container mx-auto px-5">
+      <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}

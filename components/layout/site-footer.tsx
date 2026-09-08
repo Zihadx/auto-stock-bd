@@ -200,7 +200,7 @@ export function SiteFooter() {
         }}
       />
 
-      <div className="container mx-auto px-6 pb-10 pt-20">
+      <div className="container mx-auto px-5 pb-10 pt-20 py-20">
         {/* ========================================================
             MAIN GRID
         ========================================================= */}

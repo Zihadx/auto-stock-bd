@@ -98,7 +98,7 @@ export function RecentlyAdded() {
 
   return (
     <section
-      className="relative overflow-hidden py-20 sm:py-24 lg:py-28"
+      className="relative overflow-hidden px-4 py-20 sm:py-24 lg:py-28"
       style={{
         backgroundColor: sectionBackground,
         color: primaryText,
@@ -113,7 +113,6 @@ export function RecentlyAdded() {
         }}
       />
 
-      {/* Content */}
       <motion.div
         variants={staggerContainer(0.06)}
         initial="hidden"
@@ -121,7 +120,7 @@ export function RecentlyAdded() {
         viewport={viewport}
         className="container relative mx-auto"
       >
-        {/* Section header */}
+        {/* Section heading */}
         <motion.div
           variants={fadeUp}
           className="flex flex-wrap items-end justify-between gap-6"
@@ -139,7 +138,8 @@ export function RecentlyAdded() {
               <span
                 className="italic"
                 style={{
-                  fontFamily: "var(--font-display, Georgia), serif",
+                  fontFamily:
+                    "var(--font-display, Georgia), serif",
                   fontSize: "13px",
                   color: eyebrowColor,
                 }}
@@ -151,7 +151,8 @@ export function RecentlyAdded() {
             <h2
               className="mt-5 max-w-lg text-2xl font-normal leading-[1.2] tracking-[-0.03em] sm:text-3xl"
               style={{
-                fontFamily: "var(--font-display, Georgia), serif",
+                fontFamily:
+                  "var(--font-display, Georgia), serif",
                 color: primaryText,
               }}
             >
@@ -164,37 +165,22 @@ export function RecentlyAdded() {
                 color: mutedText,
               }}
             >
-              Four of the latest arrivals — each run through our 82-point
-              inspection before it ever reached the floor.
+              Four of the latest arrivals — each run through our
+              82-point inspection before it ever reached the floor.
             </p>
           </div>
 
-          {/* Desktop link */}
+          {/* Desktop inventory link */}
           <Link
             href="/inventory?sort=newest"
             className="group hidden shrink-0 sm:block"
           >
             <span
-              className="
-                relative
-                text-[12px]
-                italic
-                transition-colors
-                duration-300
-                group-hover:text-[var(--accent)]
-                after:absolute
-                after:-bottom-1
-                after:left-0
-                after:h-px
-                after:w-0
-                after:bg-[var(--accent)]
-                after:transition-all
-                after:duration-300
-                group-hover:after:w-full
-              "
+              className="relative text-[12px] italic transition-colors duration-300 after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:transition-all after:duration-300 group-hover:after:w-full"
               style={
                 {
-                  fontFamily: "var(--font-display, Georgia), serif",
+                  fontFamily:
+                    "var(--font-display, Georgia), serif",
                   color: isLight
                     ? "rgba(23,21,18,0.68)"
                     : `${PAPER}80`,
@@ -207,16 +193,10 @@ export function RecentlyAdded() {
           </Link>
         </motion.div>
 
-        {/* Vehicle plates */}
+        {/* Vehicle grid */}
         <motion.div
           variants={staggerContainer(0.08)}
-          className="mt-12 grid grid-cols-1 gap-px overflow-hidden sm:grid-cols-2 lg:grid-cols-4"
-          style={{
-            backgroundColor: gridBorder,
-            boxShadow: isLight
-              ? "0 18px 60px rgba(23,21,18,0.06)"
-              : "none",
-          }}
+          className="mt-12 grid grid-cols-1 gap-4 overflow-hidden sm:grid-cols-2 lg:grid-cols-4"
         >
           {recentlyAdded.map((vehicle, i) => {
             const name = `${vehicle.brand} ${vehicle.model}${
@@ -242,7 +222,6 @@ export function RecentlyAdded() {
             })();
 
             const price = `$${vehicle.price.toLocaleString()}`;
-
             const mileage = `${vehicle.mileageKm.toLocaleString()} km`;
 
             return (
@@ -253,85 +232,101 @@ export function RecentlyAdded() {
               >
                 <Link
                   href={`/inventory/${vehicle.slug}`}
-                  className="group block h-full"
+                  className="group block h-full overflow-hidden border-0 shadow-none outline-none"
                   style={{
                     backgroundColor: cardBackground,
                     color: primaryText,
                   }}
                 >
-                  {/* Photograph */}
+                  {/* Image */}
                   <div className="relative aspect-[4/3] overflow-hidden px-4 pt-4 sm:px-5 sm:pt-5">
                     <div className="relative h-full w-full overflow-hidden">
                       <Image
                         src={image}
                         alt={name}
                         fill
-                        sizes="
-                          (max-width: 640px) 100vw,
-                          (max-width: 1024px) 50vw,
-                          25vw
-                        "
-                        className="
-                          object-cover
-                          transition-transform
-                          duration-[900ms]
-                          ease-out
-                          group-hover:scale-[1.03]
-                        "
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.035]"
                       />
 
-                      {/* Frame corners */}
-                      {[
-                        "left-0 top-0 border-l border-t",
-                        "right-0 top-0 border-r border-t",
-                        "bottom-0 left-0 border-b border-l",
-                        "bottom-0 right-0 border-b border-r",
-                      ].map((pos) => (
-                        <span
-                          key={pos}
-                          aria-hidden="true"
-                          className={`
-                            pointer-events-none
-                            absolute
-                            h-3
-                            w-3
-                            opacity-0
-                            transition-opacity
-                            duration-500
-                            group-hover:opacity-100
-                            ${pos}
-                          `}
-                          style={{
-                            borderColor: GOLD,
-                          }}
-                        />
-                      ))}
+                      {/* Cinematic hover wash */}
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                        style={{
+                          background:
+                            "linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.18) 100%)",
+                        }}
+                      />
+
+                      {/* Top left corner */}
+                      <span
+                        aria-hidden="true"
+                        className="absolute left-0 top-0 h-5 w-5 border-l border-t transition-all duration-500 group-hover:h-7 group-hover:w-7"
+                        style={{
+                          borderColor: `${GOLD}B0`,
+                        }}
+                      />
+
+                      {/* Top right corner */}
+                      <span
+                        aria-hidden="true"
+                        className="absolute right-0 top-0 h-5 w-5 border-r border-t transition-all duration-500 group-hover:h-7 group-hover:w-7"
+                        style={{
+                          borderColor: `${GOLD}B0`,
+                        }}
+                      />
+
+                      {/* Bottom left corner */}
+                      <span
+                        aria-hidden="true"
+                        className="absolute bottom-0 left-0 h-5 w-5 border-b border-l transition-all duration-500 group-hover:h-7 group-hover:w-7"
+                        style={{
+                          borderColor: `${GOLD}B0`,
+                        }}
+                      />
+
+                      {/* Bottom right corner */}
+                      <span
+                        aria-hidden="true"
+                        className="absolute bottom-0 right-0 h-5 w-5 border-b border-r transition-all duration-500 group-hover:h-7 group-hover:w-7"
+                        style={{
+                          borderColor: `${GOLD}B0`,
+                        }}
+                      />
+
+                      {/* New arrival badge */}
+                      <div
+                        className="absolute left-3 top-3 px-2.5 py-1 text-[9px] uppercase tracking-[0.18em]"
+                        style={{
+                          backgroundColor: isLight
+                            ? "rgba(255,255,255,0.88)"
+                            : "rgba(20,18,17,0.78)",
+                          color: plateColor,
+                          backdropFilter: "blur(8px)",
+                        }}
+                      >
+                        New arrival
+                      </div>
                     </div>
                   </div>
 
-                  {/* Caption */}
-                  <div className="px-4 pb-6 pt-4 sm:px-5">
-                    {/* Plate + intake */}
-                    <div className="flex items-baseline justify-between gap-3">
+                  {/* Card content */}
+                  <div className="px-4 pb-6 pt-5 sm:px-5">
+                    {/* Acquisition metadata */}
+                    <div className="flex items-center justify-between gap-3">
                       <span
-                        className="italic"
+                        className="text-[9px] uppercase tracking-[0.2em]"
                         style={{
-                          fontFamily:
-                            "var(--font-display, Georgia), serif",
-                          fontSize: "12px",
-                          letterSpacing: "0.04em",
-                          color: plateColor,
+                          color: listingColor,
                         }}
                       >
-                        Plate {PLATE_NUMERALS[i]}
+                        Recently acquired
                       </span>
 
                       <span
-                        className="italic"
+                        className="text-[10px]"
                         style={{
-                          fontFamily:
-                            "var(--font-display, Georgia), serif",
-                          fontSize: "10.5px",
                           color: intakeColor,
                         }}
                       >
@@ -341,7 +336,7 @@ export function RecentlyAdded() {
 
                     {/* Vehicle name */}
                     <h3
-                      className="mt-2 text-[15px] font-normal leading-5 tracking-[-0.01em]"
+                      className="mt-3 line-clamp-2 min-h-[3.25rem] text-[19px] font-normal leading-[1.15] tracking-[-0.025em] transition-colors duration-300"
                       style={{
                         fontFamily:
                           "var(--font-display, Georgia), serif",
@@ -351,80 +346,89 @@ export function RecentlyAdded() {
                       {name}
                     </h3>
 
-                    {/* Vehicle metadata */}
+                    {/* Metadata */}
                     <div
-                      className="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-[10px]"
+                      className="mt-4 flex items-center gap-3 text-[10px]"
                       style={{
                         color: metadataColor,
                       }}
                     >
-                      <span className="flex items-center gap-1.5">
+                      <span className="inline-flex items-center gap-1.5">
                         <CalendarDays
-                          size={11}
-                          strokeWidth={1.3}
+                          size={12}
+                          strokeWidth={1.4}
+                          aria-hidden="true"
                         />
                         {vehicle.year}
                       </span>
 
-                      <span aria-hidden="true">·</span>
+                      <span
+                        aria-hidden="true"
+                        className="h-3 w-px"
+                        style={{
+                          backgroundColor: gridBorder,
+                        }}
+                      />
 
-                      <span className="flex items-center gap-1.5">
+                      <span className="inline-flex items-center gap-1.5">
                         <Gauge
-                          size={11}
-                          strokeWidth={1.3}
+                          size={12}
+                          strokeWidth={1.4}
+                          aria-hidden="true"
                         />
                         {mileage}
                       </span>
-
-                      <span aria-hidden="true">·</span>
-
-                      <span>{vehicle.transmission}</span>
                     </div>
 
-                    {/* Price + listing */}
+                    {/* Divider */}
                     <div
-                      className="mt-4 flex items-baseline justify-between gap-3 border-t pt-4"
+                      className="mt-5 h-px w-full"
                       style={{
-                        borderColor: cardBorder,
+                        backgroundColor: cardBorder,
                       }}
-                    >
+                    />
+
+                    {/* Price + CTA */}
+                    <div className="mt-4 flex items-end justify-between gap-4">
+                      <div>
+                        <span
+                          className="block text-[9px] uppercase tracking-[0.18em]"
+                          style={{
+                            color: listingColor,
+                          }}
+                        >
+                          Asking
+                        </span>
+
+                        <span
+                          className="mt-1 block text-[18px] font-medium tracking-[-0.02em]"
+                          style={{
+                            color: primaryText,
+                          }}
+                        >
+                          {price}
+                        </span>
+                      </div>
+
                       <span
-                        className="italic tabular-nums"
+                        className="relative pb-1 text-[10px] italic transition-colors duration-300"
                         style={{
                           fontFamily:
                             "var(--font-display, Georgia), serif",
-                          fontSize: "14px",
-                          color: ACCENT,
+                          color: isLight
+                            ? "rgba(23,21,18,0.68)"
+                            : `${PAPER}80`,
                         }}
                       >
-                        {price}
-                      </span>
-
-                      <span
-                        className="
-                          relative
-                          text-[10px]
-                          transition-colors
-                          duration-300
-                          group-hover:text-[var(--accent)]
-                          after:absolute
-                          after:-bottom-1
-                          after:left-0
-                          after:h-px
-                          after:w-0
-                          after:bg-[var(--accent)]
-                          after:transition-all
-                          after:duration-300
-                          group-hover:after:w-full
-                        "
-                        style={
-                          {
-                            color: listingColor,
-                            "--accent": GOLD,
-                          } as React.CSSProperties
-                        }
-                      >
                         View listing
+
+                        <span
+                          aria-hidden="true"
+                          className="absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
+                          style={{
+                            backgroundColor: GOLD,
+                          }}
+                        />
                       </span>
                     </div>
                   </div>
@@ -434,40 +438,21 @@ export function RecentlyAdded() {
           })}
         </motion.div>
 
-        {/* Mobile link */}
+        {/* Mobile inventory link */}
         <div className="mt-8 text-center sm:hidden">
           <Link
             href="/inventory?sort=newest"
             className="group inline-block"
           >
             <span
-              className="
-                relative
-                italic
-                transition-colors
-                duration-300
-                group-hover:text-[var(--accent)]
-                after:absolute
-                after:-bottom-1
-                after:left-0
-                after:h-px
-                after:w-0
-                after:bg-[var(--accent)]
-                after:transition-all
-                after:duration-300
-                group-hover:after:w-full
-              "
-              style={
-                {
-                  fontFamily:
-                    "var(--font-display, Georgia), serif",
-                  fontSize: "13px",
-                  color: isLight
-                    ? "rgba(23,21,18,0.68)"
-                    : `${PAPER}80`,
-                  "--accent": GOLD,
-                } as React.CSSProperties
-              }
+              className="relative text-[12px] italic after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:transition-all after:duration-300 group-hover:after:w-full"
+              style={{
+                fontFamily:
+                  "var(--font-display, Georgia), serif",
+                color: isLight
+                  ? "rgba(23,21,18,0.68)"
+                  : `${PAPER}80`,
+              }}
             >
               View the full inventory
             </span>

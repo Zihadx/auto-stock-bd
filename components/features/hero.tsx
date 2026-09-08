@@ -139,7 +139,7 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
       </div>
 
       {/* Frame */}
-      <div className="relative z-10 container mx-auto flex min-h-[100svh] flex-col px-5 py-6 sm:px-7 sm:py-7 lg:px-8">
+      <div className="relative z-10 container mx-auto flex min-h-[100svh] flex-col px-5 py-16 lg:px-8">
         <div className="flex flex-1 items-center py-10 sm:py-14 lg:py-0">
           <div className="flex w-full flex-col gap-12 lg:flex-row lg:items-center lg:justify-between lg:gap-12 xl:gap-20">
             {/* Editorial */}
