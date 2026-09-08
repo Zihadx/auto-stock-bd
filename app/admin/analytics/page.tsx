@@ -35,7 +35,7 @@ export default async function AdminAnalyticsPage({
   );
 
   return (
-    <div className="container-page py-8">
+    <div className="container px-6 mx-auto py-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-h1 text-ink">Analytics</h1>

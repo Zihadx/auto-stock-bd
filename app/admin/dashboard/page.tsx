@@ -78,7 +78,9 @@ export default async function AdminDashboardPage() {
   ];
 
   return (
-    <div className="container px-10 py-6 sm:py-8">
+    <div
+      className="container px-6 mx-auto py-6 sm:px-8 sm:py-8 lg:px-10"
+    >
       {/* Header */}
       <section>
         <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-accent">
@@ -125,7 +127,7 @@ export default async function AdminDashboardPage() {
         <QuickActions />
       </section>
 
-      {/* Attention */}
+      {/* Needs attention */}
       <section className="mt-5">
         <NeedsAttentionPanel items={attention} />
       </section>

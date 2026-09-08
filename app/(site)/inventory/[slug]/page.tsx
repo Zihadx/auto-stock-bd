@@ -45,7 +45,7 @@ export default async function VehicleDetailPage({
   if (!vehicle) notFound();
 
   return (
-    <div className="container-page py-8 md:py-10">
+    <div className="container px-6 mx-auto py-20 md:py-40">
       <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-ink-faint">
         <Link href="/" className="hover:text-ink">
           Home

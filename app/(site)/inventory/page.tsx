@@ -26,7 +26,7 @@ export default async function InventoryPage({
   );
 
   return (
-    <div className="container-page py-10 md:py-14">
+    <div className="container px-6 mx-auto py-20 md:py-40">
       <div className="flex flex-col gap-1">
         <h1 className="text-h1 text-ink">Inventory</h1>
         <p className="text-small text-ink-soft">

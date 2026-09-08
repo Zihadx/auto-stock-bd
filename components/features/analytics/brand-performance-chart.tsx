@@ -1,50 +1,118 @@
 "use client";
 
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+
 import { ChartCard } from "@/components/ui/chart-card";
+import { ACCENT } from "@/components/ui/tokens";
+
+
+type BrandPerformancePoint = {
+  brand: string;
+  unitsSold: number;
+  avgDaysToSell: number;
+};
 
 export function BrandPerformanceChart({
   data,
 }: {
-  data: { brand: string; unitsSold: number; avgDaysToSell: number }[];
+  data: BrandPerformancePoint[];
 }) {
   return (
-    <ChartCard title="Brand performance" description="Units sold, last 8 months">
+    <ChartCard
+      title="Brand performance"
+      description="Units sold, last 8 months"
+    >
       <div className="h-72 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
             layout="vertical"
-            margin={{ top: 4, right: 16, left: 8, bottom: 0 }}
+            margin={{
+              top: 8,
+              right: 16,
+              left: 4,
+              bottom: 0,
+            }}
+            barCategoryGap="28%"
           >
-            <CartesianGrid horizontal={false} stroke="var(--color-line)" />
+            <CartesianGrid
+              horizontal={false}
+              stroke="var(--color-chart-line)"
+              strokeDasharray="3 5"
+            />
+
             <XAxis
               type="number"
               tickLine={false}
               axisLine={false}
-              tick={{ fontSize: 11, fill: "var(--color-ink-faint)" }}
+              tickMargin={8}
+              allowDecimals={false}
+              tick={{
+                fontSize: 11,
+              }}
+              className="fill-[var(--color-chart-text)]"
             />
+
             <YAxis
               type="category"
               dataKey="brand"
               tickLine={false}
               axisLine={false}
-              width={80}
-              tick={{ fontSize: 12, fill: "var(--color-ink-soft)" }}
+              width={82}
+              tickMargin={8}
+              tick={{
+                fontSize: 12,
+              }}
+              className="fill-[var(--color-ink-soft)]"
             />
+
             <Tooltip
+              cursor={{
+                fill: "var(--color-ink)",
+                fillOpacity: 0.035,
+              }}
               formatter={(value, name) =>
-                name === "unitsSold" ? [`${value} units`, "Sold"] : [`${value} days`, "Avg. to sell"]
+                name === "unitsSold"
+                  ? [`${Number(value)} units`, "Sold"]
+                  : [`${Number(value)} days`, "Avg. to sell"]
               }
               contentStyle={{
-                borderRadius: 6,
+                borderRadius: 10,
                 backgroundColor: "var(--color-paper-raised)",
-                borderColor: "var(--color-line)",
+                border: "1px solid var(--color-line)",
                 color: "var(--color-ink)",
                 fontSize: 13,
+                padding: "10px 12px",
+                boxShadow:
+                  "0 12px 32px rgba(0, 0, 0, 0.12)",
+              }}
+              labelStyle={{
+                color: "var(--color-ink-faint)",
+                fontSize: 11,
+                marginBottom: 5,
+              }}
+              itemStyle={{
+                color: ACCENT,
+                fontWeight: 600,
               }}
             />
-            <Bar dataKey="unitsSold" fill="var(--color-brass)" radius={[0, 3, 3, 0]} maxBarSize={18} />
+
+            <Bar
+              dataKey="unitsSold"
+              fill={ACCENT}
+              radius={[0, 5, 5, 0]}
+              maxBarSize={20}
+              animationDuration={700}
+              animationEasing="ease-out"
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>

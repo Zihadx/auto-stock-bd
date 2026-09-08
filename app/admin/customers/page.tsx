@@ -28,7 +28,7 @@ export default async function AdminCustomersPage({
     : resolvedParams.status ?? "";
 
   return (
-    <div className="container-page py-8">
+    <div className="container px-x m-auto py-8">
       <div>
         <h1 className="text-h1 text-ink">Customers</h1>
         <p className="mt-1 text-sm text-ink-soft">

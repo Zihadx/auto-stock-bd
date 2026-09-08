@@ -15,7 +15,7 @@ export function VehicleGallery({ images, vehicleName }: { images: VehicleImage[]
 
   return (
     <div>
-      <div className="relative aspect-[4/3] overflow-hidden rounded-md border border-line bg-ink/5 sm:aspect-[16/10]">
+      <div className="relative aspect-video overflow-hidden rounded-md border border-line bg-ink/5">
         <Image
           src={active.url}
           alt={active.alt}

@@ -1,0 +1,12 @@
+import { SettingsPage } from "@/components/features/admin/settings-page";
+import type { Metadata } from "next";
+
+
+
+export const metadata: Metadata = {
+  title: "Settings",
+};
+
+export default function AdminSettingsPage() {
+  return <SettingsPage />;
+}
