@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { fadeUp, staggerContainer, viewport } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-/** Wraps a set of direct children; each child fades/rises in, staggered, on scroll into view. */
 export function RevealList({
   children,
   className,
@@ -20,14 +19,13 @@ export function RevealList({
       initial="hidden"
       whileInView="visible"
       viewport={viewport}
-      className={className}
+      className={cn(className)}
     >
       {children}
     </motion.div>
   );
 }
 
-/** Single item to use inside RevealList — applies the shared fadeUp variant. */
 export function RevealItem({
   children,
   className,
@@ -36,7 +34,10 @@ export function RevealItem({
   className?: string;
 }) {
   return (
-    <motion.div variants={fadeUp} className={cn(className)}>
+    <motion.div
+      variants={fadeUp}
+      className={cn(className)}
+    >
       {children}
     </motion.div>
   );

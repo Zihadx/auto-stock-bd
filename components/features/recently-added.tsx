@@ -3,17 +3,19 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
-import { fadeUp, staggerContainer, viewport } from "@/lib/motion";
+import { CalendarDays, Gauge } from "lucide-react";
 
-// Swap for a real fetch/config source (e.g. @/config/site or a CMS query)
-// once wired up — kept local here so the section is drop-in runnable.
+import { fadeUp, staggerContainer, viewport } from "@/lib/motion";
+import { ACCENT, BURGUNDY, CHARCOAL, GOLD, PAPER, PINK } from "../ui/tokens";
+
+const PLATE_NUMERALS = ["I", "II", "III", "IV"] as const;
+
 const recentlyAdded = [
   {
     slug: "porsche-911-gt3",
     name: "Porsche 911 GT3",
     price: "$189,500",
-    addedLabel: "Added 2 days ago",
+    intake: "2 days ago",
     year: "2024",
     mileage: "1,200 mi",
     transmission: "PDK",
@@ -24,7 +26,7 @@ const recentlyAdded = [
     slug: "range-rover-sport-svr",
     name: "Range Rover Sport SVR",
     price: "$142,000",
-    addedLabel: "Added 3 days ago",
+    intake: "3 days ago",
     year: "2023",
     mileage: "8,400 mi",
     transmission: "Automatic",
@@ -35,7 +37,7 @@ const recentlyAdded = [
     slug: "lexus-lc-500",
     name: "Lexus LC 500",
     price: "$98,750",
-    addedLabel: "Added this week",
+    intake: "This week",
     year: "2023",
     mileage: "5,100 mi",
     transmission: "Automatic",
@@ -46,7 +48,7 @@ const recentlyAdded = [
     slug: "bmw-m5-competition",
     name: "BMW M5 Competition",
     price: "$116,200",
-    addedLabel: "Added this week",
+    intake: "This week",
     year: "2024",
     mileage: "2,600 mi",
     transmission: "Automatic",
@@ -57,91 +59,322 @@ const recentlyAdded = [
 
 export function RecentlyAdded() {
   return (
-    <section className="border-b border-line bg-paper">
+    <section
+      className="relative overflow-hidden py-20 sm:py-24 lg:py-28"
+      style={{ backgroundColor: CHARCOAL, color: PAPER }}
+    >
+      {/* ============================================================
+          AMBIENT BACKGROUND
+      ============================================================ */}
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(circle at 10% 6%, ${BURGUNDY}22 0%, transparent 32%),
+            radial-gradient(circle at 92% 90%, ${PINK}0D 0%, transparent 30%)
+          `,
+        }}
+      />
+
+      {/* ============================================================
+          CONTENT
+      ============================================================ */}
+
       <motion.div
-        variants={staggerContainer(0.03)}
+        variants={staggerContainer(0.06)}
         initial="hidden"
         whileInView="visible"
         viewport={viewport}
-        className="container-page py-16 md:py-24"
+        className="container relative mx-auto"
       >
-        <motion.div variants={fadeUp} className="flex flex-wrap items-end justify-between gap-6">
+        {/* ============================================================
+            SECTION HEADER
+        ============================================================ */}
+
+        <motion.div
+          variants={fadeUp}
+          className="flex flex-wrap items-end justify-between gap-6"
+        >
           <div>
-            <p className="text-label text-brass">Act 03 · Inventory</p>
-            <h2 className="text-h1 mt-3 text-ink">Recently added.</h2>
-            <p className="text-body mt-2 max-w-md text-ink-soft">
-              Fresh to the collection — verified and ready for viewing this
-              week.
+            <div className="flex items-center gap-3">
+              <span
+                aria-hidden="true"
+                className="h-px w-8 shrink-0"
+                style={{ backgroundColor: `${GOLD}80` }}
+              />
+
+              <span
+                className="italic"
+                style={{
+                  fontFamily: "var(--font-display, Georgia), serif",
+                  fontSize: "13px",
+                  color: `${PAPER}72`,
+                }}
+              >
+                Recent acquisitions
+              </span>
+            </div>
+
+            <h2
+              className="mt-5 max-w-lg text-2xl font-normal leading-[1.2] tracking-[-0.03em] sm:text-3xl"
+              style={{ fontFamily: "var(--font-display, Georgia), serif" }}
+            >
+              New to the floor, and already inspected.
+            </h2>
+
+            <p
+              className="mt-3 max-w-md text-[12px] leading-6"
+              style={{ color: `${PAPER}55` }}
+            >
+              Four of the latest arrivals — each run through our 82-point
+              inspection before it ever reached the floor.
             </p>
           </div>
 
+          {/* Desktop link */}
+
           <Link
             href="/inventory?sort=newest"
-            className="group hidden shrink-0 items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-ink-faint transition-colors duration-200 hover:text-brass sm:flex"
+            className="group hidden shrink-0 sm:block"
           >
-            View full inventory
-            <ArrowUpRight
-              size={14}
-              strokeWidth={1.5}
-              className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
+            <span
+              className="
+                relative
+                text-[12px]
+                italic
+                transition-colors
+                duration-300
+                group-hover:text-[var(--accent)]
+                after:absolute
+                after:-bottom-1
+                after:left-0
+                after:h-px
+                after:w-0
+                after:bg-[var(--accent)]
+                after:transition-all
+                after:duration-300
+                group-hover:after:w-full
+              "
+              style={
+                {
+                  fontFamily: "var(--font-display, Georgia), serif",
+                  color: `${PAPER}80`,
+                  "--accent": GOLD,
+                } as React.CSSProperties
+              }
+            >
+              View the full inventory
+            </span>
           </Link>
         </motion.div>
 
-        {/* Hairline table grid — dividers come from the container's bg-line
-            showing through the gap, not from individual card borders. */}
-        <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden border-t border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
-          {recentlyAdded.map((vehicle) => (
-            <motion.div key={vehicle.slug} variants={fadeUp}>
-              <Link href={`/inventory/${vehicle.slug}`} className="group block h-full bg-paper">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
-                    src={vehicle.image}
-                    alt={vehicle.name}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                  />
-                  <span className="absolute left-4 top-4 border border-brass/40 bg-paper/90 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-brass">
-                    {vehicle.addedLabel}
-                  </span>
+        {/* ============================================================
+            PLATES
+        ============================================================ */}
+
+        <motion.div
+          variants={staggerContainer(0.08)}
+          className="mt-12 grid grid-cols-1 gap-px overflow-hidden sm:grid-cols-2 lg:grid-cols-4"
+          style={{ backgroundColor: `${PAPER}0D` }}
+        >
+          {recentlyAdded.map((vehicle, i) => (
+            <motion.div key={vehicle.slug} variants={fadeUp} className="min-w-0">
+              <Link
+                href={`/inventory/${vehicle.slug}`}
+                className="group block h-full"
+                style={{ backgroundColor: CHARCOAL }}
+              >
+                {/* ==================================================
+                    PHOTOGRAPH
+                ================================================== */}
+
+                <div className="relative aspect-[4/3] overflow-hidden px-4 pt-4 sm:px-5 sm:pt-5">
+                  <div className="relative h-full w-full overflow-hidden">
+                    <Image
+                      src={vehicle.image}
+                      alt={vehicle.name}
+                      fill
+                      sizes="
+                        (max-width: 640px) 100vw,
+                        (max-width: 1024px) 50vw,
+                        25vw
+                      "
+                      className="
+                        object-cover
+                        transition-transform
+                        duration-[900ms]
+                        ease-out
+                        group-hover:scale-[1.03]
+                      "
+                    />
+
+                    {/* Frame corners — draw in on hover */}
+                    {[
+                      "left-0 top-0 border-l border-t",
+                      "right-0 top-0 border-r border-t",
+                      "bottom-0 left-0 border-b border-l",
+                      "bottom-0 right-0 border-b border-r",
+                    ].map((pos) => (
+                      <span
+                        key={pos}
+                        aria-hidden="true"
+                        className={`
+                          pointer-events-none
+                          absolute
+                          h-3
+                          w-3
+                          opacity-0
+                          transition-opacity
+                          duration-500
+                          group-hover:opacity-100
+                          ${pos}
+                        `}
+                        style={{ borderColor: GOLD }}
+                      />
+                    ))}
+                  </div>
                 </div>
 
-                <div className="px-5 py-5">
-                  <div className="flex items-start justify-between gap-3">
-                    <h3 className="text-base font-medium leading-snug text-ink">
-                      {vehicle.name}
-                    </h3>
-                    <span className="shrink-0 text-sm font-medium tabular-nums text-brass">
-                      {vehicle.price}
+                {/* ==================================================
+                    CAPTION
+                ================================================== */}
+
+                <div className="px-4 pb-6 pt-4 sm:px-5">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span
+                      className="italic"
+                      style={{
+                        fontFamily: "var(--font-display, Georgia), serif",
+                        fontSize: "12px",
+                        letterSpacing: "0.04em",
+                        color: `${GOLD}99`,
+                      }}
+                    >
+                      Plate {PLATE_NUMERALS[i]}
+                    </span>
+
+                    <span
+                      className="italic"
+                      style={{
+                        fontFamily: "var(--font-display, Georgia), serif",
+                        fontSize: "10.5px",
+                        color: `${PAPER}40`,
+                      }}
+                    >
+                      {vehicle.intake}
                     </span>
                   </div>
 
-                  <p className="mt-2 text-xs text-ink-soft">
-                    {vehicle.year} · {vehicle.mileage} · {vehicle.transmission}
-                  </p>
+                  <h3
+                    className="mt-2 text-[15px] font-normal leading-5 tracking-[-0.01em]"
+                    style={{ fontFamily: "var(--font-display, Georgia), serif" }}
+                  >
+                    {vehicle.name}
+                  </h3>
 
-                  <div className="mt-4 flex items-center gap-1.5 border-t border-line pt-4 text-[10px] font-medium uppercase tracking-[0.14em] text-ink-faint transition-colors duration-200 group-hover:text-brass">
-                    View listing
-                    <ArrowUpRight
-                      size={11}
-                      strokeWidth={1.5}
-                      className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    />
+                  <div
+                    className="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-[10px]"
+                    style={{ color: `${PAPER}52` }}
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <CalendarDays size={11} strokeWidth={1.3} />
+                      {vehicle.year}
+                    </span>
+                    <span aria-hidden="true">·</span>
+                    <span className="flex items-center gap-1.5">
+                      <Gauge size={11} strokeWidth={1.3} />
+                      {vehicle.mileage}
+                    </span>
+                    <span aria-hidden="true">·</span>
+                    <span>{vehicle.transmission}</span>
+                  </div>
+
+                  <div
+                    className="mt-4 flex items-baseline justify-between gap-3 border-t pt-4"
+                    style={{ borderColor: `${PAPER}0D` }}
+                  >
+                    <span
+                      className="italic tabular-nums"
+                      style={{
+                        fontFamily: "var(--font-display, Georgia), serif",
+                        fontSize: "14px",
+                        color: ACCENT,
+                      }}
+                    >
+                      {vehicle.price}
+                    </span>
+
+                    <span
+                      className="
+                        relative
+                        text-[10px]
+                        transition-colors
+                        duration-300
+                        group-hover:text-[var(--accent)]
+                        after:absolute
+                        after:-bottom-1
+                        after:left-0
+                        after:h-px
+                        after:w-0
+                        after:bg-[var(--accent)]
+                        after:transition-all
+                        after:duration-300
+                        group-hover:after:w-full
+                      "
+                      style={
+                        {
+                          color: `${PAPER}45`,
+                          "--accent": GOLD,
+                        } as React.CSSProperties
+                      }
+                    >
+                      View listing
+                    </span>
                   </div>
                 </div>
               </Link>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        <Link
-          href="/inventory?sort=newest"
-          className="mt-8 flex items-center justify-center gap-2 border border-line py-3 text-xs font-medium uppercase tracking-[0.18em] text-ink-faint transition-colors duration-200 hover:border-brass/40 hover:text-brass sm:hidden"
-        >
-          View full inventory
-          <ArrowUpRight size={14} strokeWidth={1.5} />
-        </Link>
+        {/* ============================================================
+            MOBILE LINK
+        ============================================================ */}
+
+        <div className="mt-8 text-center sm:hidden">
+          <Link href="/inventory?sort=newest" className="group inline-block">
+            <span
+              className="
+                relative
+                italic
+                transition-colors
+                duration-300
+                group-hover:text-[var(--accent)]
+                after:absolute
+                after:-bottom-1
+                after:left-0
+                after:h-px
+                after:w-0
+                after:bg-[var(--accent)]
+                after:transition-all
+                after:duration-300
+                group-hover:after:w-full
+              "
+              style={
+                {
+                  fontFamily: "var(--font-display, Georgia), serif",
+                  fontSize: "13px",
+                  color: `${PAPER}80`,
+                  "--accent": GOLD,
+                } as React.CSSProperties
+              }
+            >
+              View the full inventory
+            </span>
+          </Link>
+        </div>
       </motion.div>
     </section>
   );
