@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -14,66 +15,23 @@ import {
   PAPER,
   PINK,
 } from "../ui/tokens";
+import { getRecentlyAddedVehicles } from "@/services/vehicle.service";
 
 const PLATE_NUMERALS = ["I", "II", "III", "IV"] as const;
-
-const recentlyAdded = [
-  {
-    slug: "porsche-911-gt3",
-    name: "Porsche 911 GT3",
-    price: "$189,500",
-    intake: "2 days ago",
-    year: "2024",
-    mileage: "1,200 mi",
-    transmission: "PDK",
-    image:
-      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1200&q=90",
-  },
-  {
-    slug: "range-rover-sport-svr",
-    name: "Range Rover Sport SVR",
-    price: "$142,000",
-    intake: "3 days ago",
-    year: "2023",
-    mileage: "8,400 mi",
-    transmission: "Automatic",
-    image:
-      "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1200&q=90",
-  },
-  {
-    slug: "lexus-lc-500",
-    name: "Lexus LC 500",
-    price: "$98,750",
-    intake: "This week",
-    year: "2023",
-    mileage: "5,100 mi",
-    transmission: "Automatic",
-    image:
-      "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=1200&q=90",
-  },
-  {
-    slug: "bmw-m5-competition",
-    name: "BMW M5 Competition",
-    price: "$116,200",
-    intake: "This week",
-    year: "2024",
-    mileage: "2,600 mi",
-    transmission: "Automatic",
-    image:
-      "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=90",
-  },
-] as const;
 
 export function RecentlyAdded() {
   const { resolvedTheme } = useTheme();
   const isLight = resolvedTheme === "light";
 
-  /* ================================================================
-     THEME
-  ================================================================ */
+  const [recentlyAdded, setRecentlyAdded] = useState<
+    Awaited<ReturnType<typeof getRecentlyAddedVehicles>>
+  >([]);
+
+  useEffect(() => {
+    getRecentlyAddedVehicles(4).then(setRecentlyAdded);
+  }, []);
 
   const sectionBackground = isLight ? "#F5F3EE" : CHARCOAL;
-
   const primaryText = isLight ? "#171512" : PAPER;
 
   const mutedText = isLight
@@ -146,9 +104,7 @@ export function RecentlyAdded() {
         color: primaryText,
       }}
     >
-      {/* ============================================================
-          AMBIENT BACKGROUND
-      ============================================================ */}
+      {/* Ambient background */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -157,9 +113,7 @@ export function RecentlyAdded() {
         }}
       />
 
-      {/* ============================================================
-          CONTENT
-      ============================================================ */}
+      {/* Content */}
       <motion.div
         variants={staggerContainer(0.06)}
         initial="hidden"
@@ -167,22 +121,18 @@ export function RecentlyAdded() {
         viewport={viewport}
         className="container relative mx-auto"
       >
-        {/* ============================================================
-            SECTION HEADER
-        ============================================================ */}
+        {/* Section header */}
         <motion.div
           variants={fadeUp}
           className="flex flex-wrap items-end justify-between gap-6"
         >
           <div>
-            {/* Eyebrow */}
             <div className="flex items-center gap-3">
               <span
                 aria-hidden="true"
                 className="h-px w-8 shrink-0"
                 style={{
-                  backgroundColor: `${eyebrowColor}`,
-               
+                  backgroundColor: eyebrowColor,
                 }}
               />
 
@@ -198,7 +148,6 @@ export function RecentlyAdded() {
               </span>
             </div>
 
-            {/* Heading */}
             <h2
               className="mt-5 max-w-lg text-2xl font-normal leading-[1.2] tracking-[-0.03em] sm:text-3xl"
               style={{
@@ -209,7 +158,6 @@ export function RecentlyAdded() {
               New to the floor, and already inspected.
             </h2>
 
-            {/* Description */}
             <p
               className="mt-3 max-w-md text-[12px] leading-6"
               style={{
@@ -221,9 +169,7 @@ export function RecentlyAdded() {
             </p>
           </div>
 
-          {/* ========================================================
-              DESKTOP LINK
-          ======================================================== */}
+          {/* Desktop link */}
           <Link
             href="/inventory?sort=newest"
             className="group hidden shrink-0 sm:block"
@@ -261,9 +207,7 @@ export function RecentlyAdded() {
           </Link>
         </motion.div>
 
-        {/* ============================================================
-            VEHICLE PLATES
-        ============================================================ */}
+        {/* Vehicle plates */}
         <motion.div
           variants={staggerContainer(0.08)}
           className="mt-12 grid grid-cols-1 gap-px overflow-hidden sm:grid-cols-2 lg:grid-cols-4"
@@ -274,197 +218,223 @@ export function RecentlyAdded() {
               : "none",
           }}
         >
-          {recentlyAdded.map((vehicle, i) => (
-            <motion.div
-              key={vehicle.slug}
-              variants={fadeUp}
-              className="min-w-0"
-            >
-              <Link
-                href={`/inventory/${vehicle.slug}`}
-                className="group block h-full"
-                style={{
-                  backgroundColor: cardBackground,
-                  color: primaryText,
-                }}
+          {recentlyAdded.map((vehicle, i) => {
+            const name = `${vehicle.brand} ${vehicle.model}${
+              vehicle.trim ? ` ${vehicle.trim}` : ""
+            }`;
+
+            const image = vehicle.images?.[0]?.url ?? "";
+
+            const intake = (() => {
+              const createdAt = new Date(vehicle.createdAt);
+              const diff =
+                Date.now() - createdAt.getTime();
+
+              const days = Math.floor(
+                diff / (1000 * 60 * 60 * 24)
+              );
+
+              if (days <= 0) return "Today";
+              if (days === 1) return "1 day ago";
+              if (days < 7) return `${days} days ago`;
+
+              return "This week";
+            })();
+
+            const price = `$${vehicle.price.toLocaleString()}`;
+
+            const mileage = `${vehicle.mileageKm.toLocaleString()} km`;
+
+            return (
+              <motion.div
+                key={vehicle.slug}
+                variants={fadeUp}
+                className="min-w-0"
               >
-                {/* ==================================================
-                    PHOTOGRAPH
-                ================================================== */}
-                <div className="relative aspect-[4/3] overflow-hidden px-4 pt-4 sm:px-5 sm:pt-5">
-                  <div className="relative h-full w-full overflow-hidden">
-                    <Image
-                      src={vehicle.image}
-                      alt={vehicle.name}
-                      fill
-                      sizes="
-                        (max-width: 640px) 100vw,
-                        (max-width: 1024px) 50vw,
-                        25vw
-                      "
-                      className="
-                        object-cover
-                        transition-transform
-                        duration-[900ms]
-                        ease-out
-                        group-hover:scale-[1.03]
-                      "
-                    />
+                <Link
+                  href={`/inventory/${vehicle.slug}`}
+                  className="group block h-full"
+                  style={{
+                    backgroundColor: cardBackground,
+                    color: primaryText,
+                  }}
+                >
+                  {/* Photograph */}
+                  <div className="relative aspect-[4/3] overflow-hidden px-4 pt-4 sm:px-5 sm:pt-5">
+                    <div className="relative h-full w-full overflow-hidden">
+                      <Image
+                        src={image}
+                        alt={name}
+                        fill
+                        sizes="
+                          (max-width: 640px) 100vw,
+                          (max-width: 1024px) 50vw,
+                          25vw
+                        "
+                        className="
+                          object-cover
+                          transition-transform
+                          duration-[900ms]
+                          ease-out
+                          group-hover:scale-[1.03]
+                        "
+                      />
 
-                    {/* Frame corners */}
-                    {[
-                      "left-0 top-0 border-l border-t",
-                      "right-0 top-0 border-r border-t",
-                      "bottom-0 left-0 border-b border-l",
-                      "bottom-0 right-0 border-b border-r",
-                    ].map((pos) => (
+                      {/* Frame corners */}
+                      {[
+                        "left-0 top-0 border-l border-t",
+                        "right-0 top-0 border-r border-t",
+                        "bottom-0 left-0 border-b border-l",
+                        "bottom-0 right-0 border-b border-r",
+                      ].map((pos) => (
+                        <span
+                          key={pos}
+                          aria-hidden="true"
+                          className={`
+                            pointer-events-none
+                            absolute
+                            h-3
+                            w-3
+                            opacity-0
+                            transition-opacity
+                            duration-500
+                            group-hover:opacity-100
+                            ${pos}
+                          `}
+                          style={{
+                            borderColor: GOLD,
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Caption */}
+                  <div className="px-4 pb-6 pt-4 sm:px-5">
+                    {/* Plate + intake */}
+                    <div className="flex items-baseline justify-between gap-3">
                       <span
-                        key={pos}
-                        aria-hidden="true"
-                        className={`
-                          pointer-events-none
-                          absolute
-                          h-3
-                          w-3
-                          opacity-0
-                          transition-opacity
-                          duration-500
-                          group-hover:opacity-100
-                          ${pos}
-                        `}
+                        className="italic"
                         style={{
-                          borderColor: GOLD,
+                          fontFamily:
+                            "var(--font-display, Georgia), serif",
+                          fontSize: "12px",
+                          letterSpacing: "0.04em",
+                          color: plateColor,
                         }}
-                      />
-                    ))}
-                  </div>
-                </div>
+                      >
+                        Plate {PLATE_NUMERALS[i]}
+                      </span>
 
-                {/* ==================================================
-                    CAPTION
-                ================================================== */}
-                <div className="px-4 pb-6 pt-4 sm:px-5">
-                  {/* Plate + intake */}
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span
-                      className="italic"
+                      <span
+                        className="italic"
+                        style={{
+                          fontFamily:
+                            "var(--font-display, Georgia), serif",
+                          fontSize: "10.5px",
+                          color: intakeColor,
+                        }}
+                      >
+                        {intake}
+                      </span>
+                    </div>
+
+                    {/* Vehicle name */}
+                    <h3
+                      className="mt-2 text-[15px] font-normal leading-5 tracking-[-0.01em]"
                       style={{
-                        fontFamily: "var(--font-display, Georgia), serif",
-                        fontSize: "12px",
-                        letterSpacing: "0.04em",
-                        color: plateColor,
+                        fontFamily:
+                          "var(--font-display, Georgia), serif",
+                        color: primaryText,
                       }}
                     >
-                      Plate {PLATE_NUMERALS[i]}
-                    </span>
+                      {name}
+                    </h3>
 
-                    <span
-                      className="italic"
+                    {/* Vehicle metadata */}
+                    <div
+                      className="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-[10px]"
                       style={{
-                        fontFamily: "var(--font-display, Georgia), serif",
-                        fontSize: "10.5px",
-                        color: intakeColor,
+                        color: metadataColor,
                       }}
                     >
-                      {vehicle.intake}
-                    </span>
-                  </div>
+                      <span className="flex items-center gap-1.5">
+                        <CalendarDays
+                          size={11}
+                          strokeWidth={1.3}
+                        />
+                        {vehicle.year}
+                      </span>
 
-                  {/* Vehicle name */}
-                  <h3
-                    className="mt-2 text-[15px] font-normal leading-5 tracking-[-0.01em]"
-                    style={{
-                      fontFamily: "var(--font-display, Georgia), serif",
-                      color: primaryText,
-                    }}
-                  >
-                    {vehicle.name}
-                  </h3>
+                      <span aria-hidden="true">·</span>
 
-                  {/* Vehicle metadata */}
-                  <div
-                    className="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-[10px]"
-                    style={{
-                      color: metadataColor,
-                    }}
-                  >
-                    <span className="flex items-center gap-1.5">
-                      <CalendarDays
-                        size={11}
-                        strokeWidth={1.3}
-                      />
-                      {vehicle.year}
-                    </span>
+                      <span className="flex items-center gap-1.5">
+                        <Gauge
+                          size={11}
+                          strokeWidth={1.3}
+                        />
+                        {mileage}
+                      </span>
 
-                    <span aria-hidden="true">·</span>
+                      <span aria-hidden="true">·</span>
 
-                    <span className="flex items-center gap-1.5">
-                      <Gauge
-                        size={11}
-                        strokeWidth={1.3}
-                      />
-                      {vehicle.mileage}
-                    </span>
+                      <span>{vehicle.transmission}</span>
+                    </div>
 
-                    <span aria-hidden="true">·</span>
-
-                    <span>{vehicle.transmission}</span>
-                  </div>
-
-                  {/* Price + listing */}
-                  <div
-                    className="mt-4 flex items-baseline justify-between gap-3 border-t pt-4"
-                    style={{
-                      borderColor: cardBorder,
-                    }}
-                  >
-                    <span
-                      className="italic tabular-nums"
+                    {/* Price + listing */}
+                    <div
+                      className="mt-4 flex items-baseline justify-between gap-3 border-t pt-4"
                       style={{
-                        fontFamily: "var(--font-display, Georgia), serif",
-                        fontSize: "14px",
-                        color: ACCENT,
+                        borderColor: cardBorder,
                       }}
                     >
-                      {vehicle.price}
-                    </span>
+                      <span
+                        className="italic tabular-nums"
+                        style={{
+                          fontFamily:
+                            "var(--font-display, Georgia), serif",
+                          fontSize: "14px",
+                          color: ACCENT,
+                        }}
+                      >
+                        {price}
+                      </span>
 
-                    <span
-                      className="
-                        relative
-                        text-[10px]
-                        transition-colors
-                        duration-300
-                        group-hover:text-[var(--accent)]
-                        after:absolute
-                        after:-bottom-1
-                        after:left-0
-                        after:h-px
-                        after:w-0
-                        after:bg-[var(--accent)]
-                        after:transition-all
-                        after:duration-300
-                        group-hover:after:w-full
-                      "
-                      style={
-                        {
-                          color: listingColor,
-                          "--accent": GOLD,
-                        } as React.CSSProperties
-                      }
-                    >
-                      View listing
-                    </span>
+                      <span
+                        className="
+                          relative
+                          text-[10px]
+                          transition-colors
+                          duration-300
+                          group-hover:text-[var(--accent)]
+                          after:absolute
+                          after:-bottom-1
+                          after:left-0
+                          after:h-px
+                          after:w-0
+                          after:bg-[var(--accent)]
+                          after:transition-all
+                          after:duration-300
+                          group-hover:after:w-full
+                        "
+                        style={
+                          {
+                            color: listingColor,
+                            "--accent": GOLD,
+                          } as React.CSSProperties
+                        }
+                      >
+                        View listing
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
+                </Link>
+              </motion.div>
+            );
+          })}
         </motion.div>
 
-        {/* ============================================================
-            MOBILE LINK
-        ============================================================ */}
+        {/* Mobile link */}
         <div className="mt-8 text-center sm:hidden">
           <Link
             href="/inventory?sort=newest"
@@ -489,7 +459,8 @@ export function RecentlyAdded() {
               "
               style={
                 {
-                  fontFamily: "var(--font-display, Georgia), serif",
+                  fontFamily:
+                    "var(--font-display, Georgia), serif",
                   fontSize: "13px",
                   color: isLight
                     ? "rgba(23,21,18,0.68)"

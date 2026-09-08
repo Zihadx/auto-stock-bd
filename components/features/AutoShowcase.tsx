@@ -1,9 +1,20 @@
-
 "use client";
 
-import { memo, useCallback, useMemo, useState, type ReactNode } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import Image from "next/image";
-import { motion, useReducedMotion, type Transition, type Variants } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  type Transition,
+  type Variants,
+} from "framer-motion";
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
 import {
@@ -18,10 +29,18 @@ import {
   Fuel,
 } from "lucide-react";
 import { ACCENT, CHARCOAL, PAPER } from "../ui/tokens";
+// adjust to your actual path
+import type { Vehicle } from "@/types/vehicle";
+import { getFeaturedVehicles } from "@/services/vehicle.service";
+import Link from "next/link";
 
 const subscribe = () => () => {};
 const useMounted = () =>
-  useSyncExternalStore(subscribe, () => true, () => false);
+  useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false,
+  );
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const FAST: Transition = { duration: 0.3, ease: EASE };
@@ -64,44 +83,34 @@ const CATEGORIES = [
   { name: "Electric", icon: Zap },
 ] as const;
 
-interface Car {
+// Shape the card actually renders — mapped from your real Vehicle records.
+interface CarCardData {
+  id: string;
   name: string;
   price: string;
   year: string;
   transmission: string;
   fuel: string;
   image: string;
+  slug: string;
 }
 
-const CARS: Car[] = [
-  {
-    name: "BMW M4 Competition",
-    price: "$72,500",
-    year: "2024",
-    transmission: "Automatic",
-    fuel: "Petrol",
-    image:
-      "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=90",
-  },
-  {
-    name: "Audi R8 Coupe",
-    price: "$159,000",
-    year: "2024",
-    transmission: "Automatic",
-    fuel: "Petrol",
-    image:
-      "https://images.unsplash.com/photo-1614200187524-dc4b892acf16?auto=format&fit=crop&w=1200&q=90",
-  },
-  {
-    name: "Mercedes-AMG GT",
-    price: "$134,900",
-    year: "2024",
-    transmission: "Automatic",
-    fuel: "Petrol",
-    image:
-      "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1200&q=90",
-  },
-];
+const FEATURED_COUNT = 3;
+
+function toCardData(vehicle: Vehicle): CarCardData {
+  return {
+    id: vehicle.id,
+    slug: vehicle.slug,
+    name: [vehicle.brand, vehicle.model, vehicle.trim]
+      .filter(Boolean)
+      .join(" "),
+    price: `$${vehicle.price.toLocaleString()}`,
+    year: String(vehicle.year),
+    transmission: vehicle.transmission,
+    fuel: vehicle.fuelType,
+    image: vehicle.images?.[0]?.url ?? "",
+  };
+}
 
 function buildTheme(dark: boolean) {
   return {
@@ -217,45 +226,56 @@ const CategoryPanel = memo(function CategoryPanel({
 
         <div className="mt-8 grid grid-cols-2 gap-x-5 gap-y-7 lg:grid-cols-1 lg:gap-y-5">
           {CATEGORIES.map(({ name, icon: Icon }) => (
-            <motion.button
+            <motion.div
               key={name}
-              type="button"
               variants={item}
               whileHover="hover"
               whileTap={{ scale: 0.98 }}
-              className="group flex items-center gap-3 text-left outline-none"
             >
-              <motion.span
-                variants={iconHover}
-                transition={FAST}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border"
-                style={{
-                  borderColor: theme.iconBorder,
-                  backgroundColor: theme.iconBg,
-                }}
+              <Link
+                href={`/inventory?category=${encodeURIComponent(name)}`}
+                className="group flex items-center gap-3 text-left outline-none"
               >
-                <Icon size={18} strokeWidth={1.5} style={{ color: theme.iconColor }} />
-              </motion.span>
-
-              <span className="min-w-0">
-                <span
-                  className="block text-[13px] font-medium tracking-[-0.01em]"
-                  style={{ color: theme.text }}
+                <motion.span
+                  variants={iconHover}
+                  transition={FAST}
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border"
+                  style={{
+                    borderColor: theme.iconBorder,
+                    backgroundColor: theme.iconBg,
+                  }}
                 >
-                  {name}
-                </span>
+                  <Icon
+                    size={18}
+                    strokeWidth={1.5}
+                    style={{ color: theme.iconColor }}
+                  />
+                </motion.span>
 
-                <span
-                  className="mt-1 flex items-center gap-1 text-[10px] font-medium uppercase tracking-[0.12em]"
-                  style={{ color: theme.muted }}
-                >
-                  Explore
-                  <motion.span variants={arrowHover} transition={FAST} className="flex">
-                    <ArrowRight size={11} strokeWidth={1.6} />
-                  </motion.span>
+                <span className="min-w-0">
+                  <span
+                    className="block text-[13px] font-medium tracking-[-0.01em]"
+                    style={{ color: theme.text }}
+                  >
+                    {name}
+                  </span>
+
+                  <span
+                    className="mt-1 flex items-center gap-1 text-[10px] font-medium uppercase tracking-[0.12em]"
+                    style={{ color: theme.muted }}
+                  >
+                    Explore
+                    <motion.span
+                      variants={arrowHover}
+                      transition={FAST}
+                      className="flex"
+                    >
+                      <ArrowRight size={11} strokeWidth={1.6} />
+                    </motion.span>
+                  </span>
                 </span>
-              </span>
-            </motion.button>
+              </Link>
+            </motion.div>
           ))}
         </div>
 
@@ -290,6 +310,23 @@ const FeaturedCars = memo(function FeaturedCars({
   theme: Theme;
   dark: boolean;
 }) {
+  const [cars, setCars] = useState<CarCardData[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    getFeaturedVehicles(FEATURED_COUNT).then((vehicles) => {
+      if (cancelled) return;
+      setCars(vehicles.map(toCardData));
+      setLoading(false);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <div className="min-w-0">
       <motion.div
@@ -325,14 +362,15 @@ const FeaturedCars = memo(function FeaturedCars({
         variants={container}
         className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"
       >
-        {CARS.map((car, index) => (
-          <CarCard
-            key={car.name}
-            car={car}
-            theme={theme}
-            priority={index === 0}
-          />
-        ))}
+        {!loading &&
+          cars.map((car, index) => (
+            <CarCard
+              key={car.id}
+              car={car}
+              theme={theme}
+              priority={index === 0}
+            />
+          ))}
       </motion.div>
 
       <button
@@ -356,7 +394,7 @@ const CarCard = memo(function CarCard({
   theme,
   priority = false,
 }: {
-  car: Car;
+  car: CarCardData;
   theme: Theme;
   priority?: boolean;
 }) {
@@ -367,117 +405,129 @@ const CarCard = memo(function CarCard({
   );
 
   return (
-    <motion.article
-      variants={cardVariants}
-      whileHover="hover"
-      className="group min-w-0"
+    <Link
+      href={`/inventory/${car.slug}`}
+      className="block outline-none"
+      aria-label={`View ${car.name}`}
     >
-      <div
-        className="relative aspect-[4/3] overflow-hidden rounded-2xl border"
-        style={{
-          borderColor: theme.cardBorder,
-          backgroundColor: theme.cardBg,
-          boxShadow: theme.cardShadow,
-        }}
+      <motion.article
+        variants={cardVariants}
+        whileHover="hover"
+        className="group min-w-0"
       >
-        <motion.div
-          variants={imageScale}
-          transition={IMAGE}
-          className="absolute inset-0"
-        >
-          <Image
-            src={car.image}
-            alt={car.name}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-            className="object-cover"
-            priority={priority}
-            loading={priority ? undefined : "lazy"}
-          />
-        </motion.div>
-
         <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent"
-        />
-
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-16"
+          className="relative aspect-[4/3] overflow-hidden rounded-2xl border"
           style={{
-            background: `linear-gradient(180deg, ${PAPER}0B, transparent)`,
-          }}
-        />
-
-        <motion.button
-          type="button"
-          aria-label={
-            favorited
-              ? `Remove ${car.name} from favorites`
-              : `Favorite ${car.name}`
-          }
-          aria-pressed={favorited}
-          onClick={toggleFavorited}
-          whileTap={{ scale: 0.88 }}
-          className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-xl"
-          style={{
-            borderColor: theme.favoriteBorder,
-            backgroundColor: theme.favoriteBg,
-            boxShadow: `inset 0 1px 0 ${PAPER}0D`,
+            borderColor: theme.cardBorder,
+            backgroundColor: theme.cardBg,
+            boxShadow: theme.cardShadow,
           }}
         >
-          <motion.span
-            variants={heartPop}
-            animate={favorited ? "popped" : "idle"}
+          <motion.div
+            variants={imageScale}
+            transition={IMAGE}
+            className="absolute inset-0"
           >
-            <Heart
-              size={15}
-              strokeWidth={1.55}
-              fill={favorited ? ACCENT : "transparent"}
-              style={{ color: favorited ? ACCENT : PAPER }}
+            <Image
+              src={car.image}
+              alt={car.name}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+              className="object-cover"
+              priority={priority}
+              loading={priority ? undefined : "lazy"}
             />
-          </motion.span>
-        </motion.button>
+          </motion.div>
 
-        <div
-          className="absolute bottom-3 left-3 rounded-full border px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] backdrop-blur-xl"
-          style={{
-            borderColor: theme.yearBorder,
-            backgroundColor: theme.yearBg,
-            color: theme.yearText,
-          }}
-        >
-          {car.year}
-        </div>
-      </div>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent"
+          />
 
-      <div className="pt-4">
-        <div className="flex items-start justify-between gap-4">
-          <h3
-            className="min-w-0 text-[14px] font-medium leading-5 tracking-[-0.01em]"
-            style={{ color: theme.text }}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-16"
+            style={{
+              background: `linear-gradient(180deg, ${PAPER}0B, transparent)`,
+            }}
+          />
+
+          <motion.button
+            type="button"
+            aria-label={
+              favorited
+                ? `Remove ${car.name} from favorites`
+                : `Favorite ${car.name}`
+            }
+            aria-pressed={favorited}
+            onClick={toggleFavorited}
+            whileTap={{ scale: 0.88 }}
+            className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-xl"
+            style={{
+              borderColor: theme.favoriteBorder,
+              backgroundColor: theme.favoriteBg,
+              boxShadow: `inset 0 1px 0 ${PAPER}0D`,
+            }}
           >
-            {car.name}
-          </h3>
+            <motion.span
+              variants={heartPop}
+              animate={favorited ? "popped" : "idle"}
+            >
+              <Heart
+                size={15}
+                strokeWidth={1.55}
+                fill={favorited ? ACCENT : "transparent"}
+                style={{ color: favorited ? ACCENT : PAPER }}
+              />
+            </motion.span>
+          </motion.button>
 
-          <span
-            className="shrink-0 text-[13px] font-semibold tabular-nums"
-            style={{ color: ACCENT }}
+          <div
+            className="absolute bottom-3 left-3 rounded-full border px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] backdrop-blur-xl"
+            style={{
+              borderColor: theme.yearBorder,
+              backgroundColor: theme.yearBg,
+              color: theme.yearText,
+            }}
           >
-            {car.price}
-          </span>
+            {car.year}
+          </div>
         </div>
 
-        <div
-          className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] font-medium"
-          style={{ color: theme.subtle }}
-        >
-          <Meta icon={<CalendarDays size={12} strokeWidth={1.5} />} text={car.year} />
-          <Meta icon={<Gauge size={12} strokeWidth={1.5} />} text={car.transmission} />
-          <Meta icon={<Fuel size={12} strokeWidth={1.5} />} text={car.fuel} />
+        <div className="pt-4">
+          <div className="flex items-start justify-between gap-4">
+            <h3
+              className="min-w-0 text-[14px] font-medium leading-5 tracking-[-0.01em]"
+              style={{ color: theme.text }}
+            >
+              {car.name}
+            </h3>
+
+            <span
+              className="shrink-0 text-[13px] font-semibold tabular-nums"
+              style={{ color: ACCENT }}
+            >
+              {car.price}
+            </span>
+          </div>
+
+          <div
+            className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] font-medium"
+            style={{ color: theme.subtle }}
+          >
+            <Meta
+              icon={<CalendarDays size={12} strokeWidth={1.5} />}
+              text={car.year}
+            />
+            <Meta
+              icon={<Gauge size={12} strokeWidth={1.5} />}
+              text={car.transmission}
+            />
+            <Meta icon={<Fuel size={12} strokeWidth={1.5} />} text={car.fuel} />
+          </div>
         </div>
-      </div>
-    </motion.article>
+      </motion.article>
+    </Link>
   );
 });
 
@@ -500,13 +550,7 @@ const Meta = memo(function Meta({
 
 Meta.displayName = "Meta";
 
-function Eyebrow({
-  text,
-  theme,
-}: {
-  text: string;
-  theme: Theme;
-}) {
+function Eyebrow({ text, theme }: { text: string; theme: Theme }) {
   return (
     <div className="flex items-center gap-3">
       <span className="h-px w-7 shrink-0" style={{ backgroundColor: ACCENT }} />
@@ -519,4 +563,3 @@ function Eyebrow({
     </div>
   );
 }
-

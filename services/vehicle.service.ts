@@ -94,6 +94,19 @@ export async function getFeaturedVehicles(limit = 6): Promise<Vehicle[]> {
 }
 
 /**
+ * Get hot selling vehicles (featured + high demand)
+ * Returns vehicles marked as hotSelling, sorted by inquiry count
+ */
+export async function getHotSellingVehicles(limit = 6): Promise<Vehicle[]> {
+  return delay(
+    vehicleRecords
+      .filter((v) => v.hotSelling)
+      .sort((a, b) => b.inquiryCount - a.inquiryCount)
+      .slice(0, limit)
+  );
+}
+
+/**
  * Brands actually represented in current inventory, with a live count each,
  * sorted by how many vehicles are available. Used anywhere the site invites
  * someone to "browse by brand" — so it never promises a brand (e.g. a
@@ -170,6 +183,8 @@ export async function createVehicle(input: CreateVehicleInput): Promise<Vehicle>
     history: [],
     views: 0,
     inquiryCount: 0,
+    featured: input.featured ?? false,
+    hotSelling: input.hotSelling ?? false,
     createdAt: now,
     updatedAt: now,
   };
@@ -189,6 +204,8 @@ export async function updateVehicle(input: UpdateVehicleInput): Promise<Vehicle 
     images: input.images
       ? input.images.map((img, i) => ({ ...img, id: `img-${Date.now()}-${i}` }))
       : vehicleRecords[index].images,
+    featured: input.featured ?? vehicleRecords[index].featured,
+    hotSelling: input.hotSelling ?? vehicleRecords[index].hotSelling,
     updatedAt: new Date().toISOString(),
   };
 

@@ -1,4 +1,4 @@
-import FeaturedCollections from "@/components/features/featured-vehicles";
+import FeaturedCollections from "@/components/features/hot-selling";
 import { BrowseByBrand } from "@/components/features/browse-by-brand";
 
 import { RecentlyAdded } from "@/components/features/recently-added";

@@ -1,8 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight, Play, Search, SlidersHorizontal } from "lucide-react";
+import { useRouter } from "next/navigation";
+import {
+  ArrowUpRight,
+  Play,
+  Search,
+  SlidersHorizontal,
+} from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
+import { useState } from "react";
 
 import {
   ACCENT,
@@ -19,6 +26,33 @@ const SERIF = "Georgia, 'Times New Roman', serif";
 
 export function Hero({ vehicleCount }: { vehicleCount: number }) {
   const reducedMotion = useReducedMotion();
+  const router = useRouter();
+
+  const [search, setSearch] = useState("");
+  const [budget, setBudget] = useState("");
+  const [condition, setCondition] = useState("");
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+
+    if (search.trim()) {
+      params.set("search", search.trim());
+    }
+
+    if (budget) {
+      params.set("budget", budget);
+    }
+
+    if (condition) {
+      params.set("condition", condition);
+    }
+
+    router.push(
+      params.toString()
+        ? `/inventory?${params.toString()}`
+        : "/inventory",
+    );
+  };
 
   return (
     <section
@@ -39,8 +73,10 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
           poster="/images/hero-image.png"
           className="h-full w-full object-cover"
         >
-          {/* <source src="/videos/hero-loop.mp4" type="video/mp4" /> */}
-          <source src="/videos/hero-loop-002.mp4" type="video/mp4" />
+          <source
+            src="/videos/hero-loop-002.mp4"
+            type="video/mp4"
+          />
         </video>
 
         <div className="absolute inset-0 bg-black/30" />
@@ -122,8 +158,8 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
                   fontFamily: SERIF,
                 }}
               >
-                For those who notice the difference before it&apos;s pointed
-                out.
+                For those who notice the difference before it&apos;s
+                pointed out.
               </motion.p>
 
               <motion.h1
@@ -186,8 +222,9 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
                   className="max-w-[310px] text-[11px] font-medium leading-[1.8] sm:text-[12px]"
                   style={{ color: PAPER }}
                 >
-                  Every car in the collection is inspected in person before it
-                  earns a listing. Nothing arrives here by algorithm.
+                  Every car in the collection is inspected in person
+                  before it earns a listing. Nothing arrives here by
+                  algorithm.
                 </p>
 
                 <Link
@@ -199,7 +236,9 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
                     fontFamily: SERIF,
                   }}
                 >
-                  <span className="italic">Enter the collection</span>
+                  <span className="italic">
+                    Enter the collection
+                  </span>
 
                   <span
                     className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-300 group-hover:bg-white/10"
@@ -344,6 +383,13 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
 
                       <input
                         type="text"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            handleSearch();
+                          }
+                        }}
                         placeholder="e.g. Porsche 911"
                         className="w-full bg-transparent text-[12px] font-medium outline-none placeholder:opacity-60 sm:text-[13px]"
                         style={{
@@ -354,6 +400,7 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
 
                     {/* Budget + Condition */}
                     <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3">
+                      {/* Budget */}
                       <label
                         className="rounded-xl border px-3.5 py-3 sm:px-4"
                         style={{
@@ -369,13 +416,13 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
                         </span>
 
                         <select
-                          defaultValue=""
+                          value={budget}
+                          onChange={(e) => setBudget(e.target.value)}
                           className="w-full bg-transparent text-[11px] font-medium outline-none sm:text-[12px]"
                           style={{ color: PAPER }}
                         >
                           <option
                             value=""
-                            disabled
                             style={{
                               backgroundColor: CHARCOAL,
                               color: PAPER,
@@ -426,6 +473,7 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
                         </select>
                       </label>
 
+                      {/* Condition */}
                       <label
                         className="rounded-xl border px-3.5 py-3 sm:px-4"
                         style={{
@@ -441,13 +489,15 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
                         </span>
 
                         <select
-                          defaultValue=""
+                          value={condition}
+                          onChange={(e) =>
+                            setCondition(e.target.value)
+                          }
                           className="w-full bg-transparent text-[11px] font-medium outline-none sm:text-[12px]"
                           style={{ color: PAPER }}
                         >
                           <option
                             value=""
-                            disabled
                             style={{
                               backgroundColor: CHARCOAL,
                               color: PAPER,
@@ -491,8 +541,9 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
                   </div>
 
                   {/* Primary CTA */}
-                  <Link
-                    href="/inventory"
+                  <button
+                    type="button"
+                    onClick={handleSearch}
                     className="group mt-3 flex h-11 w-full items-center justify-between rounded-xl px-4 transition-all duration-300 hover:brightness-110 sm:mt-4 sm:h-12"
                     style={{
                       backgroundColor: ACCENT,
@@ -504,7 +555,7 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
                     }}
                   >
                     <span className="text-[10px] font-semibold uppercase tracking-[0.12em] sm:text-[11px]">
-                      Explore inventory
+                      Search inventory
                     </span>
 
                     <span
@@ -518,7 +569,7 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
                         className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                       />
                     </span>
-                  </Link>
+                  </button>
 
                   {/* Advanced Search */}
                   <Link
@@ -531,7 +582,6 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
                       className="h-3 w-3"
                       strokeWidth={1.7}
                     />
-
                     Advanced search
                   </Link>
                 </div>

@@ -45,6 +45,7 @@ export interface Vehicle {
   location: string;
   status: VehicleStatus;
   featured: boolean;
+  hotSelling: boolean;
   description: string;
   features: VehicleFeatureGroup[];
   history: VehicleHistoryEvent[];
