@@ -428,7 +428,7 @@ export default function ContactPage() {
 
             <a
               href={`tel:${siteConfig.phone}`}
-              className="group inline-flex w-fit items-center gap-4 border px-5 py-3.5 text-sm font-medium text-paper transition-all duration-300 hover:border-[#F51B72] hover:bg-[#F51B72] hover:text-[#0A0106]"
+              className="group inline-flex w-fit items-center gap-4 border px-5 py-3.5 text-sm font-medium text-paper transition-all duration-300 hover:border-[#F51B72] bg-[#F51B72] hover:text-[#0A0106]"
               style={{
                 borderColor: "rgba(245, 241, 234, 0.2)",
               }}
