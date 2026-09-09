@@ -20,8 +20,11 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
 }
 
 /**
- * Wraps next-themes. Class strategy on <html>, system preference by default,
- * no flash of incorrect theme (next-themes injects a blocking inline script).
+ * Wraps next-themes. Class strategy on <html>, dark by default for every
+ * first-time visitor regardless of OS preference — the user only ever sees
+ * light mode after explicitly switching, and that choice is then persisted
+ * (next-themes stores it in localStorage). No flash of incorrect theme
+ * either way, since next-themes injects a blocking inline script.
  *
  * Also wraps the app in MotionConfig(reducedMotion="user") so every Framer
  * Motion animation in the app automatically respects the OS-level
@@ -38,8 +41,8 @@ export function ThemeProvider({
   return (
     <NextThemesProvider
       attribute="class"
-      defaultTheme="system"
-      enableSystem
+      defaultTheme="dark"
+      enableSystem={false}
       disableTransitionOnChange={false}
       {...props}
     >

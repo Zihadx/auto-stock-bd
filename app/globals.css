@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ==========================================================================
    AutoStock BD — Design Tokens
    A premium, restrained system: ink + paper, one accent (muted brass).

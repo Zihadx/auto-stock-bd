@@ -279,25 +279,27 @@ const CategoryPanel = memo(function CategoryPanel({
           ))}
         </div>
 
-        <motion.button
-          variants={item}
-          type="button"
-          whileHover={{
-            y: -1,
-            backgroundColor: dark ? `${PAPER}09` : "rgba(0,0,0,.025)",
-          }}
-          whileTap={{ scale: 0.98 }}
-          transition={FAST}
-          className="mt-9 flex w-full items-center justify-between rounded-xl border px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.18em]"
-          style={{
-            borderColor: theme.buttonBorder,
-            color: theme.buttonText,
-            backgroundColor: theme.buttonBg,
-          }}
-        >
-          View All
-          <ArrowRight size={13} strokeWidth={1.5} style={{ color: ACCENT }} />
-        </motion.button>
+        <Link href="/inventory">
+          <motion.button
+            variants={item}
+            type="button"
+            whileHover={{
+              y: -1,
+              backgroundColor: dark ? `${PAPER}09` : "rgba(0,0,0,.025)",
+            }}
+            whileTap={{ scale: 0.98 }}
+            transition={FAST}
+            className="mt-9 flex w-full items-center justify-between rounded-xl border px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.18em]"
+            style={{
+              borderColor: theme.buttonBorder,
+              color: theme.buttonText,
+              backgroundColor: theme.buttonBg,
+            }}
+          >
+            View All
+            <ArrowRight size={13} strokeWidth={1.5} style={{ color: ACCENT }} />
+          </motion.button>
+        </Link>
       </div>
     </motion.aside>
   );
