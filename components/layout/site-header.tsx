@@ -434,14 +434,14 @@ export function SiteHeader() {
           boxShadow: elevated ? "0 12px 45px rgba(10,1,6,.12)" : "none",
         }}
       >
-        <div className="container mx-auto flex h-[76px] items-center justify-between">
+        <div className="container px-4 mx-auto flex h-[76px] items-center justify-between">
           {/* Brand */}
           <Link href="/" aria-label={`${siteConfig.name} — home`} className="group relative flex shrink-0 items-center gap-3" onClick={handleNavigation}>
             <span className="relative flex h-8 w-8 items-center justify-center">
               <LogoMark className="h-[25px] w-[25px] transition-transform duration-500 group-hover:-translate-y-0.5" />
               <span className="absolute bottom-0 left-1/2 h-px w-3 -translate-x-1/2 opacity-0 transition-all duration-500 group-hover:w-5 group-hover:opacity-100" style={{ backgroundColor: ACCENT }} />
             </span>
-            <span className="hidden items-center text-[11px] font-medium uppercase leading-none tracking-[0.38em] sm:flex">
+            <span className="flex items-center text-[11px] font-medium uppercase leading-none tracking-[0.38em]">
               {brandFirst}
               {brandRest && <span className="ml-1" style={{ color: ACCENT }}>{brandRest}</span>}
             </span>

@@ -72,6 +72,7 @@ function vehicleToFormValues(vehicle: Vehicle): VehicleFormValues {
     images: vehicle.images.map((img) => ({ url: img.url, alt: img.alt })),
     status: vehicle.status,
     featured: vehicle.featured,
+    hotSelling: vehicle.hotSelling,
   };
 }
 
@@ -119,6 +120,7 @@ export function VehicleForm({ vehicle }: { vehicle?: Vehicle }) {
         location: values.location,
         status: values.status,
         featured: values.featured,
+        hotSelling: values.hotSelling,
         description: values.description,
         ownerCount: values.ownerCount,
         features: [
@@ -137,6 +139,7 @@ export function VehicleForm({ vehicle }: { vehicle?: Vehicle }) {
         await createVehicle(payload);
         toast.success("Vehicle added to inventory.");
       }
+
       router.push("/admin/inventory");
     } catch {
       toast.error("Something went wrong. Please try again.");
@@ -315,6 +318,21 @@ export function VehicleForm({ vehicle }: { vehicle?: Vehicle }) {
                   id="featured"
                   label="Featured"
                   description="Show on the homepage featured section"
+                  checked={field.value}
+                  onChange={field.onChange}
+                />
+              )}
+            />
+          </div>
+          <div className="flex items-end">
+            <Controller
+              control={control}
+              name="hotSelling"
+              render={({ field }) => (
+                <Switch
+                  id="hotSelling"
+                  label="Hot selling"
+                  description="Show a 'hot selling' badge on the listing"
                   checked={field.value}
                   onChange={field.onChange}
                 />

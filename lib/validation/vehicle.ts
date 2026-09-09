@@ -56,6 +56,7 @@ export const vehicleFormSchema = z.object({
   // Status
   status: z.enum(["available", "reserved", "sold", "draft"]),
   featured: z.boolean(),
+  hotSelling: z.boolean(),
 });
 
 export type VehicleFormValues = z.infer<typeof vehicleFormSchema>;
@@ -82,4 +83,5 @@ export const vehicleFormDefaults: VehicleFormValues = {
   images: [{ url: "", alt: "" }],
   status: "draft",
   featured: false,
+  hotSelling: false,
 };
