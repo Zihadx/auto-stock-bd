@@ -4,6 +4,7 @@ import { Toaster } from "@/components/toaster";
 import { StoreProvider } from "@/store/provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import AIConcierge from "@/components/ai-concierge/AIConcierge";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {children}
             <Toaster />
           </StoreProvider>
+          <AIConcierge />
         </ThemeProvider>
       </body>
     </html>
