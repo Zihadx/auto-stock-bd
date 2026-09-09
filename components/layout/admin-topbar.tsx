@@ -8,14 +8,18 @@ import {
   setCommandPaletteOpen,
   setMobileNavOpen,
 } from "@/store/slices/uiSlice";
+
 import { ACCENT, CHARCOAL, PAPER } from "../ui/tokens";
+import { useMounted } from "@/hooks/use-mounted";
 
 export function AdminTopbar() {
   const dispatch = useAppDispatch();
   const { resolvedTheme } = useTheme();
+  const mounted = useMounted();
 
-  const isDark = resolvedTheme !== "light";
+  const isDark = mounted && resolvedTheme !== "light";
   const isMac =
+    mounted &&
     typeof navigator !== "undefined" &&
     /Mac/.test(navigator.platform);
 

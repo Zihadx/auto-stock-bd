@@ -7,7 +7,9 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, ChevronRight, Car } from "lucide-react";
 import { useTheme } from "next-themes";
 import { fadeUp, staggerContainer, viewport } from "@/lib/motion";
+
 import { ACCENT, CHARCOAL, PAPER, GOLD } from "../ui/tokens";
+import { useMounted } from "@/hooks/use-mounted";
 
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                    */
@@ -68,8 +70,11 @@ export function BrowseByBrand({
   brands: { brand: string; count: number }[];
 }) {
   const reducedMotion = useReducedMotion();
+  const mounted = useMounted();
   const { resolvedTheme } = useTheme();
-  const isLight = resolvedTheme === "light";
+  // Before mount: always dark, matching defaultTheme="dark" and avoiding a
+  // hydration flash. After mount: the real, stable, user-selected theme.
+  const isLight = mounted && resolvedTheme === "light";
 
   if (brands.length === 0) return null;
 

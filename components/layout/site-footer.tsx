@@ -11,7 +11,9 @@ import {
 import { useTheme } from "next-themes";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
+
 import { ACCENT, CHARCOAL, GOLD, PAPER } from "../ui/tokens";
+import { useMounted } from "@/hooks/use-mounted";
 
 /* ================================================================
    SOCIALS
@@ -108,8 +110,9 @@ function LogoMark({
 
 export function SiteFooter() {
   const { resolvedTheme } = useTheme();
+  const mounted = useMounted();
 
-  const isDark = resolvedTheme !== "light";
+  const isDark = mounted && resolvedTheme !== "light";
 
   /* ==============================================================
      BRAND

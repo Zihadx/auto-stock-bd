@@ -17,7 +17,9 @@ import { useTheme } from "next-themes";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { viewport } from "@/lib/motion";
+
 import { BURGUNDY, CHARCOAL, PAPER, PINK, GOLD } from "../ui/tokens";
+import { useMounted } from "@/hooks/use-mounted";
 
 // ============================================================
 // GRAIN
@@ -404,9 +406,12 @@ function TrustItem({
 
 export function FinalCta() {
   const shouldReduceMotion = !!useReducedMotion();
+  const mounted = useMounted();
   const { resolvedTheme } = useTheme();
 
-  const isLight = resolvedTheme === "light";
+  // Before mount: always dark, matching defaultTheme="dark" and avoiding a
+  // hydration flash. After mount: the real, stable, user-selected theme.
+  const isLight = mounted && resolvedTheme === "light";
 
   const theme = useMemo(() => buildTheme(isLight), [isLight]);
 

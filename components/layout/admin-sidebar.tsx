@@ -13,7 +13,9 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleSidebarCollapsed, setMobileNavOpen } from "@/store/slices/uiSlice";
 import { cn } from "@/lib/utils";
 
+
 import { ACCENT, BURGUNDY, CHARCOAL, GOLD, PAPER, PINK } from "../ui/tokens";
+import { useMounted } from "@/hooks/use-mounted";
 
 /* -----------------------------------------------------------------------
    Active-route matching
@@ -321,7 +323,8 @@ export function AdminSidebar() {
   const collapsed = useAppSelector((s) => s.ui.sidebarCollapsed);
   const mobileOpen = useAppSelector((s) => s.ui.mobileNavOpen);
   const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme !== "light";
+  const mounted = useMounted();
+  const isDark = mounted && resolvedTheme !== "light";
   const tokens = useSidebarTokens(isDark);
 
   const closeMobile = () => dispatch(setMobileNavOpen(false));

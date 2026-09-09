@@ -767,214 +767,479 @@ export default function HotSelling() {
         }}
       />
 
-      <div className="container relative mx-auto">
-        {/* ---------------------------------------------------------------- */}
-        {/* Header                                                           */}
-        {/* ---------------------------------------------------------------- */}
 
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8">
-          <motion.div
-            variants={
-              reducedMotion
-                ? undefined
-                : itemVariants
-            }
-            className="flex flex-col lg:col-span-4"
+      {/* ====================================== */}
+
+<div className="container relative mx-auto px-3 sm:px-4 lg:px-0">
+  {/* ================================================================
+      HOT SELLING HERO
+      ================================================================ */}
+  <div
+    className="
+      relative
+      isolate
+      overflow-hidden
+      rounded-[20px]
+      sm:rounded-[24px]
+      lg:rounded-[28px]
+    "
+    style={{
+      boxShadow: theme.heroShadow,
+    }}
+  >
+    {/* ==============================================================
+        BACKGROUND
+        ============================================================== */}
+    <div
+      className="
+        absolute
+        inset-0
+        -z-20
+        bg-cover
+        bg-center
+        bg-[position:67%_center]
+        sm:bg-[position:66%_center]
+        lg:bg-center
+      "
+      style={{
+        backgroundImage: 'url("/images/hot-selling-bg.png")',
+      }}
+      aria-hidden="true"
+    />
+
+    {/* ==============================================================
+        RESPONSIVE OVERLAY
+        ============================================================== */}
+    <div
+      className="
+        pointer-events-none
+        absolute
+        inset-0
+        -z-10
+      "
+      style={{
+        background: `
+          linear-gradient(
+            180deg,
+            rgba(5,4,3,0.96) 0%,
+            rgba(5,4,3,0.78) 28%,
+            rgba(5,4,3,0.18) 65%,
+            rgba(5,4,3,0.40) 100%
+          )
+        `,
+      }}
+      aria-hidden="true"
+    />
+
+    {/* Desktop left-side darkness */}
+    <div
+      className="
+        pointer-events-none
+        absolute
+        inset-0
+        -z-10
+        hidden
+        lg:block
+      "
+      style={{
+        background: `
+          linear-gradient(
+            90deg,
+            rgba(5,4,3,0.98) 0%,
+            rgba(5,4,3,0.90) 20%,
+            rgba(5,4,3,0.58) 38%,
+            rgba(5,4,3,0.12) 65%,
+            transparent 100%
+          )
+        `,
+      }}
+      aria-hidden="true"
+    />
+
+    {/* Mobile subtle bottom fade */}
+    <div
+      className="
+        pointer-events-none
+        absolute
+        inset-x-0
+        bottom-0
+        h-32
+        bg-gradient-to-t
+        from-black/40
+        to-transparent
+        lg:hidden
+      "
+      aria-hidden="true"
+    />
+
+    {/* Gold border */}
+    <div
+      className="
+        pointer-events-none
+        absolute
+        inset-0
+        rounded-[20px]
+        sm:rounded-[24px]
+        lg:rounded-[28px]
+      "
+      style={{
+        border: `1px solid ${theme.border}`,
+      }}
+      aria-hidden="true"
+    />
+
+    {/* ================================================================
+        CONTENT
+        ================================================================ */}
+    <div
+      className="
+        relative
+        z-10
+        grid
+        min-h-[420px]
+        grid-cols-1
+        px-4
+        pt-6
+
+        sm:min-h-[450px]
+        sm:px-7
+        sm:pt-8
+
+        lg:min-h-[500px]
+        lg:grid-cols-12
+        lg:px-10
+        lg:py-10
+
+        xl:px-12
+      "
+    >
+      {/* ==============================================================
+          CONTENT
+          ============================================================== */}
+      <motion.div
+        variants={
+          reducedMotion
+            ? undefined
+            : itemVariants
+        }
+        className="
+          flex
+          flex-col
+          lg:col-span-5
+          lg:justify-center
+        "
+      >
+        {/* Eyebrow */}
+        <span
+          className="
+            flex
+            items-center
+            gap-2
+            text-[9px]
+            font-semibold
+            uppercase
+            tracking-[0.18em]
+            sm:text-[10px]
+            sm:tracking-[0.2em]
+            md:text-[11px]
+          "
+          style={{
+            color: "#E5453E",
+          }}
+        >
+          <Flame
+            size={12}
+            strokeWidth={2}
+            aria-hidden="true"
+          />
+
+          Most wanted right now
+        </span>
+
+        {/* Heading */}
+        <h2
+          className="
+            mt-2
+            [font-family:var(--font-display)]
+            text-[2rem]
+            font-semibold
+            uppercase
+            leading-[0.98]
+            tracking-[-0.025em]
+
+            sm:mt-3
+            sm:text-[2.5rem]
+
+            md:text-[2.8rem]
+
+            lg:text-[3rem]
+
+            xl:text-[3.2rem]
+          "
+        >
+          <span
+            style={{
+              color: theme.heading,
+            }}
           >
-            <span className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#E5453E]">
-              <Flame
-                size={13}
-                strokeWidth={2}
-                aria-hidden="true"
-              />
+            Hot Selling
+          </span>
 
-              Most wanted right now
-            </span>
+          <br />
 
-            <h2 className="mt-3 [font-family:var(--font-display)] text-[2.15rem] font-semibold uppercase leading-[1.15] md:text-[2.5rem]">
-              <span
-                style={{
-                  color: theme.heading,
-                }}
-              >
-                Hot Selling
-              </span>
+          <span className="text-[#CBA36B]">
+            Collection
+          </span>
+        </h2>
 
-              <br />
+        {/* Description */}
+        <p
+          className="
+            mt-3
+            max-w-[300px]
+            text-[12px]
+            leading-[1.65]
 
-              <span className="text-[#CBA36B]">
-                Collection
-              </span>
-            </h2>
+            sm:mt-4
+            sm:max-w-sm
+            sm:text-[13px]
 
-            <p
-              className="mt-5 max-w-xs text-[14px] leading-relaxed sm:text-[15px]"
-              style={{
-                color: theme.muted,
-              }}
-            >
-              Discover the vehicles creating the
-              most attention right now — ranked by
-              real buyer inquiries.
-            </p>
+            md:text-[14px]
 
-            <Link
-              href={INVENTORY_HREF}
-              className="mt-8 inline-flex w-fit items-center gap-3 rounded-full px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
-              style={{
-                border: `1px solid ${theme.border}`,
-                color: theme.heading,
-                backgroundColor:
-                  theme.ctaBorderBg,
-              }}
-            >
-              Explore best sellers
+            lg:text-[15px]
+          "
+          style={{
+            color: theme.muted,
+          }}
+        >
+          Discover the vehicles creating the
+          most attention right now — ranked by
+          real buyer inquiries.
+        </p>
 
-              <ArrowRight
-                size={14}
-                strokeWidth={1.8}
-                className="text-[#CBA36B]"
-                aria-hidden="true"
-              />
-            </Link>
-          </motion.div>
+        {/* CTA */}
+        <Link
+          href={INVENTORY_HREF}
+          className="
+            group
+            mt-5
+            inline-flex
+            w-fit
+            items-center
+            gap-2.5
+            rounded-full
+            px-4
+            py-2.5
+            text-[9px]
+            font-semibold
+            uppercase
+            tracking-[0.12em]
+            transition-all
+            duration-300
+            hover:-translate-y-0.5
 
-          {/* ---------------------------------------------------------------- */}
-          {/* Hero                                                             */}
-          {/* ---------------------------------------------------------------- */}
+            sm:mt-6
+            sm:px-5
+            sm:py-3
+            sm:text-[10px]
 
-          <motion.div
-            variants={
-              reducedMotion
-                ? undefined
-                : itemVariants
-            }
-            className="lg:col-span-8"
-          >
-            <div
-              className="relative h-72 overflow-hidden rounded-2xl md:h-80"
-              style={{
-                boxShadow: theme.heroShadow,
-              }}
-            >
-              {heroImage && (
-                <Image
-                  src={heroImage}
-                  alt="Top hot-selling vehicle"
-                  fill
-                  sizes="(min-width: 1024px) 66vw, 100vw"
-                  className="object-cover saturate-[1.05] contrast-[1.05] transition-transform duration-[1200ms] ease-out hover:scale-105"
-                  priority
-                />
-              )}
+            lg:text-[11px]
+          "
+          style={{
+            border: `1px solid ${theme.border}`,
+            color: theme.heading,
+            backgroundColor: theme.ctaBorderBg,
+            boxShadow: "0 10px 30px rgba(0,0,0,0.18)",
+          }}
+        >
+          Explore best sellers
 
-              {!heroImage && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Car
-                    size={64}
-                    strokeWidth={0.8}
-                    className="text-[#CBA36B]/30"
-                  />
-                </div>
-              )}
+          <ArrowRight
+            size={13}
+            strokeWidth={1.8}
+            className="
+              shrink-0
+              text-[#CBA36B]
+              transition-transform
+              duration-300
+              group-hover:translate-x-1
+            "
+            aria-hidden="true"
+          />
+        </Link>
+      </motion.div>
 
-              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(203,163,107,0.16)_0%,transparent_22%),linear-gradient(65deg,rgba(229,69,62,0.10)_0%,transparent_18%)]" />
+      {/* ==============================================================
+          VISUAL AREA
 
-              <div
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background: theme.bottomFade,
-                }}
-              />
+          Small on mobile because the background already contains
+          the vehicle.
+          ============================================================== */}
+      <motion.div
+        variants={
+          reducedMotion
+            ? undefined
+            : itemVariants
+        }
+        className="
+          relative
+          min-h-[145px]
 
-              <svg
-                className="pointer-events-none absolute -bottom-10 left-1/2 h-[60px] w-[92%] -translate-x-1/2"
-                viewBox="0 0 800 60"
-                fill="none"
-                aria-hidden="true"
-              >
-                <ellipse
-                  cx="400"
-                  cy="10"
-                  rx="380"
-                  ry="10"
-                  fill="none"
-                  stroke="#CBA36B"
-                  strokeOpacity="0.55"
-                  strokeWidth="1.5"
-                />
-              </svg>
+          sm:min-h-[165px]
 
-              {/* Demand badge */}
-              <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full border border-[#E5453E]/40 bg-[#0A0806]/[0.76] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F3EEE6] backdrop-blur-md">
-                <Flame
-                  size={12}
-                  strokeWidth={2}
-                  className="text-[#E5453E]"
-                  aria-hidden="true"
-                />
+          md:min-h-[180px]
 
-                High Demand
-              </div>
+          lg:col-span-7
+          lg:min-h-0
+        "
+      >
+        {/* High demand */}
+        <div
+          className="
+            absolute
+            left-0
+            top-3
+            flex
+            items-center
+            gap-1.5
+            rounded-full
+            border
+            border-[#E5453E]/40
+            bg-[#080604]/70
+            px-2.5
+            py-1.5
+            text-[8px]
+            font-semibold
+            uppercase
+            tracking-[0.12em]
+            text-[#F3EEE6]
+            backdrop-blur-md
 
-              {/* Desktop stats */}
-              <div
-                className="absolute right-4 top-4 hidden w-32 flex-col rounded-2xl px-4 py-5 backdrop-blur-md lg:flex"
-                style={{
-                  border: `1px solid ${theme.statsPanelBorder}`,
-                  backgroundColor:
-                    theme.statsPanelBg,
-                }}
-              >
-                <StatsList
-                  vertical
-                  isLight={isLight}
-                />
-              </div>
-            </div>
+            sm:px-3
+            sm:py-2
+            sm:text-[9px]
 
-            {/* Mobile stats */}
-            <div
-              className="mt-4 flex justify-between gap-4 rounded-2xl px-5 py-4 lg:hidden"
-              style={{
-                border: `1px solid ${theme.border}`,
-                backgroundColor:
-                  theme.mobileStatsBg,
-                boxShadow:
-                  theme.mobileStatsShadow,
-              }}
-            >
-              <StatsList isLight={isLight} />
-            </div>
-          </motion.div>
+            lg:left-auto
+            lg:right-0
+            lg:top-0
+          "
+        >
+          <Flame
+            size={10}
+            strokeWidth={2}
+            className="text-[#E5453E]"
+            aria-hidden="true"
+          />
+
+          High Demand
         </div>
 
-        {/* ---------------------------------------------------------------- */}
-        {/* Hot Selling Cards                                                */}
-        {/* ---------------------------------------------------------------- */}
-
-        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {loading && cards.length === 0
-            ? Array.from({
-                length: HOT_SELLING_COUNT,
-              }).map((_, index) => (
-                <HotSellingCardSkeleton
-                  key={index}
-                  theme={theme}
-                />
-              ))
-            : cards.map((data) => (
-                <HotSellingCard
-                  key={data.id}
-                  data={data}
-                  theme={theme}
-                  reducedMotion={
-                    reducedMotion
-                  }
-                />
-              ))}
+        {/* Desktop stats */}
+        <div
+          className="
+            absolute
+            right-0
+            top-12
+            hidden
+            w-[115px]
+            rounded-2xl
+            px-3
+            py-4
+            backdrop-blur-xl
+            lg:block
+          "
+          style={{
+            border: `1px solid ${theme.statsPanelBorder}`,
+            backgroundColor: theme.statsPanelBg,
+            boxShadow: "0 18px 40px rgba(0,0,0,0.22)",
+          }}
+        >
+          <StatsList
+            vertical
+            isLight={isLight}
+          />
         </div>
-      </div>
+      </motion.div>
+    </div>
+
+    {/* ================================================================
+        MOBILE STATS
+        ============================================================== */}
+    <div
+      className="
+        relative
+        z-20
+        mx-3
+        mb-3
+        flex
+        min-h-[48px]
+        items-center
+        justify-between
+        gap-2
+        rounded-xl
+        px-3
+        py-2
+
+        sm:mx-5
+        sm:mb-5
+        sm:min-h-[56px]
+        sm:rounded-2xl
+        sm:px-4
+        sm:py-3
+
+        lg:hidden
+      "
+      style={{
+        border: `1px solid ${theme.border}`,
+        backgroundColor: theme.mobileStatsBg,
+        boxShadow: theme.mobileStatsShadow,
+        backdropFilter: "blur(16px)",
+      }}
+    >
+      <StatsList isLight={isLight} />
+    </div>
+  </div>
+
+  {/* ================================================================
+      HOT SELLING CARDS
+      ================================================================ */}
+  <div
+    className="
+      mt-6
+      grid
+      grid-cols-1
+      gap-4
+
+      sm:mt-8
+      sm:gap-5
+
+      md:mt-10
+      md:grid-cols-3
+      md:gap-6
+    "
+  >
+    {loading && cards.length === 0
+      ? Array.from({
+          length: HOT_SELLING_COUNT,
+        }).map((_, index) => (
+          <HotSellingCardSkeleton
+            key={index}
+            theme={theme}
+          />
+        ))
+      : cards.map((data) => (
+          <HotSellingCard
+            key={data.id}
+            data={data}
+            theme={theme}
+            reducedMotion={reducedMotion}
+          />
+        ))}
+  </div>
+</div>
+
+
+     
     </motion.section>
   );
 }

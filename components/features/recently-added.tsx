@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { CalendarDays, Gauge } from "lucide-react";
 import { useTheme } from "next-themes";
 import { fadeUp, staggerContainer, viewport } from "@/lib/motion";
+
 import {
   ACCENT,
   BURGUNDY,
@@ -16,12 +17,14 @@ import {
   PINK,
 } from "../ui/tokens";
 import { getRecentlyAddedVehicles } from "@/services/vehicle.service";
-
-const PLATE_NUMERALS = ["I", "II", "III", "IV"] as const;
+import { useMounted } from "@/hooks/use-mounted";
 
 export function RecentlyAdded() {
+  const mounted = useMounted();
   const { resolvedTheme } = useTheme();
-  const isLight = resolvedTheme === "light";
+  // Before mount: always dark, matching defaultTheme="dark" and avoiding a
+  // hydration flash. After mount: the real, stable, user-selected theme.
+  const isLight = mounted && resolvedTheme === "light";
 
   const [recentlyAdded, setRecentlyAdded] = useState<
     Awaited<ReturnType<typeof getRecentlyAddedVehicles>>

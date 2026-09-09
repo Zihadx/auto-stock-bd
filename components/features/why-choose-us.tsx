@@ -1,6 +1,13 @@
 "use client";
 
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -20,6 +27,8 @@ import { useTheme } from "next-themes";
 import { ACCENT, BURGUNDY, CHARCOAL, GOLD, LINE, PAPER, PINK } from "../ui/tokens";
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { useMounted } from "@/hooks/use-mounted";
+
 
 const DISPLAY_SERIF = "Georgia, 'Times New Roman', serif";
 
@@ -97,12 +106,6 @@ const reasons = [
 
 /* ============================================================
    THEME TOKENS
-   Every color in this section used to be a 4-6 line
-   `isLight ? "rgba(23,21,18,X)" : alpha(PAPER|LINE, Y)`
-   ternary, several repeated verbatim in 2-3 places. `tone()`
-   captures that recurring "ink on light / alpha on dark"
-   pattern in one line, and the whole object is computed once
-   per theme flip via useMemo below instead of on every render.
 ============================================================ */
 
 function buildTheme(isLight: boolean) {
@@ -122,11 +125,9 @@ function buildTheme(isLight: boolean) {
 
     text: isLight ? "#171512" : PAPER,
 
-    // Stronger readable text
     textMuted: tone(0.76, PAPER, 0.82),
     textSubtle: tone(0.68, PAPER, 0.72),
 
-    // Stronger borders
     border: tone(0.18, LINE, 0.70),
     borderSoft: tone(0.15, LINE, 0.60),
     borderFaint: tone(0.13, LINE, 0.52),
@@ -141,7 +142,6 @@ function buildTheme(isLight: boolean) {
       ? "0 30px 90px rgba(23,21,18,0.10), inset 0 1px 0 rgba(255,255,255,0.8)"
       : `0 30px 90px ${alpha("#000000", 0.32)}, inset 0 1px 0 ${alpha(PAPER, 0.07)}`,
 
-    // Small labels — significantly more visible
     kicker: tone(0.68, PAPER, 0.72),
     subhead: tone(0.72, PAPER, 0.78),
     statLabel: tone(0.68, PAPER, 0.72),
@@ -187,10 +187,6 @@ type Theme = ReturnType<typeof buildTheme>;
 
 /* ============================================================
    SCROLL SPY
-   `setRef` now caches one stable callback per index (instead of
-   returning a brand new closure on every render), and `scrollTo`
-   is stable via useCallback — both are handed down to memoized
-   children below, so passing them no longer defeats memo().
 ============================================================ */
 
 function useScrollSpy(count: number) {
@@ -259,8 +255,11 @@ export default function WhyChooseUs({
 }: {
   stats: { totalAvailable: number; brandCount: number };
 }) {
+  const mounted = useMounted();
   const { resolvedTheme } = useTheme();
-  const isLight = resolvedTheme === "light";
+  // Before mount: always dark, matching defaultTheme="dark" and avoiding a
+  // hydration flash. After mount: the real, stable, user-selected theme.
+  const isLight = mounted && resolvedTheme === "light";
   const theme = useMemo(() => buildTheme(isLight), [isLight]);
 
   const stats = useMemo(
@@ -277,7 +276,6 @@ export default function WhyChooseUs({
 
   return (
     <section className="relative overflow-hidden py-20" style={{ backgroundColor: theme.background, color: theme.text }}>
-      {/* Ambient background */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -290,7 +288,6 @@ export default function WhyChooseUs({
       />
 
       <div className="container mx-auto px-4">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -321,9 +318,7 @@ export default function WhyChooseUs({
           </p>
         </motion.div>
 
-        {/* Main */}
         <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16 xl:gap-24">
-          {/* LEFT */}
           <div className="lg:sticky lg:top-24 lg:self-start">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -346,7 +341,6 @@ export default function WhyChooseUs({
                 />
 
                 <div className="relative">
-                  {/* Small heading */}
                   <div className="mb-10 flex items-start justify-between gap-5">
                     <div>
                       <p className="text-[10px] uppercase tracking-[0.25em]" style={{ color: theme.kicker }}>
@@ -363,7 +357,6 @@ export default function WhyChooseUs({
                     </div>
                   </div>
 
-                  {/* Editorial title */}
                   <div className="mb-10">
                     <p
                       className="text-[clamp(2rem,3vw,3rem)] leading-none tracking-[-0.04em]"
@@ -379,7 +372,6 @@ export default function WhyChooseUs({
                     </p>
                   </div>
 
-                  {/* Stats */}
                   <div className="divide-y" style={{ borderColor: theme.borderSoft }}>
                     {stats.map((stat, index) => (
                       <div key={stat.label} className="flex items-center justify-between gap-5 py-4 first:pt-0 last:pb-0">
@@ -401,7 +393,6 @@ export default function WhyChooseUs({
                     ))}
                   </div>
 
-                  {/* Active item */}
                   <div className="mt-8 rounded-2xl border p-4" style={{ borderColor: theme.borderFaint, background: theme.activeBoxBg }}>
                     <div className="flex items-center gap-2">
                       <span
@@ -430,7 +421,6 @@ export default function WhyChooseUs({
                 </div>
               </div>
 
-              {/* Desktop progress */}
               <div className="mt-5 hidden items-center gap-3 px-1 lg:flex">
                 <div className="flex items-center gap-2">
                   {reasons.map((reason, index) => (
@@ -452,7 +442,6 @@ export default function WhyChooseUs({
             </motion.div>
           </div>
 
-          {/* RIGHT — ONLY THIS SCROLLS */}
           <div className="min-w-0">
             <div
               ref={containerRef}
@@ -474,7 +463,6 @@ export default function WhyChooseUs({
               </div>
             </div>
 
-            {/* Bottom statement */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -504,11 +492,6 @@ export default function WhyChooseUs({
 
 /* ============================================================
    REASON CARD
-   Extracted and memoized so that when `active` changes during
-   scroll, React only re-renders the two cards whose `isActive`
-   flag actually flipped — the other four bail out instead of
-   recomputing their (fairly heavy) gradients/shadows/icons on
-   every scroll-driven state update.
 ============================================================ */
 
 const ReasonCard = memo(function ReasonCard({
@@ -544,7 +527,6 @@ const ReasonCard = memo(function ReasonCard({
       className="group relative"
     >
       <button type="button" onClick={() => onSelect(index)} className="relative w-full text-left">
-        {/* Glass active layer */}
         <motion.div
           animate={{ opacity: isActive ? 1 : 0 }}
           transition={{ duration: 0.3, ease: ease.out }}
@@ -556,7 +538,6 @@ const ReasonCard = memo(function ReasonCard({
           }}
         />
 
-        {/* Card */}
         <div
           className={cn(
             "relative rounded-[24px] border p-5 transition-all duration-300 sm:p-6 lg:p-7",
@@ -569,14 +550,12 @@ const ReasonCard = memo(function ReasonCard({
           }}
         >
           <div className="flex gap-5 sm:gap-7">
-            {/* Number */}
             <div className="hidden w-10 shrink-0 pt-1 sm:block">
               <span className="text-[10px] tracking-[0.18em]" style={{ color: isActive ? reason.accent : theme.numberIdle }}>
                 {reason.number}
               </span>
             </div>
 
-            {/* Icon */}
             <div
               className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border transition-all duration-300 sm:h-12 sm:w-12"
               style={{
@@ -587,7 +566,6 @@ const ReasonCard = memo(function ReasonCard({
               <Icon size={18} strokeWidth={1.5} style={{ color: isActive ? reason.accent : theme.iconIdleColor }} />
             </div>
 
-            {/* Content */}
             <div className="min-w-0 flex-1">
               <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1">
                 <span
@@ -624,7 +602,6 @@ const ReasonCard = memo(function ReasonCard({
             </div>
           </div>
 
-          {/* Active bottom line */}
           <div
             className="absolute bottom-0 left-6 right-6 h-px origin-left overflow-hidden sm:left-7 sm:right-7"
             style={{ background: theme.borderCard }}
