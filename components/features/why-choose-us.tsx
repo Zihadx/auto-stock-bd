@@ -22,12 +22,10 @@ import {
   Wrench,
 } from "lucide-react";
 
-import { useTheme } from "next-themes";
-
-import { ACCENT, BURGUNDY, CHARCOAL, GOLD, LINE, PAPER, PINK } from "../ui/tokens";
+import { ACCENT, BURGUNDY, CHARCOAL, EDITORIAL_INK_LIGHT, EDITORIAL_SURFACE_LIGHT, GOLD, LINE, PAPER, PINK } from "../ui/tokens";
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
-import { useMounted } from "@/hooks/use-mounted";
+import { useIsLightTheme } from "@/hooks/use-mounted";
 
 
 const DISPLAY_SERIF = "Georgia, 'Times New Roman', serif";
@@ -121,9 +119,9 @@ function buildTheme(isLight: boolean) {
   return {
     isLight,
 
-    background: isLight ? "#F5F3EE" : CHARCOAL,
+    background: isLight ? EDITORIAL_SURFACE_LIGHT : CHARCOAL,
 
-    text: isLight ? "#171512" : PAPER,
+    text: isLight ? EDITORIAL_INK_LIGHT : PAPER,
 
     textMuted: tone(0.76, PAPER, 0.82),
     textSubtle: tone(0.68, PAPER, 0.72),
@@ -255,11 +253,7 @@ export default function WhyChooseUs({
 }: {
   stats: { totalAvailable: number; brandCount: number };
 }) {
-  const mounted = useMounted();
-  const { resolvedTheme } = useTheme();
-  // Before mount: always dark, matching defaultTheme="dark" and avoiding a
-  // hydration flash. After mount: the real, stable, user-selected theme.
-  const isLight = mounted && resolvedTheme === "light";
+  const isLight = useIsLightTheme();
   const theme = useMemo(() => buildTheme(isLight), [isLight]);
 
   const stats = useMemo(

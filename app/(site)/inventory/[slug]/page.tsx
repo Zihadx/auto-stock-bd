@@ -18,7 +18,6 @@ import { FeatureList, HistoryTimeline } from "@/components/features/vehicle-deta
 import { CtaSidebar } from "@/components/features/vehicle-detail/cta-sidebar";
 import { SimilarVehicles } from "@/components/features/vehicle-detail/similar-vehicles";
 import { VehicleStatusBadge } from "@/components/ui/status-badge";
-import { formatFullDate } from "@/lib/format";
 
 export async function generateStaticParams() {
   const { items } = await getVehicles({ pageSize: 100 });

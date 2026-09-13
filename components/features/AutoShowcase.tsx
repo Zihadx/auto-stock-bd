@@ -28,7 +28,7 @@ import {
   Gauge,
   Fuel,
 } from "lucide-react";
-import { ACCENT, CHARCOAL, PAPER } from "../ui/tokens";
+import { ACCENT, CHARCOAL, EDITORIAL_INK_LIGHT, EDITORIAL_SURFACE_LIGHT, PAPER } from "../ui/tokens";
 // adjust to your actual path
 import type { Vehicle } from "@/types/vehicle";
 import { getFeaturedVehicles } from "@/services/vehicle.service";
@@ -114,8 +114,8 @@ function toCardData(vehicle: Vehicle): CarCardData {
 
 function buildTheme(dark: boolean) {
   return {
-    bg: dark ? CHARCOAL : "#F5F4F0",
-    text: dark ? PAPER : "#111111",
+    bg: dark ? CHARCOAL : EDITORIAL_SURFACE_LIGHT,
+    text: dark ? PAPER : EDITORIAL_INK_LIGHT,
     muted: dark ? PAPER : "#38342E",
     subtle: dark ? PAPER : "#454039",
     soft: dark ? PAPER : "#3E3932",

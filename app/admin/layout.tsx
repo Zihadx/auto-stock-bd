@@ -22,7 +22,7 @@ export default function AdminLayout({ children }: LayoutProps<"/admin">) {
       <AdminSidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <AdminTopbar />
-        <main id="admin-main-content" className="flex-1 bg-charcoal text-ink">
+        <main id="admin-main-content" className="flex-1 bg-paper text-ink">
           {children}
         </main>
       </div>

@@ -24,6 +24,7 @@ export function CustomerSearch() {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search by name, phone, email..."
+        aria-label="Search customers"
         className="h-9 w-full rounded-sm border border-line bg-paper pl-9 pr-3 text-sm text-ink placeholder:text-ink-faint"
       />
     </div>

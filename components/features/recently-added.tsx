@@ -5,26 +5,22 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { CalendarDays, Gauge } from "lucide-react";
-import { useTheme } from "next-themes";
 import { fadeUp, staggerContainer, viewport } from "@/lib/motion";
 
 import {
-  ACCENT,
   BURGUNDY,
   CHARCOAL,
+  EDITORIAL_INK_LIGHT,
+  EDITORIAL_SURFACE_LIGHT,
   GOLD,
   PAPER,
   PINK,
 } from "../ui/tokens";
 import { getRecentlyAddedVehicles } from "@/services/vehicle.service";
-import { useMounted } from "@/hooks/use-mounted";
+import { useIsLightTheme } from "@/hooks/use-mounted";
 
 export function RecentlyAdded() {
-  const mounted = useMounted();
-  const { resolvedTheme } = useTheme();
-  // Before mount: always dark, matching defaultTheme="dark" and avoiding a
-  // hydration flash. After mount: the real, stable, user-selected theme.
-  const isLight = mounted && resolvedTheme === "light";
+  const isLight = useIsLightTheme();
 
   const [recentlyAdded, setRecentlyAdded] = useState<
     Awaited<ReturnType<typeof getRecentlyAddedVehicles>>
@@ -34,8 +30,8 @@ export function RecentlyAdded() {
     getRecentlyAddedVehicles(4).then(setRecentlyAdded);
   }, []);
 
-  const sectionBackground = isLight ? "#F5F3EE" : CHARCOAL;
-  const primaryText = isLight ? "#171512" : PAPER;
+  const sectionBackground = isLight ? EDITORIAL_SURFACE_LIGHT : CHARCOAL;
+  const primaryText = isLight ? EDITORIAL_INK_LIGHT : PAPER;
 
   const mutedText = isLight
     ? "rgba(23,21,18,0.62)"
@@ -201,7 +197,7 @@ export function RecentlyAdded() {
           variants={staggerContainer(0.08)}
           className="mt-12 grid grid-cols-1 gap-4 overflow-hidden sm:grid-cols-2 lg:grid-cols-4"
         >
-          {recentlyAdded.map((vehicle, i) => {
+          {recentlyAdded.map((vehicle) => {
             const name = `${vehicle.brand} ${vehicle.model}${
               vehicle.trim ? ` ${vehicle.trim}` : ""
             }`;

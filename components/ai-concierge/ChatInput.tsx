@@ -1,6 +1,6 @@
 "use client";
 
-import { Bot, Paperclip, Send, Sparkles } from "lucide-react";
+import { Bot, Paperclip, Send } from "lucide-react";
 import { FormEvent, KeyboardEvent, RefObject } from "react";
 
 export function ChatInput({
@@ -64,6 +64,7 @@ export function ChatInput({
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={disabled ? "AutoStock is thinking..." : "Ask about a vehicle..."}
+          aria-label="Message the AutoStock concierge"
           disabled={disabled}
           className="w-full min-w-0 flex-1 bg-transparent px-2 py-2.5 text-[11px] text-white outline-none placeholder:text-white/25 disabled:cursor-not-allowed"
         />

@@ -8,12 +8,23 @@ import {
   siX,
   siYoutube,
 } from "simple-icons";
-import { useTheme } from "next-themes";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-import { ACCENT, CHARCOAL, GOLD, PAPER } from "../ui/tokens";
-import { useMounted } from "@/hooks/use-mounted";
+import {
+  ACCENT,
+  CHARCOAL,
+  GOLD,
+  GOLD_BORDER_LIGHT,
+  GOLD_LIGHT,
+  GOLD_TEXT_LIGHT,
+  INK_FAINT_LIGHT,
+  INK_MUTED_LIGHT,
+  INK_SOFT_LIGHT,
+  INK_STRONG_LIGHT,
+  PAPER,
+} from "../ui/tokens";
+import { useIsDarkTheme } from "@/hooks/use-mounted";
 
 /* ================================================================
    SOCIALS
@@ -109,10 +120,7 @@ function LogoMark({
 ================================================================ */
 
 export function SiteFooter() {
-  const { resolvedTheme } = useTheme();
-  const mounted = useMounted();
-
-  const isDark = mounted && resolvedTheme !== "light";
+  const isDark = useIsDarkTheme();
 
   /* ==============================================================
      BRAND
@@ -137,15 +145,15 @@ export function SiteFooter() {
 
   const primaryText = isDark
     ? PAPER
-    : "#11100E";
+    : INK_STRONG_LIGHT;
 
   const secondaryText = isDark
     ? "rgba(255,255,255,0.72)"
-    : "#332F29";
+    : INK_SOFT_LIGHT;
 
   const mutedText = isDark
     ? "rgba(255,255,255,0.62)"
-    : "#3A3630";
+    : INK_MUTED_LIGHT;
 
   const linkText = isDark
     ? "rgba(255,255,255,0.72)"
@@ -165,7 +173,7 @@ export function SiteFooter() {
 
   const goldStrong = isDark
     ? ACCENT
-    : "#654A19";
+    : GOLD_TEXT_LIGHT;
 
   const inputBackground = isDark
     ? "rgba(255,255,255,0.04)"
@@ -177,7 +185,7 @@ export function SiteFooter() {
 
   const badgeText = isDark
     ? "rgba(255,255,255,0.68)"
-    : "#332F29";
+    : INK_SOFT_LIGHT;
 
   const badgeBorder = isDark
     ? "rgba(255,255,255,0.11)"
@@ -319,7 +327,7 @@ export function SiteFooter() {
                       borderColor,
                       color: isDark
                         ? "rgba(255,255,255,0.72)"
-                        : "#3A3630",
+                        : INK_MUTED_LIGHT,
                       backgroundColor: isDark
                         ? "rgba(255,255,255,0.025)"
                         : "rgba(255,255,255,0.35)",
@@ -328,7 +336,7 @@ export function SiteFooter() {
                       event.currentTarget.style.borderColor =
                         isDark
                           ? `${ACCENT}55`
-                          : "#96712F";
+                          : GOLD_BORDER_LIGHT;
 
                       event.currentTarget.style.color =
                         goldStrong;
@@ -345,7 +353,7 @@ export function SiteFooter() {
                       event.currentTarget.style.color =
                         isDark
                           ? "rgba(255,255,255,0.72)"
-                          : "#3A3630";
+                          : INK_MUTED_LIGHT;
 
                       event.currentTarget.style.backgroundColor =
                         isDark
@@ -517,7 +525,7 @@ export function SiteFooter() {
                 style={{
                   backgroundColor: isDark
                     ? ACCENT
-                    : "#8A6828",
+                    : GOLD_LIGHT,
                   color: isDark
                     ? CHARCOAL
                     : "#FFFDF8",
@@ -615,7 +623,7 @@ export function SiteFooter() {
             style={{
               color: isDark
                 ? "rgba(255,255,255,0.38)"
-                : "#514B41",
+                : INK_FAINT_LIGHT,
             }}
           >
             Automotive Atelier

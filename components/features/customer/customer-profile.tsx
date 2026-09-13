@@ -19,7 +19,7 @@ import {
 import { useTheme } from "next-themes";
 import { useState, type ReactNode } from "react";
 
-import { ACCENT, GOLD } from "@/components/ui/tokens";
+import { ACCENT, GOLD, NATIVE_OPTION_CLASS } from "@/components/ui/tokens";
 import { cn } from "@/lib/utils";
 import { CustomerSettingSection, CustomerSettingsSidebar } from "./settings-sidebar";
 
@@ -359,8 +359,8 @@ export function CustomerSettingsPage() {
                       value={language}
                       onChange={setLanguage}
                     >
-                      <option value="English">English</option>
-                      <option value="বাংলা">বাংলা</option>
+                      <option value="English" className={NATIVE_OPTION_CLASS}>English</option>
+                      <option value="বাংলা" className={NATIVE_OPTION_CLASS}>বাংলা</option>
                     </SelectField>
                   </SettingRow>
 
@@ -373,8 +373,8 @@ export function CustomerSettingsPage() {
                       value={currency}
                       onChange={setCurrency}
                     >
-                      <option value="BDT">BDT · ৳</option>
-                      <option value="USD">USD · $</option>
+                      <option value="BDT" className={NATIVE_OPTION_CLASS}>BDT · ৳</option>
+                      <option value="USD" className={NATIVE_OPTION_CLASS}>USD · $</option>
                     </SelectField>
                   </SettingRow>
                 </div>
@@ -477,11 +477,11 @@ export function CustomerSettingsPage() {
                     value="All vehicles"
                     onChange={() => {}}
                   >
-                    <option>All vehicles</option>
-                    <option>SUV</option>
-                    <option>Sedan</option>
-                    <option>Hatchback</option>
-                    <option>Pickup</option>
+                    <option className={NATIVE_OPTION_CLASS}>All vehicles</option>
+                    <option className={NATIVE_OPTION_CLASS}>SUV</option>
+                    <option className={NATIVE_OPTION_CLASS}>Sedan</option>
+                    <option className={NATIVE_OPTION_CLASS}>Hatchback</option>
+                    <option className={NATIVE_OPTION_CLASS}>Pickup</option>
                   </SelectField>
                 </SettingRow>
               </GlassCard>

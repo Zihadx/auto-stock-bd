@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from "react";
+import { useTheme } from "next-themes";
 
 /**
  * True once the component has mounted on the client, false during SSR and
@@ -16,6 +17,10 @@ import { useSyncExternalStore } from "react";
  *   //              ^ before mount: always false (dark), matching
  *   //                defaultTheme="dark" in ThemeProvider and avoiding a
  *   //                hydration flash. After mount: the real theme.
+ *
+ * If a component only needs the boolean and has no other use for `mounted`
+ * or `resolvedTheme`, prefer `useIsLightTheme` / `useIsDarkTheme` below —
+ * they're this exact snippet, named.
  */
 const subscribe = () => () => {};
 
@@ -25,3 +30,17 @@ export const useMounted = () =>
     () => true,
     () => false,
   );
+
+/** SSR-safe `resolvedTheme === "light"`. See `useMounted` above. */
+export const useIsLightTheme = () => {
+  const mounted = useMounted();
+  const { resolvedTheme } = useTheme();
+  return mounted && resolvedTheme === "light";
+};
+
+/** SSR-safe `resolvedTheme !== "light"`. See `useMounted` above. */
+export const useIsDarkTheme = () => {
+  const mounted = useMounted();
+  const { resolvedTheme } = useTheme();
+  return mounted && resolvedTheme !== "light";
+};

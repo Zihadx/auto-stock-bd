@@ -78,7 +78,7 @@ export function SpecSheet({ vehicle }: { vehicle: Vehicle }) {
         sm:grid-cols-4
       "
     >
-      {specs.map(({ icon: Icon, label, value }, index) => (
+      {specs.map(({ icon: Icon, label, value }) => (
         <div
           key={label}
           className="

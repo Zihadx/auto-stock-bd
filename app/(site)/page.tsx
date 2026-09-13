@@ -1,7 +1,7 @@
 import { BrowseByBrand } from "@/components/features/browse-by-brand";
 
 import { RecentlyAdded } from "@/components/features/recently-added";
-import {  FinalCta } from "@/components/features/homepage-ctas";
+import { FinalCta } from "@/components/features/homepage-ctas";
 import BenefitsStrip from "@/components/features/trust-section";
 import { Hero } from "@/components/features/hero";
 
@@ -21,24 +21,15 @@ export default async function HomePage() {
     <>
       <Hero vehicleCount={inventoryStats.totalAvailable} />
 
-     {/* <QuickSearchBar /> */}
       <BenefitsStrip />
-      {/* <SpecStrip
-        totalInventoryCount={214}
-        totalInventoryValueBDT={186_000_000}
-        newVehiclesThisWeek={9}
-      /> */}
 
       <AutoShowcase />
 
-      {/* <HotSelling /> */}
-       <HotSellingSection />
+      <HotSellingSection />
       <BrowseByBrand brands={brandCounts} />
       <WhyChooseUs stats={inventoryStats} />
       <RecentlyAdded />
       <FinalCta />
-
-      {/* <SellCTA /> */}
     </>
   );
 }

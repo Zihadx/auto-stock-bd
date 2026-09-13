@@ -5,7 +5,6 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { ChevronDown, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
 import { Suspense, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useTheme } from "next-themes";
 
 import { adminNav } from "@/config/admin-nav";
 import { siteConfig } from "@/config/site";
@@ -15,7 +14,7 @@ import { cn } from "@/lib/utils";
 
 
 import { ACCENT, BURGUNDY, CHARCOAL, GOLD, PAPER, PINK } from "../ui/tokens";
-import { useMounted } from "@/hooks/use-mounted";
+import { useIsDarkTheme } from "@/hooks/use-mounted";
 
 /* -----------------------------------------------------------------------
    Active-route matching
@@ -322,9 +321,7 @@ export function AdminSidebar() {
   const dispatch = useAppDispatch();
   const collapsed = useAppSelector((s) => s.ui.sidebarCollapsed);
   const mobileOpen = useAppSelector((s) => s.ui.mobileNavOpen);
-  const { resolvedTheme } = useTheme();
-  const mounted = useMounted();
-  const isDark = mounted && resolvedTheme !== "light";
+  const isDark = useIsDarkTheme();
   const tokens = useSidebarTokens(isDark);
 
   const closeMobile = () => dispatch(setMobileNavOpen(false));

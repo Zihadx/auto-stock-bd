@@ -24,6 +24,7 @@ export function FeatureListInput({
             <input
               type="text"
               placeholder="e.g. Sunroof, Reverse camera, Cruise control"
+              aria-label={`Feature ${index + 1}`}
               className="h-9 w-full rounded-sm border border-line bg-paper px-3 text-sm text-ink placeholder:text-ink-faint"
               {...register(`features.${index}.value` as const)}
             />

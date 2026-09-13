@@ -1,4 +1,4 @@
-import { CHARCOAL, PAPER } from "@/components/ui/tokens";
+import { CHARCOAL, EDITORIAL_INK_LIGHT, EDITORIAL_SURFACE_LIGHT, PAPER } from "@/components/ui/tokens";
 
 
 /** Brand accent colors — constant across light/dark, cycled per card. */
@@ -22,8 +22,8 @@ export function buildTheme(isLight: boolean) {
 
   return {
     isLight,
-    sectionBg: isLight ? "#F5F3EE" : CHARCOAL,
-    heading: isLight ? "#171512" : PAPER,
+    sectionBg: isLight ? EDITORIAL_SURFACE_LIGHT : CHARCOAL,
+    heading: isLight ? EDITORIAL_INK_LIGHT : PAPER,
     // Real opacity-based hierarchy so muted/subtle text is actually dimmer
     // than headings in BOTH themes, not just in light mode.
     muted: `rgba(${ink},0.68)`,

@@ -21,10 +21,8 @@ import { useState } from "react";
 
 import {
   ACCENT,
-  BURGUNDY,
   GOLD,
-  PAPER,
-  PINK,
+  NATIVE_OPTION_CLASS,
 } from "@/components/ui/tokens";
 import { cn } from "@/lib/utils";
 
@@ -452,7 +450,7 @@ export function SettingsPage() {
                       className="size-[14px]"
                       strokeWidth={1.7}
                       style={{
-                        color: selected ? PINK : ACCENT,
+                        color: ACCENT,
                       }}
                     />
                   </span>
@@ -604,8 +602,8 @@ export function SettingsPage() {
                         value={language}
                         onChange={setLanguage}
                       >
-                        <option value="English">English</option>
-                        <option value="বাংলা">বাংলা</option>
+                        <option value="English" className={NATIVE_OPTION_CLASS}>English</option>
+                        <option value="বাংলা" className={NATIVE_OPTION_CLASS}>বাংলা</option>
                       </SelectField>
                     </SettingRow>
 

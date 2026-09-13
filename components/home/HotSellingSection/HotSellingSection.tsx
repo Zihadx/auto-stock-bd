@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { Cinzel, Inter } from "next/font/google";
 import { motion, useReducedMotion } from "framer-motion";
-import { useTheme } from "next-themes";
 import { ArrowRight, Flame } from "lucide-react";
 
 import { getHotSellingVehicles } from "@/services/vehicle.service";
+import { useIsLightTheme } from "@/hooks/use-mounted";
 import { buildTheme, HERO_HEADING, HERO_MUTED, STATS_PANEL_BG, STATS_PANEL_BORDER } from "./theme";
 import { containerVariants, itemVariants } from "./animations";
 import { StatsList } from "./StatsList";
@@ -29,10 +29,7 @@ export default function HotSellingSection() {
   const reducedMotion = useReducedMotion();
   const motionOn = !reducedMotion;
 
-  // Same external-store pattern for both: hydration-safe, no effect+setState.
-  const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
-  const { resolvedTheme } = useTheme();
-  const isLight = mounted && resolvedTheme === "light";
+  const isLight = useIsLightTheme();
   const theme = useMemo(() => buildTheme(isLight), [isLight]);
 
   // Cached vehicles from sessionStorage, read as external state rather than
@@ -85,9 +82,9 @@ export default function HotSellingSection() {
         {/* ---------------------------------------------------------------- */}
         {/* Hero — always sits on a dark photo, so its text is always light  */}
         {/* ---------------------------------------------------------------- */}
-        <div className="relative isolate overflow-hidden rounded-[20px] sm:rounded-[24px] lg:rounded-[28px]" style={{ boxShadow: theme.heroShadow }}>
+        <div className="relative isolate overflow-hidden rounded-[20px] sm:rounded-3xl lg:rounded-[28px]" style={{ boxShadow: theme.heroShadow }}>
           <div
-            className="absolute inset-0 -z-20 bg-cover bg-[position:67%_center] sm:bg-[position:66%_center] lg:bg-center"
+            className="absolute inset-0 -z-20 bg-cover bg-position-[67%_center] sm:bg-position-[66%_center] lg:bg-center"
             style={{ backgroundImage: 'url("/images/hot-selling-bg.png")' }}
             aria-hidden="true"
           />

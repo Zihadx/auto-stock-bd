@@ -11,7 +11,7 @@ import {
   UserRound,
 } from "lucide-react";
 
-import { ACCENT, GOLD, PINK } from "@/components/ui/tokens";
+import { ACCENT, GOLD } from "@/components/ui/tokens";
 import { cn } from "@/lib/utils";
 
 export type CustomerSettingSection =
@@ -133,7 +133,7 @@ export function CustomerSettingsSidebar({
                   className="size-[14px]"
                   strokeWidth={1.7}
                   style={{
-                    color: selected ? PINK : ACCENT,
+                    color: ACCENT,
                   }}
                 />
               </span>

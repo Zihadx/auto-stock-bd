@@ -19,6 +19,8 @@ import { useSyncExternalStore } from "react";
 import {
   ACCENT,
   CHARCOAL,
+  EDITORIAL_INK_LIGHT,
+  EDITORIAL_SURFACE_LIGHT,
   PAPER,
 } from "../ui/tokens";
 
@@ -140,7 +142,7 @@ export default function BenefitsStrip() {
 
   const sectionBackground = isDark
     ? CHARCOAL
-    : "#F5F4F0";
+    : EDITORIAL_SURFACE_LIGHT;
 
   const surfaceBackground = isDark
     ? `${ACCENT}14`
@@ -156,7 +158,7 @@ export default function BenefitsStrip() {
 
   const titleColor = isDark
     ? PAPER
-    : "#111111";
+    : EDITORIAL_INK_LIGHT;
 
   const descriptionColor = isDark
     ? `${PAPER}75`

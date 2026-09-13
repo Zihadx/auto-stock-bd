@@ -26,6 +26,7 @@ export function InventorySearch() {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search vehicles..."
+        aria-label="Search vehicles"
         className="h-9 w-full rounded-sm border border-line bg-paper pl-9 pr-3 text-sm text-ink placeholder:text-ink-faint"
       />
     </div>

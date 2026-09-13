@@ -5,11 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, ChevronRight, Car } from "lucide-react";
-import { useTheme } from "next-themes";
 import { fadeUp, staggerContainer, viewport } from "@/lib/motion";
 
-import { ACCENT, CHARCOAL, PAPER, GOLD } from "../ui/tokens";
-import { useMounted } from "@/hooks/use-mounted";
+import { ACCENT, CHARCOAL, EDITORIAL_INK_LIGHT, EDITORIAL_SURFACE_LIGHT, PAPER, GOLD } from "../ui/tokens";
+import { useIsLightTheme } from "@/hooks/use-mounted";
 
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                    */
@@ -70,18 +69,14 @@ export function BrowseByBrand({
   brands: { brand: string; count: number }[];
 }) {
   const reducedMotion = useReducedMotion();
-  const mounted = useMounted();
-  const { resolvedTheme } = useTheme();
-  // Before mount: always dark, matching defaultTheme="dark" and avoiding a
-  // hydration flash. After mount: the real, stable, user-selected theme.
-  const isLight = mounted && resolvedTheme === "light";
+  const isLight = useIsLightTheme();
 
   if (brands.length === 0) return null;
 
-  const sectionBackground = isLight ? "#F5F3EE" : CHARCOAL;
+  const sectionBackground = isLight ? EDITORIAL_SURFACE_LIGHT : CHARCOAL;
 
-  const headingColor = isLight ? "#171512" : PAPER;
-  const bodyColor = isLight ? "#171512" : PAPER;
+  const headingColor = isLight ? EDITORIAL_INK_LIGHT : PAPER;
+  const bodyColor = isLight ? EDITORIAL_INK_LIGHT : PAPER;
 
   /* Stronger readable text */
   const mutedColor = isLight ? "#38342E" : PAPER;

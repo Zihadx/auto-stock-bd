@@ -24,6 +24,7 @@ export function InquirySearch() {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search by name, phone, message..."
+        aria-label="Search inquiries"
         className="h-9 w-full rounded-sm border border-line bg-paper pl-9 pr-3 text-sm text-ink placeholder:text-ink-faint"
       />
     </div>

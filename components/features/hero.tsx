@@ -29,6 +29,7 @@ import {
   PINK,
   GOLD,
   LINE,
+  NATIVE_OPTION_CLASS,
 } from "@/components/ui/tokens";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -377,6 +378,7 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
                             if (e.key === "Enter") handleSearch();
                           }}
                           placeholder="e.g. Porsche 911"
+                          aria-label="Search vehicles"
                           className="w-full bg-transparent text-[12px] font-medium outline-none placeholder:opacity-60 sm:text-[13px]"
                           style={{ color: PAPER }}
                         />
@@ -403,11 +405,11 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
                             className="w-full bg-transparent text-[11px] font-medium outline-none sm:text-[12px]"
                             style={{ color: PAPER }}
                           >
-                            <option value="">Any price</option>
-                            <option value="under-30">Under $30k</option>
-                            <option value="30-60">$30k – $60k</option>
-                            <option value="60-100">$60k – $100k</option>
-                            <option value="100-plus">$100k+</option>
+                            <option value="" className={NATIVE_OPTION_CLASS}>Any price</option>
+                            <option value="under-30" className={NATIVE_OPTION_CLASS}>Under $30k</option>
+                            <option value="30-60" className={NATIVE_OPTION_CLASS}>$30k – $60k</option>
+                            <option value="60-100" className={NATIVE_OPTION_CLASS}>$60k – $100k</option>
+                            <option value="100-plus" className={NATIVE_OPTION_CLASS}>$100k+</option>
                           </select>
                         </label>
 
@@ -431,10 +433,10 @@ export function Hero({ vehicleCount }: { vehicleCount: number }) {
                             className="w-full bg-transparent text-[11px] font-medium outline-none sm:text-[12px]"
                             style={{ color: PAPER }}
                           >
-                            <option value="">Any condition</option>
-                            <option value="excellent">Excellent</option>
-                            <option value="very-good">Very good</option>
-                            <option value="good">Good</option>
+                            <option value="" className={NATIVE_OPTION_CLASS}>Any condition</option>
+                            <option value="excellent" className={NATIVE_OPTION_CLASS}>Excellent</option>
+                            <option value="very-good" className={NATIVE_OPTION_CLASS}>Very good</option>
+                            <option value="good" className={NATIVE_OPTION_CLASS}>Good</option>
                           </select>
                         </label>
                       </div>

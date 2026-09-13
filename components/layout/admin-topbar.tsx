@@ -1,7 +1,6 @@
 "use client";
 
 import { Bell, Search, Menu } from "lucide-react";
-import { useTheme } from "next-themes";
 
 import { useAppDispatch } from "@/store/hooks";
 import {
@@ -10,14 +9,13 @@ import {
 } from "@/store/slices/uiSlice";
 
 import { ACCENT, CHARCOAL, PAPER } from "../ui/tokens";
-import { useMounted } from "@/hooks/use-mounted";
+import { useMounted, useIsDarkTheme } from "@/hooks/use-mounted";
 
 export function AdminTopbar() {
   const dispatch = useAppDispatch();
-  const { resolvedTheme } = useTheme();
   const mounted = useMounted();
 
-  const isDark = mounted && resolvedTheme !== "light";
+  const isDark = useIsDarkTheme();
   const isMac =
     mounted &&
     typeof navigator !== "undefined" &&

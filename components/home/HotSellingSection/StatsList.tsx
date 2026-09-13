@@ -1,5 +1,5 @@
 
-import { PAPER } from "@/components/ui/tokens";
+import { EDITORIAL_INK_LIGHT, PAPER } from "@/components/ui/tokens";
 import { HEADLINE_STATS } from "./utils";
 
 interface StatsListProps {
@@ -16,7 +16,7 @@ interface StatsListProps {
 
 export function StatsList({ vertical = false, tone, isLight }: StatsListProps) {
   const useLightText = tone === "light" || !isLight;
-  const valueColor = useLightText ? PAPER : "#171512";
+  const valueColor = useLightText ? PAPER : EDITORIAL_INK_LIGHT;
   const labelColor = useLightText ? "rgba(243,238,230,0.66)" : "rgba(23,21,18,0.6)";
   const dividerColor = useLightText ? "rgba(243,238,230,0.16)" : "rgba(23,21,18,0.14)";
 

@@ -12,14 +12,28 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import { useTheme } from "next-themes";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { viewport } from "@/lib/motion";
 
-import { BURGUNDY, CHARCOAL, PAPER, PINK, GOLD } from "../ui/tokens";
-import { useMounted } from "@/hooks/use-mounted";
+import {
+  BURGUNDY,
+  CHARCOAL,
+  EDITORIAL_SURFACE_LIGHT,
+  GOLD_BORDER_LIGHT,
+  GOLD_ICON_LIGHT,
+  GOLD_LIGHT,
+  GOLD_TEXT_LIGHT,
+  INK_FAINT_LIGHT,
+  INK_MUTED_LIGHT,
+  INK_SOFT_LIGHT,
+  INK_STRONG_LIGHT,
+  PAPER,
+  PINK,
+  GOLD,
+} from "../ui/tokens";
+import { useIsLightTheme } from "@/hooks/use-mounted";
 
 // ============================================================
 // GRAIN
@@ -102,18 +116,18 @@ function buildTheme(isLight: boolean) {
   const frame = isLight ? "rgba(23,21,18,0.14)" : `${PAPER}08`;
 
   return {
-    background: isLight ? "#F5F3EE" : CHARCOAL,
+    background: isLight ? EDITORIAL_SURFACE_LIGHT : CHARCOAL,
 
     // Main typography
-    text: isLight ? "#11100E" : PAPER,
+    text: isLight ? INK_STRONG_LIGHT : PAPER,
 
     // 100% visible small/body text
     textSecondary: isLight ? "#2B2823" : PAPER,
-    textTertiary: isLight ? "#3A3630" : PAPER,
+    textTertiary: isLight ? INK_MUTED_LIGHT : PAPER,
     textSoft: isLight ? "#27241F" : PAPER,
 
     // Destination italic
-    destinationAccent: isLight ? "#514B41" : PAPER,
+    destinationAccent: isLight ? INK_FAINT_LIGHT : PAPER,
 
     // Frame lines
     frameGradient: `linear-gradient(
@@ -133,15 +147,15 @@ function buildTheme(isLight: boolean) {
     grainOpacity: isLight ? 0.018 : 0.035,
 
     // Eyebrow — 100% visible
-    eyebrowLine: isLight ? "#8A6828" : GOLD,
-    eyebrowText: isLight ? "#654A19" : PAPER,
+    eyebrowLine: isLight ? GOLD_LIGHT : GOLD,
+    eyebrowText: isLight ? GOLD_TEXT_LIGHT : PAPER,
 
     // Station — 100% visible
-    stationDescription: isLight ? "#332F29" : PAPER,
+    stationDescription: isLight ? INK_SOFT_LIGHT : PAPER,
     stationCta: isLight ? "#211E19" : PAPER,
-    stationMarker: isLight ? "#76571F" : GOLD,
-    stationIcon: isLight ? "#76571F" : GOLD,
-    stationCtaBorder: isLight ? "#96712F" : GOLD,
+    stationMarker: isLight ? GOLD_ICON_LIGHT : GOLD,
+    stationIcon: isLight ? GOLD_ICON_LIGHT : GOLD,
+    stationCtaBorder: isLight ? GOLD_BORDER_LIGHT : GOLD,
     stationCtaBg: isLight
       ? "rgba(138,104,40,0.10)"
       : `${GOLD}14`,
@@ -150,8 +164,8 @@ function buildTheme(isLight: boolean) {
       : `${GOLD}10`,
 
     // Trust — 100% visible
-    trustIcon: isLight ? "#76571F" : GOLD,
-    trustLabel: isLight ? "#332F29" : PAPER,
+    trustIcon: isLight ? GOLD_ICON_LIGHT : GOLD,
+    trustLabel: isLight ? INK_SOFT_LIGHT : PAPER,
 
     burgundyBg: isLight ? `${BURGUNDY}0C` : `${BURGUNDY}20`,
     burgundyOpacity: isLight ? [0.12, 0.18, 0.12] : [0.35, 0.5, 0.35],
@@ -289,7 +303,7 @@ function Station({
           className="h-[2px] w-14 transition-all duration-700 group-hover:w-24"
           style={{
             background:
-              "linear-gradient(to right, #8A6828, rgba(138,104,40,0.18), transparent)",
+              `linear-gradient(to right, ${GOLD_LIGHT}, rgba(138,104,40,0.18), transparent)`,
           }}
         />
       </div>
@@ -406,12 +420,7 @@ function TrustItem({
 
 export function FinalCta() {
   const shouldReduceMotion = !!useReducedMotion();
-  const mounted = useMounted();
-  const { resolvedTheme } = useTheme();
-
-  // Before mount: always dark, matching defaultTheme="dark" and avoiding a
-  // hydration flash. After mount: the real, stable, user-selected theme.
-  const isLight = mounted && resolvedTheme === "light";
+  const isLight = useIsLightTheme();
 
   const theme = useMemo(() => buildTheme(isLight), [isLight]);
 
@@ -503,7 +512,7 @@ export function FinalCta() {
             <span
               className="italic"
               style={{
-                color: isLight ? "#8A6828" : GOLD,
+                color: isLight ? GOLD_LIGHT : GOLD,
               }}
             >
               Your next one.
@@ -563,7 +572,7 @@ export function FinalCta() {
           className="mx-auto mt-24 h-24 w-[2px] origin-top md:mt-32 md:h-32"
           style={{
             background: isLight
-              ? "linear-gradient(to bottom, transparent, #A9823A 25%, #8A6828 50%, #A9823A 75%, transparent)"
+              ? `linear-gradient(to bottom, transparent, #A9823A 25%, ${GOLD_LIGHT} 50%, #A9823A 75%, transparent)`
               : `linear-gradient(to bottom, ${GOLD}00, ${GOLD}65 50%, ${GOLD}00)`,
           }}
         />
@@ -648,7 +657,7 @@ export function FinalCta() {
                 strokeWidth={1.4}
                 className="transition-transform duration-500 group-hover:translate-x-1"
                 style={{
-                  color: isLight ? "#8A6828" : GOLD,
+                  color: isLight ? GOLD_LIGHT : GOLD,
                 }}
               />
             </Link>
